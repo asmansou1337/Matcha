@@ -155,27 +155,26 @@ const Auth = {
 
         if (responseData.isValid === true) {
             const user = await authManager.verifLoginInfo(username);
-            //console.log(chalk.red(user[0].password));
             if (user[0]) {
                 // Verify password is correct
-                bcrypt.compare(password, user[0].password, (err, res) => {
-                    if(res) {
-                        // Passwords match
-                        if(user[0].is_active === 1)
-                            {
-                                console.log("login success");
-                                responseData.successMessage = "login success";
-                            }
-                            else {
-                                responseData.isValid = false;
-                                responseData.errorMessage.push({error: "Account Activation Required!"});
-                            }
-                    } else {
+                const match = await bcrypt.compare(password, user[0].password);
+                if (match) {
+                    // Passwords match
+                    if(user[0].is_active === 1)
+                    {
+                        console.log("login success");
+                        responseData.successMessage = "login success";
+                    }
+                    else {
+                        responseData.isValid = false;
+                        responseData.errorMessage.push({error: "Account Activation Required!"});
+                    }
+                } else {
                      // Passwords don't match
+                     console.log("Wrong Password!");
                      responseData.isValid = false;
                      responseData.errorMessage.push({error: "Wrong Password!"});
-                    } 
-                  });
+                }
             } else {
                 responseData.isValid = false;
                 responseData.errorMessage.push({error: "This username does not exist!"});
