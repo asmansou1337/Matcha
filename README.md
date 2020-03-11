@@ -1,1 +1,265 @@
-# matchaV2
+# Matcha project
+
+## Description:
+
+  - Matcha is a dating web app that is made with NodeJs, Express Js, Ejs Template Engine/ Bootstrap, and MySQL.
+  
+## Installing:
+
+Install the app through the setup page to create automatically the database, steps:
+
+1. **Change database credentials and create database with it's tables**
+
+    1. Copy and rename the file:
+      - cp config/database.example.js config/database.js
+
+    1. Edit database credentials:
+      - vim config/database.js
+
+    1. Copy and rename the file:
+      - cp config/setup.example.js config/setup.js
+
+    1. Edit database credentials:
+      - vim config/setup.js
+    
+    1. Allow permission to the project folder and enclosed files:
+      - chmod -R 777 .
+      
+1. **Install the project dependencies:**
+
+    - In terminal lauch the command: npm install
+
+2. **Lunch setup page:**
+
+    - In terminal lauch the command: npm run setup
+    
+3. **Run the server:**
+
+    - In terminal lauch the command: npm run dev
+
+1. **Authentication**
+    - Login page: http://localhost/matcha/signin
+        > Created user in setup page: user1:helloWorld10$$
+    - Sign up page : http://localhost/matcha/signup
+        > After signing up you will need to activate you account through email
+
+________________________________________________________________________
+
+## Overall tasks:
+
+- [X] Define tasks: Read the subject and identify the required tasks
+- [X] Database: Create database and database tables
+- [ ] Frontend: Pages and Design ..
+- [ ] Backend: functions, modules and classes ..
+- [ ] Testing
+
+### Things to respect:
+
+  - [ ] app must be compatible at least with Firefox (>= 41) and Chrome (>= 46)
+  - [X] Relational Database or graph oriented Database (I used Mysql in this project)
+  - [X] “micro-framework” has a router, and eventually templating, but no ORM, validators or User Accounts Manager.(Using express)
+  - [ ] Your website must have a decent layout: at least a header, a main section and a footer.
+  - [ ] Your website must be usable on a mobile phone and keep an acceptable layout on small resolutions (Responsive).
+  - [ ] Security: storing hashed passwords, protection against injection and bad files uploaded and unprotected js vars
+
+### Major project sections and features:
+
+Part 1:
+  - [X] Project structure
+  - [ ] Classes
+  - [ ] Modules: validation , Database Manager, ..
+  - [ ] Authentication
+  - [ ] Access Management & Session
+  - [ ] Force user to fill basic required info (Redirect to user profile)
+  - [ ] User info and ability to edit them  
+    - [ ] Edit basic required info : username, email, password, first name, last name, gender, sexual preference, bio,
+    - [ ] Edit gender and sexual preferences
+    - [ ] Change pictures max 5 (1 is for profile)
+    - [ ] Set picture as profile picture
+    - [ ] Edit interests (tags)
+    - [ ] Locating the position of user automatically
+    - [ ] Edit location
+  - [ ] User profile: All info except mail and pass
+  - [ ] Visits history
+  - [ ] Like history
+  - [ ] like/like back/unlike profiles 
+  - [ ] Block and report user
+  - [ ] Check when user last connected
+  - [ ] has fame rating (calculated)
+
+Part 2: 
+  - [ ] Chat: real time chat (10 secs max)
+  - [ ] Search profiles based on critera
+  - [ ] Suggesting profiles based on critera
+  - [ ] Notifications: 
+    - [ ] New message
+    - [ ] The user received a “like”.
+    - [ ] The user’s profile has been checked.
+    - [ ] The user received a message.
+    - [ ] A “liked” user “liked” back.
+    - [ ] A connected user “unliked” you.
+    - [ ] Blocked user (won't generate notifications)
+
+### Frontend:
+
+  - **Pages**
+
+    - [X] Setup:Create Database, Creates tables if not exists , Install dummy data: users
+    - [ ] Sign up
+    - [ ] Sign in
+    - [ ] Reset password (Email form)
+    - [ ] Reset password (new password form)
+    - [ ] Profile
+    - [ ] Edit profile (edit infos + update password)
+    - [ ] Visits history
+    - [ ] Likes history
+    - [ ] Welcome page (Visitors list + likes list)
+    - [ ] Suggested profiles Discover people (like or not)
+    - [ ] Search
+    - [ ] Chat
+    - [ ] Notifications
+
+  - **Components**
+
+    - [ ] Header (Nav)
+      - Non connected user
+        - signup
+        - signin
+      - connected user
+        -  Links to : Home, logout, profile, edit profile, search, match, chat
+        -  Notifications: Messages , general (connecting , likes, visits ..)
+    - [ ] Footer
+
+  - **Design** 
+
+    - [ ] Template (Layout & Theme)
+    - [ ] Responsive
+
+### Backend:
+
+  - **Functions**
+
+    - [ ] Routing
+    - [ ] Rendering
+    - [ ] Validation
+      - [ ] Sign in , Sign up, Reset, Confirm
+      - [ ] Edit profile
+      - [ ] Picture
+      - [ ] Search
+      - [ ] Message
+    - [ ] Controllers
+    - [ ] Models
+
+  - **Modules**
+
+    - [ ] Database
+    - [ ] Session
+    - [ ] Mailer
+    - [ ] Validation
+    - [ ] Picture
+
+### Database:
+
+  - **Tables**
+
+    - [X] users
+    - [X] preferences
+    - [X] genders
+    - [X] pictures
+    - [X] tags
+    - [X] user_tags
+    - [X] reported_users
+    - [X] blocked_users
+    - [X] liked_profiles
+    - [X] visited_profiles
+    - [X] notifications
+    - [X] conversations
+    - [X] messages
+________________________________________________________________________
+
+### Project details:
+
+  - **Registration**
+
+    - [ ] at least an email address, a username, a last name, a first name and a password
+    - [ ] After the registration, an e-mail with an unique link must be sent to the registered user to verify his account
+  
+  - **Signing-in** 
+
+    - [ ] connect with his/her username and password
+    - [ ] able to receive an email allowing him/her to re-initialize his/her password in case of forgetting his/her password 
+    - [ ] Disconnect with 1 click from any pages on the site.
+
+  - **User profile**
+
+    - [ ] Once connected user must complete his or her profile:
+      ◦ [ ] The gender.
+      ◦ [ ] Sexual preferences.
+      ◦ [ ] A short biography.
+      ◦ [ ] A list of interests with tags (ex: #vegan, #geek, #piercing etc...). These tags must be reusable.
+      ◦ [ ] Pictures, max 5, including 1 as profile picture.
+    - [ ] At any time, the user must be able to modify these information, as well as the last name, first name, email and password.
+    - [ ] The user should be able to change or reinitialize his password despite been connected or not.
+    - [ ] The user must be able to check who visited his/her profile as well as who “liked” him/her.
+    - [ ] The user must have a public “fame rating”:
+      ◦ Up to you to define what “fame rating” means as long as your criteria are consistent
+    - [ ] The user must be located using GPS positioning, up to his/her neighborhood. If the user does not want to be positioned, you must find a way to locate him/her even without his/her consent.2 The user must be able to modify his/her position in his/her profile.
+
+
+  - **Matching**
+
+    - [ ] The user must be able to easily get a list of suggestions that match his/her profile
+    - [ ] The user can see this page only if he/she fill his profile
+    - You will only propose “interesting” profiles for example, only men for a heterosexual girls.
+      - You must manage bisexuality. If the orientation isn’t specified, the user will be considered bi-sexual by default.
+      - You must match profiles based on (in priority):
+          - Sexual orientation
+          - Close geographic area as the user.
+          - With a maximum of common tags. 
+          - With their “fame rating”.
+      - The list must be sortable by age, location, “fame rating” and common tags.
+      - The list must be filterable by age, location, “fame rating” and common tags.
+
+  - **Search**
+
+    [ ] The user must be able to run an advanced research selecting one or a few criterias such as:
+      - A age gap.
+      - A “fame rating” gap.
+      - A location.
+      - One or multiple interests tags.
+    As per the suggestion list, the resulting list must be sortable and filterable by age, location, “fame rating” and tags.
+      - A blocked user should not appear in the search.
+
+  - **Profile of other users**
+
+    - [ ] A user must be able to consult the profile of other users. Profiles must contain all the information available about them, except for the email address and the password.
+    - [ ] When a user consults a profile, it must appear in his/her visit history.
+    - [ ] The user must also be able to:
+      - Like or Unlike the another user profile if this one has at least one picture.
+      - See if the other user has already liked the user and like him back.
+      - Check the “fame rating”.
+      - See if the user is online, and if not see the date and time of the last connection.
+      When two people “like” each other, we will say that they are “connected” and are now able to chat.
+      If the current user does not have a picture, he/she cannot complete this action.
+      - [ ] Report the user as a “fake account”.
+      - [ ] Block the user. A blocked user won’t appear anymore in the research results and won’t generate additional notifications.
+
+    - [ ] A user can clearly see if the consulted profile is connected or “like” his/her profile and
+    must be able to “unlike” or be disconnected from that profile.
+
+  - **Chat**
+
+    - [ ] When two users are connected,(Meaning they “like” each other.) they must be able to “chat” in real time.(We’ll tolerate a 10 secondes delay.) How you will implement the chat is totally up to you. The user must be able to see from any page if a new message is received.
+
+  - **Notifications**
+
+    - [ ] A user must be notified in real time(We’ll also tolerate a 10 secondes delay.) of the following events:
+
+      - [ ] The user received a “like”.
+      - [ ] The user’s profile has been visited.
+      - [ ] The user received a message.
+      - [ ] A “liked” user “liked” back.
+      - [ ] A connected user “unliked” you.
+
+    - [ ] A user must be able to see, from any page that a notification hasn’t been read.
+
