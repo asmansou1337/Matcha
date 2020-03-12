@@ -3,10 +3,10 @@ var chalk = require('chalk');
 var mysql = require('mysql');
 
 var cnx = mysql.createConnection({
-	host     : 'localhost',
+	host     : 'database',
 	port	 : 3306,
     user     : 'root',
-    password: '', 
+    password : 'root', 
 });
 
 //Catching errors
@@ -49,8 +49,8 @@ sql += '`preference_id` int(11) NOT NULL DEFAULT 3,';
 sql += '`firstName` varchar(100) NOT NULL,';
 sql += '`lastName` varchar(100) NOT NULL,';
 sql += '`token` varchar(100)  NOT NULL,';
-sql += '`biography` TEXT  NOT NULL,';
-sql += '`gps_location` varchar(200)  NOT NULL,';
+sql += '`biography` TEXT,';
+sql += '`gps_location` varchar(200),';
 sql += '`last_connection` datetime,';
 sql += '`born_date` datetime,';
 sql += '`notify` int(11)  NOT NULL DEFAULT 1,';

@@ -4,6 +4,8 @@ var chalk = require('chalk');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const mail = require('../models/mailModel');
+const profileManager = require('../models/profileModel');
+const jwt = require("jsonwebtoken");
 
 const Auth = {
     signup: async (req, res) => {
@@ -87,15 +89,22 @@ const Auth = {
                 const subject = 'Matcha: Account Activation';
                 const content = `Hi ${username}, <br>Folow the link below to activate your account: 
                 <a href='http://${process.env.HOST}:${process.env.PORT}/activateAccount/${token}'>Link</a><br>`;
-                if (mail.sendMail(email, subject, content)) {
+                const m = await mail.sendMail(email, subject, content);
+                if (m) {
                     responseData.successMessage = "Your Account has been created successfully, Please check your Email for the activation link";
+                } else {
+                    responseData.isValid = false;
+                    responseData.errorMessage.push({error: 'Error Creating your account, Please try again!'});
                 }
             } else {
                 responseData.isValid = false;
                 responseData.errorMessage.push({error: 'Error Creating your account, Please try again!'});
             }
         }
-        res.send(responseData);
+        if (responseData.isValid === true)
+            res.status(201).send(responseData);
+        else
+            res.status(400).send(responseData);
     },
     activateAccount: async (req, res) => {
         let responseData = {
@@ -127,7 +136,10 @@ const Auth = {
                 }
             }
         }
-        res.send(responseData);
+        if (responseData.isValid === true)
+            res.status(200).send(responseData);
+        else
+            res.status(400).send(responseData);
     },
     login: async (req, res) => {
         let responseData = {
@@ -163,7 +175,17 @@ const Auth = {
                     if(user[0].is_active === 1)
                     {
                         console.log("login success");
+                        // Create JWT token
+                        const token = jwt.sign(
+                            {
+                              username: user[0].username,
+                              userId: user[0].id
+                            },
+                            process.env.JWT_KEY,
+                            { expiresIn: "12h" }
+                          );
                         responseData.successMessage = "login success";
+                        responseData.authToken = token;
                     }
                     else {
                         responseData.isValid = false;
@@ -180,7 +202,102 @@ const Auth = {
                 responseData.errorMessage.push({error: "This username does not exist!"});
             }
         }
-        res.send(responseData);
+        if (responseData.isValid === true)
+            res.status(201).send(responseData);
+        else
+            res.status(400).send(responseData);
+    },
+    sendResetEmail: async (req, res) => {
+        let responseData = {
+            isValid : true,
+            successMessage: null,
+            errorMessage: []
+        };
+        let {email} = req.body;
+        // Validate Email
+        if (validation.isEmpty(email)) {
+            responseData.isValid = false;
+            responseData.errorMessage.push({email: "Your email should not be empty!"});
+        } else if(!validation.isEmail(email.trim())) {
+            responseData.isValid = false;
+            responseData.errorMessage.push({email: "Your email is not valid!"});
+        }
+        // Verify if email exists
+        if (responseData.isValid === true) {
+            const verifEmail = await authManager.verifyEmailExists(email);
+            if (verifEmail[0].count === 0) {
+                responseData.isValid = false;
+                responseData.errorMessage.push({email: "This email does not exist, Please choose another one!"});
+            } else {
+                const user = await authManager.getUserInfos('email', email);
+                // Send Activation MAIL
+                const subject = 'Matcha: Password Reinitialisation Link';
+                const content = `Hi ${user[0].username}, <br>Folow the link below to reinitialize your password: 
+                <a href='http://${process.env.HOST}:${process.env.PORT}/reinitializePassword/${user[0].token}'>Link</a><br>`;
+                const m = await mail.sendMail(email, subject, content);
+                if (m) {
+                    responseData.successMessage = "A link to reinitialize your password is sent to you, Please check your Email.";
+                } else {
+                    responseData.isValid = false;
+                    responseData.errorMessage.push({error: 'Error Sending Email, Please try again!'});
+                }
+            }
+        }
+        if (responseData.isValid === true)
+            res.status(201).send(responseData);
+        else
+            res.status(400).send(responseData);
+    },
+    reinitializePassword: async (req, res) => {
+        let responseData = {
+            isValid : true,
+            successMessage: null,
+            errorMessage: []
+        };
+        let {password, confirmPassword} = req.body;
+        let token = req.params.token;
+        // Validate Password Confirmation
+        if (validation.isEmpty(confirmPassword)) {
+            responseData.isValid = false;
+            responseData.errorMessage.push({confirmPassword: "Your password should not be empty!"});
+        } else if(!validation.isConfirmPassword(password.trim(), confirmPassword.trim())) {
+            responseData.isValid = false;
+            responseData.errorMessage.push({confirmPassword: "Both password should be the same!"});
+        }
+        // Validate Password
+        if (validation.isEmpty(password)) {
+            responseData.isValid = false;
+            responseData.errorMessage.push({password: "Your password should not be empty!"});
+        }else if(!validation.isPassword(password.trim())) {
+            responseData.isValid = false;
+            responseData.errorMessage.push({password: "Password should be at least 8 characters in length and should include at least one uppercase letter,one lowercase letter, one number, and one special character.!"});
+        }
+        if (responseData.isValid === true) {
+            if (!validation.isToken(token)) {
+                responseData.isValid = false;
+                responseData.errorMessage.push({error: 'Unvalid link, Please Try Again!'});
+            } else {
+                const verifTokenExist = await authManager.verifyTokenExists(token);
+                if (verifTokenExist[0].count !== 1) {
+                    responseData.isValid = false;
+                    responseData.errorMessage.push({error: "Unvalid link, Please Try Again!"});
+                } else {
+                    // Creation of hashed password
+                    password = await bcrypt.hash(password, 10);
+                    const update = await profileManager.updatePassword(password, token);
+                    if (update) {
+                        responseData.successMessage = "Your password has changed successfuly.";
+                    } else {
+                        responseData.isValid = false;
+                        responseData.errorMessage.push({error: 'Error Updating your password, Please try again!'});
+                    }
+                }
+            }
+        }
+        if (responseData.isValid === true)
+            res.status(200).send(responseData);
+        else
+            res.status(400).send(responseData);
     }
 }
 

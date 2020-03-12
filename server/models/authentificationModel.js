@@ -59,7 +59,7 @@ const Auth = {
                else
                {
                    resolve(JSON.parse(JSON.stringify(result)));
-                   console.log(chalk.red(JSON.stringify(result)));
+                   //console.log(chalk.red(JSON.stringify(result)));
                }
            });
        })
@@ -99,6 +99,22 @@ const Auth = {
         const sql = 'SELECT * FROM users WHERE username = ?';
         return new Promise ((resolve, reject) =>  {
             conn.query(sql, username, (err,result) => {
+               if(err) {
+                    console.log(chalk.redBright('Error!!'));
+                    reject(err);
+               }
+               else
+               {
+                    const data = JSON.parse(JSON.stringify(result));
+                    resolve(data);
+               }
+           });
+       })
+    },
+    getUserInfos: async (str, value) => {
+        const sql = `SELECT * FROM users WHERE ${str} = ?`;
+        return new Promise ((resolve, reject) =>  {
+            conn.query(sql, value, (err,result) => {
                if(err) {
                     console.log(chalk.redBright('Error!!'));
                     reject(err);
