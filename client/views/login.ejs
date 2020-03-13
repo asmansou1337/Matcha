@@ -1,0 +1,28 @@
+<%- include('header'); %>
+
+<section class="view">
+      <div class="col-md-12">
+        <div class="d-flex flex-column justify-content-center">
+            <!-- Login Form -->
+                <form class="text-center border border-light p-5">
+                    <p class="h4 mb-4">LOGIN</p>
+
+                    <!-- Username -->
+                    <input type="text" id="username" class="form-control mb-4" placeholder="Username">
+
+                    <!-- Password -->
+                    <input type="password" id="password" class="form-control" placeholder="Password">
+
+                    <!-- Sign up button -->
+                    <button class="btn btn-info my-4 btn-block" type="submit">LOGIN</button>
+                    <a href="/resetEmail">Forgot Password?</a>
+                    <hr>
+                    <!-- Register -->
+                    <p>Don't Have An Account Yet? <a href="/signup">Register HERE</a></p>
+                </form>
+        </div>
+      </div>
+</section>
+
+
+<%- include('footer'); %>
