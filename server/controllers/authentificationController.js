@@ -287,6 +287,9 @@ const Auth = {
                     const update = await profileManager.updatePassword(password, token);
                     if (update) {
                         responseData.successMessage = "Your password has changed successfuly.";
+                        // Reset token
+                        let newToken = crypto.randomBytes(40).toString('hex');
+                        await authManager.resetToken(newToken, token);
                     } else {
                         responseData.isValid = false;
                         responseData.errorMessage.push({error: 'Error Updating your password, Please try again!'});

@@ -127,6 +127,21 @@ const Auth = {
            });
        })
     },
+    resetToken: async (newToken, token) => {
+        const sql = 'UPDATE users SET token = ? WHERE token = ?';
+        return new Promise ((resolve, reject) =>  {
+            conn.query(sql, [newToken, token], (err) => {
+               if(err) {
+                    console.log(chalk.redBright('Error activating account!!'));
+                    reject(err);
+               }
+               else
+               {
+                   resolve(true);
+               }
+           });
+       })
+    },
 
 }
 

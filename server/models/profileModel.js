@@ -17,22 +17,6 @@ const Auth = {
            });
        })
     },
-    verifyUsernameExists: async (username) => {
-        const sql = 'SELECT count(username) as count FROM users WHERE username = ?';
-        return new Promise ((resolve, reject) =>  {
-            conn.query(sql, username, (err,result) => {
-               if(err) {
-                    console.log(chalk.redBright('Error Selecting username!!'));
-                    reject(err);
-               }
-               else
-               {
-                   const data = JSON.parse(JSON.stringify(result));
-                   resolve(data);
-               }
-           });
-       })
-    },
 
 }
 

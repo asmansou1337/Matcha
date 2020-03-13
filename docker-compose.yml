@@ -25,6 +25,15 @@ services:
      volumes:
         - ./server/:/usr/src/app
      entrypoint: tail -f /dev/null
+   front:
+     container_name: 'front'
+     build: .
+     ports:
+       - "8080:8080"
+     restart: always
+     volumes:
+        - ./client/:/usr/src/app
+     entrypoint: tail -f /dev/null
    phpmyadmin:
      image: phpmyadmin/phpmyadmin
      container_name: phpmyadmin
