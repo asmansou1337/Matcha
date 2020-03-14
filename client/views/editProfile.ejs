@@ -1,0 +1,127 @@
+<%- include('header'); %>
+
+<!-- Intro -->
+<section class="view">
+      <div >
+        <ul class="nav nav-tabs d-flex justify-content-center" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic"
+                aria-selected="true">Basic Infos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="passowrd-tab" data-toggle="tab" href="#passowrd" role="tab" aria-controls="passowrd"
+                aria-selected="false">Password</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="picture-tab" data-toggle="tab" href="#picture" role="tab" aria-controls="picture"
+                aria-selected="false">Pictures</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="location-tab" data-toggle="tab" href="#location" role="tab" aria-controls="location"
+                  aria-selected="false">Location</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="preview-tab" data-toggle="tab" href="#preview" role="tab" aria-controls="preview"
+                  aria-selected="false">Preview</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="basic" role="tabpanel" aria-labelledby="basic-tab">
+                <!-- Extended default form grid -->
+                <form>
+                    <!-- Grid row -->
+                    <div class="form-row">
+                        <!-- Default input -->
+                        <div class="form-group col-md-6">
+                            <label for="firstName">First Name</label>
+                            <input type="text" class="form-control" id="firstName" placeholder="First Name">
+                        </div>
+                        <!-- Default input -->
+                        <div class="form-group col-md-6">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" placeholder="Last Name">
+                        </div>
+                        </div>
+                        <!-- Grid row -->
+                    <!-- Grid row -->
+                    <div class="form-row">
+                    <!-- Default input -->
+                    <div class="form-group col-md-6">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" placeholder="Username">
+                    </div>
+                    <!-- Default input -->
+                    <div class="form-group col-md-6">
+                        <label for="birthday">Birth Day</label>
+                        <input type="date" class="form-control" id="birthday" placeholder="Birth Day">
+                    </div>
+                    </div>
+                    <!-- Grid row -->
+                     <!-- Grid row -->
+                     <div class="form-row">
+                        <!-- Default input -->
+                        <div class="form-group col-md-6">
+                            <label for="gender">Gender</label>
+                            <select class="browser-default custom-select">
+                                <option selected>Select your gender</option>
+                                <option value="1">Male</option>
+                                <option value="2">Female</option>
+                              </select>
+                        </div>
+                        <!-- Default input -->
+                        <div class="form-group col-md-6">
+                            <label for="orientation">Orientation</label>
+                            <select class="browser-default custom-select">
+                                <option selected>Select your Orientation</option>
+                                <option value="1">Heterosexual</option>
+                                <option value="2">Homosexual</option>
+                                <option value="3">Bisexual</option>
+                              </select>
+                        </div>
+                        </div>
+                        <!-- Grid row -->
+                
+                    <!-- Default input -->
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="E-mail">
+                    </div>
+                    <!-- Default input -->
+                    <div class="form-group">
+                        <label for="bio">Bio</label>
+                        <textarea class="form-control" id="bio" rows="7"></textarea>
+                    </div>
+                    <!-- Grid row -->
+                    <div class="form-row">
+                    <!-- Default input -->
+                    <div class="form-group col-md-6">
+                        <label for="tags">Tags</label>
+                        <input type="text" class="form-control" id="inputCity" placeholder="New York City">
+                    </div>
+                    </div>
+                    <!-- Grid row -->
+                    <button type="submit" class="btn btn-primary btn-md">Submit</button>
+                </form>
+                <!-- Extended default form grid -->
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">Food truck fixie
+              locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit,
+              blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee.
+              Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum
+              PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS
+              salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit,
+              sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester
+              stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</div>
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">Etsy mixtape
+              wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack
+              lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard
+              locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify
+              squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie
+              etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog
+              stumptown. Pitchfork sustainable tofu synth chambray yr.</div>
+          </div>
+      </div>
+  </section>
+
+
+<%- include('footer'); %>

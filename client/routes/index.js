@@ -21,4 +21,9 @@ router.get('/resetEmail', function(req, res, next) {
   res.render('resetEmail');
 });
 
+/* GET edit profile page. */
+router.get('/editProfile', function(req, res, next) {
+  res.render('editProfile');
+});
+
 module.exports = router;
