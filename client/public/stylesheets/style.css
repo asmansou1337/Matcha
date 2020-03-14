@@ -14,3 +14,33 @@ a {
 #myTabJust {
   padding: 10px;
 }
+
+#myTabContent {
+  padding-top: 20px;
+}
+
+.tag{
+  display: inline-block;
+  position: relative;
+  margin: 5px 10px 5px 0px;
+}
+
+.tag label{
+  padding: 7px 34px 6px 18px;
+  position: relative;
+  z-index: 200;
+  color: white;
+  display: block;
+  border-radius: 16px;
+  background: blue;
+  transition: all timing ease-in;
+}
+
+.tag .fa{
+  position: absolute;
+  z-index: 250;
+  right: 11px;
+  top: 9px;
+  color: white;
+  line-height: 0.95;
+}
