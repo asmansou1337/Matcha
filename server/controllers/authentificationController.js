@@ -14,54 +14,43 @@ const Auth = {
             successMessage: null,
             errorMessage: []
         };
+        // get the form infos from the request body
         let { firstName, lastName, username, email, password, confirmPassword } = req.body;
         // Validate First Name
-        if (validation.isEmpty(firstName)){
+        let err = validation.validate(firstName, "first Name", validation.isName);
+        if (err !== "success") {
             responseData.isValid = false;
-            responseData.errorMessage.push({firstName: "Your first name should not be empty!"});
-        } else if(!validation.isName(firstName.trim())) {
-            responseData.isValid = false;
-            responseData.errorMessage.push({firstName: "Your first name should contain caracteres only!"});
+            responseData.errorMessage.push({firstName: err});
         }
         // Validate Last Name
-        if (validation.isEmpty(lastName)) {
+        err = validation.validate(lastName, "last Name", validation.isName);
+        if (err !== "success") {
             responseData.isValid = false;
-            responseData.errorMessage.push({lastName: "Your last name should not be empty!"});
-        } else if(!validation.isName(lastName.trim())) {
-            responseData.isValid = false;
-            responseData.errorMessage.push({lastName: "Your last name should contain caracteres only!"});
+            responseData.errorMessage.push({lastName: err});
         }
         // Validate Username
-        if (validation.isEmpty(username)) {
+        err = validation.validate(username, "username", validation.isUsername);
+        if (err !== "success") {
             responseData.isValid = false;
-            responseData.errorMessage.push({username: "Your username should not be empty!"});
-        } else if(!validation.isUsername(username.trim())) {
-            responseData.isValid = false;
-            responseData.errorMessage.push({username: "Your username should contain alphanumerique caracteres only!"});
+            responseData.errorMessage.push({username: err});
         }
         // Validate Email
-        if (validation.isEmpty(email)) {
+        err = validation.validate(email, "email", validation.isEmail);
+        if (err !== "success") {
             responseData.isValid = false;
-            responseData.errorMessage.push({email: "Your email should not be empty!"});
-        }else if(!validation.isEmail(email.trim())) {
-            responseData.isValid = false;
-            responseData.errorMessage.push({email: "Your email is not valid!"});
+            responseData.errorMessage.push({email: err});
         }
         // Validate Password Confirmation
-        if (validation.isEmpty(confirmPassword)) {
+        err = validation.isConfirmPassword(password, confirmPassword);
+        if (err !== "success") {
             responseData.isValid = false;
-            responseData.errorMessage.push({confirmPassword: "Your password should not be empty!"});
-        }else if(!validation.isConfirmPassword(password.trim(), confirmPassword.trim())) {
-            responseData.isValid = false;
-            responseData.errorMessage.push({confirmPassword: "Both password should be the same!"});
+            responseData.errorMessage.push({confirmPassword: err});
         }
         // Validate Password
-        if (validation.isEmpty(password)) {
+        err = validation.validate(password, "password", validation.isPassword);
+        if (err !== "success") {
             responseData.isValid = false;
-            responseData.errorMessage.push({password: "Your password should not be empty!"});
-        }else if(!validation.isPassword(password.trim())) {
-            responseData.isValid = false;
-            responseData.errorMessage.push({password: "Password should be at least 8 characters in length and should include at least one uppercase letter,one lowercase letter, one number, and one special character.!"});
+            responseData.errorMessage.push({password: err});
         }
 
         // Validation: username & email should be unique
@@ -88,7 +77,7 @@ const Auth = {
                 // Send Activation MAIL
                 const subject = 'Matcha: Account Activation';
                 const content = `Hi ${username}, <br>Folow the link below to activate your account: 
-                <a href='http://${process.env.HOST}:${process.env.PORT}/activateAccount/${token}'>Link</a><br>`;
+                <a href='http://${process.env.HOST}:${process.env.PORT}/activateAccount?token=${token}'>Link</a><br>`;
                 const m = await mail.sendMail(email, subject, content);
                 if (m) {
                     responseData.successMessage = "Your Account has been created successfully, Please check your Email for the activation link";
@@ -113,7 +102,7 @@ const Auth = {
             errorMessage: []
         };
         // Validate token (should be alphanumerique string)
-        const token = req.params.token;
+        const token = req.query.token;
         if (!validation.isToken(token)) {
             responseData.isValid = false;
             responseData.errorMessage.push({error: 'Unvalid link, Please Try Again!'});
@@ -149,22 +138,18 @@ const Auth = {
         };
         let {username, password} = req.body;
         // Validate Username
-        if (validation.isEmpty(username)) {
+        let err = validation.validate(username, "username", validation.isUsername);
+        if (err !== "success") {
             responseData.isValid = false;
-            responseData.errorMessage.push({username: "Your username should not be empty!"});
-        } else if(!validation.isUsername(username.trim())) {
-            responseData.isValid = false;
-            responseData.errorMessage.push({username: "Your username should contain alphanumerique caracteres only!"});
+            responseData.errorMessage.push({username: err});
         }
          // Validate Password
-         if (validation.isEmpty(password)) {
+        err = validation.validate(password, "password", validation.isPassword);
+        if (err !== "success") {
             responseData.isValid = false;
-            responseData.errorMessage.push({password: "Your password should not be empty!"});
-        } else if(!validation.isPassword(password.trim())) {
-            responseData.isValid = false;
-            responseData.errorMessage.push({password: "Password should be at least 8 characters in length and should include at least one uppercase letter,one lowercase letter, one number, and one special character.!"});
+            responseData.errorMessage.push({password: err});
         }
-
+        // Verify if the login infos are correct & create autorisation token
         if (responseData.isValid === true) {
             const user = await authManager.verifLoginInfo(username);
             if (user[0]) {
@@ -192,10 +177,9 @@ const Auth = {
                         responseData.errorMessage.push({error: "Account Activation Required!"});
                     }
                 } else {
-                     // Passwords don't match
-                     console.log("Wrong Password!");
-                     responseData.isValid = false;
-                     responseData.errorMessage.push({error: "Wrong Password!"});
+                    // Passwords don't match
+                    responseData.isValid = false;
+                    responseData.errorMessage.push({error: "Wrong Password!"});
                 }
             } else {
                 responseData.isValid = false;
@@ -203,7 +187,7 @@ const Auth = {
             }
         }
         if (responseData.isValid === true)
-            res.status(201).send(responseData);
+            res.status(200).send(responseData);
         else
             res.status(400).send(responseData);
     },
@@ -215,12 +199,10 @@ const Auth = {
         };
         let {email} = req.body;
         // Validate Email
-        if (validation.isEmpty(email)) {
+        let err = validation.validate(email, "email", validation.isEmail);
+        if (err !== "success") {
             responseData.isValid = false;
-            responseData.errorMessage.push({email: "Your email should not be empty!"});
-        } else if(!validation.isEmail(email.trim())) {
-            responseData.isValid = false;
-            responseData.errorMessage.push({email: "Your email is not valid!"});
+            responseData.errorMessage.push({email: err});
         }
         // Verify if email exists
         if (responseData.isValid === true) {
@@ -233,7 +215,7 @@ const Auth = {
                 // Send Activation MAIL
                 const subject = 'Matcha: Password Reinitialisation Link';
                 const content = `Hi ${user[0].username}, <br>Folow the link below to reinitialize your password: 
-                <a href='http://${process.env.HOST}:${process.env.PORT}/reinitializePassword/${user[0].token}'>Link</a><br>`;
+                <a href='http://${process.env.HOST}:${process.env.PORT}/reinitializePassword?token=${user[0].token}'>Link</a><br>`;
                 const m = await mail.sendMail(email, subject, content);
                 if (m) {
                     responseData.successMessage = "A link to reinitialize your password is sent to you, Please check your Email.";
@@ -244,7 +226,7 @@ const Auth = {
             }
         }
         if (responseData.isValid === true)
-            res.status(201).send(responseData);
+            res.status(200).send(responseData);
         else
             res.status(400).send(responseData);
     },
@@ -255,23 +237,20 @@ const Auth = {
             errorMessage: []
         };
         let {password, confirmPassword} = req.body;
-        let token = req.params.token;
+        let token = req.query.token;
         // Validate Password Confirmation
-        if (validation.isEmpty(confirmPassword)) {
+        let err = validation.isConfirmPassword(password, confirmPassword);
+        if (err !== "success") {
             responseData.isValid = false;
-            responseData.errorMessage.push({confirmPassword: "Your password should not be empty!"});
-        } else if(!validation.isConfirmPassword(password.trim(), confirmPassword.trim())) {
-            responseData.isValid = false;
-            responseData.errorMessage.push({confirmPassword: "Both password should be the same!"});
+            responseData.errorMessage.push({confirmPassword: err});
         }
         // Validate Password
-        if (validation.isEmpty(password)) {
+        err = validation.validate(password, "password", validation.isPassword);
+        if (err !== "success") {
             responseData.isValid = false;
-            responseData.errorMessage.push({password: "Your password should not be empty!"});
-        }else if(!validation.isPassword(password.trim())) {
-            responseData.isValid = false;
-            responseData.errorMessage.push({password: "Password should be at least 8 characters in length and should include at least one uppercase letter,one lowercase letter, one number, and one special character.!"});
+            responseData.errorMessage.push({password: err});
         }
+        // Check if token exist & is valid before updating the password & reseting the token
         if (responseData.isValid === true) {
             if (!validation.isToken(token)) {
                 responseData.isValid = false;

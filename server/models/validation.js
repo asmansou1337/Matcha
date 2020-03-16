@@ -1,31 +1,32 @@
 const chalk = require('chalk');
+const util = require('./functions');
+
+const errorTab = {
+  "first Name" : "Your first name should contain caracteres only!",
+  "last Name": "Your last name should contain caracteres only!",
+  "username": "Your username should contain alphanumerique caracteres only!",
+  "email": "Your email is not valid!",
+  "password": "Password should be at least 8 characters in length and should include at least one uppercase letter,one lowercase letter, one number, and one special character.!",
+  "password confirmation": "Both password should be the same!"
+}
 
 const Valid = {
-      isEmpty: (value) => {
-        if(!value || (typeof value === 'undefined') || (value.length === 0) || JSON.stringify(value) === '{}') 
-            return true
-        return false
+      validate: (data, field, func) => {
+        if (util.isEmpty(data))
+            return `Your ${field} should not be empty!`;
+        if (!func(data.trim()))
+            return errorTab[field];
+        return "success";
       },
-      isAlpha: (value) => {
-        return /^[a-zA-Z]+$/.test(value) 
-      },
-      isAlphaNum: (value) => {
-        return /^[a-zA-Z0-9]+$/.test(value)
-      },
-      isDigit: (value) => {
-        return /[0-9]/.test(value)
-      },
-      isSpecial: (value) => {
-        return /[ !@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(value)
-      },
-      isLowercase: (value) => {
-        return /[a-z]/.test(value)
-      },
-      isUppercase: (value) => {
-        return /[A-Z]/.test(value)
+      isConfirmPassword: (password, cpassword) => {
+        if (util.isEmpty(cpassword))
+            return `Your password confirmation should not be empty!`;
+        if ((cpassword !== password))
+            return "Both password should be the same!";
+        return "success";
       },
       isName: (name) => {
-        if((name.length > 30) || !Valid.isAlpha(name)) 
+        if((name.length > 30) || !util.isAlpha(name)) 
             return false
         return true
       },
@@ -36,23 +37,18 @@ const Valid = {
         return true
       },
       isUsername: (username) => {
-            if((username.length < 2) || (username.length > 20) || !Valid.isAlphaNum(username))
+            if((username.length < 2) || (username.length > 20) || !util.isAlphaNum(username))
                 return false
             return true
       },
       isPassword : (password) => {
         if((password.length < 8) || (password.length > 30) ||
-        !(Valid.isDigit(password) && Valid.isSpecial(password) && Valid.isLowercase(password) && Valid.isUppercase(password)))
+        !(util.isDigit(password) && util.isSpecial(password) && util.isLowercase(password) && util.isUppercase(password)))
             return false
         return true
       },
-      isConfirmPassword: (password, cpassword) => {
-        if(cpassword === password)
-            return true
-        return false
-      },
       isToken: (token) => {
-        if(Valid.isEmpty(token) || !Valid.isAlphaNum(token))
+        if(util.isEmpty(token) || !util.isAlphaNum(token))
             return false
         return true
       }

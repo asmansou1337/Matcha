@@ -6,9 +6,9 @@ const checkAuth = require('../middleware/check-auth');
 const authentification = require('../controllers/authentificationController');
 
 router.post('/signup', authentification.signup);
-router.get('/activateAccount/:token', authentification.activateAccount);
+router.get('/activateAccount', authentification.activateAccount);
 router.post('/login', authentification.login);
 router.post('/sendResetEmail', authentification.sendResetEmail);
-router.post('/reinitializePassword/:token', authentification.reinitializePassword);
+router.post('/reinitializePassword', authentification.reinitializePassword);
 
 module.exports = router;

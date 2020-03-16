@@ -3,10 +3,10 @@ var chalk = require('chalk');
 var mysql = require('mysql');
 
 var cnx = mysql.createConnection({
-	host     : 'database',
+	host     : 'localhost',
 	port	 : 3306,
     user     : 'root',
-    password : 'root', 
+    password : '', 
 });
 
 //Catching errors
