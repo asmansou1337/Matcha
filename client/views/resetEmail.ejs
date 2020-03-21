@@ -4,13 +4,34 @@
 <section class="view">
       <div class="col-md-12">
         <div class="d-flex flex-column justify-content-center">
+          <!-- Error & messages section -->
+          <div>
+            <% if(typeof  error !== 'undefined'){ %>
+                <% if (typeof  error.error != 'undefined') { %>
+                    <div class="alert alert-danger" role="alert">
+                    <%= error.error %>
+                    </div>
+                <% } }
+                if (typeof  success !== 'undefined') { %>
+                    <div class="alert alert-success" role="alert">
+                        <%= success.successMessage %>
+                      </div>
+               <% } %>
+          </div>
             <!-- Password Reset Email Form -->
-                <form class="text-center border border-light p-5">
+                <form class="text-center border border-light p-5" method="POST" action="/resetEmail">
                     <p class="h4 mb-4">Reinitialisation Of Password</p>
-                    <p>Please enter your email, a link to reinitialize your password will be send to you</p>
+                    <p>Please enter your email, a link to reinitialize your password will be sent to you</p>
                     <!-- E-mail -->
-                    <input type="email" id="email" class="form-control mb-4" placeholder="E-mail">
-
+                    <div class="form-row mb-4">
+                      <input type="email" name="email" class="form-control mb-4" placeholder="E-mail">
+                      <% if(typeof  error !== 'undefined'){ %>
+                        <div class="error-input">
+                            <% if (typeof  error.email !== 'undefined') %>
+                            <%= error.email %>
+                        </div>
+                      <% } %>
+                    </div>
                     <!-- Submit button -->
                     <button class="btn btn-info my-4 btn-block" type="submit">Submit</button>
                 </form>

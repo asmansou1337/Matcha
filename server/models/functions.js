@@ -3,7 +3,7 @@
 // let hashPassword = await bcrypt.hash(password, 10);
 
 const util = {
-    isEmpty: (value) => {
+      isEmpty: (value) => {
         if(!value || (typeof value === 'undefined') || (value.length === 0) || JSON.stringify(value) === '{}') 
             return true
         return false
@@ -25,6 +25,17 @@ const util = {
       },
       isUppercase: (value) => {
         return /[A-Z]/.test(value)
+      },
+      escapeHtml: (str) => {
+        str  = str.replace(/[&<>'"]/g, 
+          tag => ({
+              '&': '&amp;',
+              '<': '&lt;',
+              '>': '&gt;',
+              "'": '&#39;',
+              '"': '&quot;'
+            }[tag] || tag))
+        return str
       }
 }
 

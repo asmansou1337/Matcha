@@ -44,7 +44,7 @@ sql += '`username`  varchar(100)  NOT NULL,';
 sql += '`email`  varchar(300)  NOT NULL,';
 sql += '`password` varchar(200) NOT NULL,';
 sql += '`is_active` int(11) NOT NULL DEFAULT 0,';
-sql += '`gender_id` int(11) NOT NULL DEFAULT 3,';
+sql += '`gender_id` int(11) NOT NULL DEFAULT 1,';
 sql += '`preference_id` int(11) NOT NULL DEFAULT 3,';
 sql += '`firstName` varchar(100) NOT NULL,';
 sql += '`lastName` varchar(100) NOT NULL,';
@@ -238,8 +238,7 @@ cnx.query(sql, function(err) {
 // Fill Tabe gender
 genders = [
     {title: "male"},
-    {title: "female"},
-    {title: "other"}
+    {title: "female"}
 ];
 
 genders.forEach(g => {

@@ -1,146 +1,33 @@
-const conn = require('../config/database');
-const chalk = require('chalk');
-const bcrypt = require('bcrypt');
+const db = require('../models/databaseModel')
 
 const Auth = {
     register: async (data) => {
         const sql = 'INSERT INTO users SET ?';
-        return new Promise ((resolve, reject) =>  {
-            conn.query(sql, data, (err) => {
-               if(err) {
-                    console.log(chalk.redBright('Error Creating new User!!'));
-                    console.log(chalk.redBright(err));
-                    reject(err);
-               }
-               else
-                    resolve(true);
-           });
-       })
-    },
-    verifyUsernameExists: async (username) => {
-        const sql = 'SELECT count(username) as count FROM users WHERE username = ?';
-        return new Promise ((resolve, reject) =>  {
-            conn.query(sql, username, (err,result) => {
-               if(err) {
-                    console.log(chalk.redBright('Error Selecting username!!'));
-                    reject(err);
-               }
-               else
-               {
-                   const data = JSON.parse(JSON.stringify(result));
-                   resolve(data);
-               }
-           });
-       })
-    },
-    verifyEmailExists: async (email) => {
-        const sql = 'SELECT count(email) as count FROM users WHERE email = ?';
-        return new Promise ((resolve, reject) =>  {
-            conn.query(sql, email, (err, result) => {
-               if(err) {
-                    console.log(chalk.redBright('Error Selecting email!!'));
-                    reject(err);
-               }
-               else
-               {
-                   resolve(JSON.parse(JSON.stringify(result)));
-               }
-           });
-       })
+        return db.insertdb(data, sql)
     },
     verifyTokenExists: async (token) => {
         const sql = 'SELECT count(token) as count FROM users WHERE token = ?';
-        return new Promise ((resolve, reject) =>  {
-            conn.query(sql, token, (err, result) => {
-               if(err) {
-                    console.log(chalk.redBright('Error Selecting token!!'));
-                    reject(err);
-               }
-               else
-               {
-                   resolve(JSON.parse(JSON.stringify(result)));
-                   //console.log(chalk.red(JSON.stringify(result)));
-               }
-           });
-       })
+        return db.selectDB(token, sql)
     },
     verifyAccountActivated: async (token) => {
         const sql = 'SELECT count(*) as count FROM users WHERE token = ? AND is_active = 1';
-        return new Promise ((resolve, reject) =>  {
-            conn.query(sql, token, (err,result) => {
-               if(err) {
-                    console.log(chalk.redBright('Error!!'));
-                    reject(err);
-               }
-               else
-               {
-                   const data = JSON.parse(JSON.stringify(result));
-                   resolve(data);
-               }
-           });
-       })
+        return db.selectDB(token, sql)
     },
     activateAccount: async (token) => {
         const sql = 'UPDATE users SET is_active = 1 WHERE token = ?';
-        return new Promise ((resolve, reject) =>  {
-            conn.query(sql, token, (err) => {
-               if(err) {
-                    console.log(chalk.redBright('Error activating account!!'));
-                    reject(err);
-               }
-               else
-               {
-                   resolve(true);
-               }
-           });
-       })
+        return db.updateDB(token, sql)
     },
     verifLoginInfo: async (username) => {
         const sql = 'SELECT * FROM users WHERE username = ?';
-        return new Promise ((resolve, reject) =>  {
-            conn.query(sql, username, (err,result) => {
-               if(err) {
-                    console.log(chalk.redBright('Error!!'));
-                    reject(err);
-               }
-               else
-               {
-                    const data = JSON.parse(JSON.stringify(result));
-                    resolve(data);
-               }
-           });
-       })
+        return db.selectDB(username, sql)
     },
     getUserInfos: async (str, value) => {
         const sql = `SELECT * FROM users WHERE ${str} = ?`;
-        return new Promise ((resolve, reject) =>  {
-            conn.query(sql, value, (err,result) => {
-               if(err) {
-                    console.log(chalk.redBright('Error!!'));
-                    reject(err);
-               }
-               else
-               {
-                    const data = JSON.parse(JSON.stringify(result));
-                    resolve(data);
-               }
-           });
-       })
+        return db.selectDB(value, sql)
     },
     resetToken: async (newToken, token) => {
         const sql = 'UPDATE users SET token = ? WHERE token = ?';
-        return new Promise ((resolve, reject) =>  {
-            conn.query(sql, [newToken, token], (err) => {
-               if(err) {
-                    console.log(chalk.redBright('Error activating account!!'));
-                    reject(err);
-               }
-               else
-               {
-                   resolve(true);
-               }
-           });
-       })
+        return db.updateDB([newToken, token], sql)
     },
 
 }

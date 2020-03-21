@@ -17,6 +17,10 @@
                 aria-selected="false">Pictures</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" id="tag-tab" data-toggle="tab" href="#tag" role="tab" aria-controls="tag"
+                aria-selected="false">Tags</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" id="location-tab" data-toggle="tab" href="#location" role="tab" aria-controls="location"
                   aria-selected="false">Location</a>
             </li>
@@ -27,8 +31,20 @@
           </ul>
           <div class="tab-content col-12" id="myTabContent">
             <div class="tab-pane fade show active" id="basic" role="tabpanel" aria-labelledby="basic-tab">
-                <!-- Extended default form grid -->
-                <form>
+              <!-- Error & messages section -->
+          <div>
+            <% if(typeof  error !== 'undefined'){ %>
+                <% if (typeof  error.error != 'undefined') { %>
+                    <div class="alert alert-danger" role="alert">
+                    <%= error.error %>
+                    </div>
+                <% } }
+                if (typeof  success !== 'undefined') { %>
+                    <div class="alert alert-success" role="alert">
+                        <%= success.successMessage %>
+                      </div>
+               <% } %>
+          </div>
                   <!-- Grid column -->
                   <div class="d-flex justify-content-center">
                     <img src="https://mdbootstrap.com/img/Photos/Avatars/img(31).jpg" class="img-fluid z-depth-1 rounded-circle"
@@ -40,32 +56,58 @@
                   <div class="row d-flex justify-content-center">
                     <button type="button" class="btn btn-rounded btn-red"><i class="fas fa-trash-alt pr-2" aria-hidden="true"></i>Remove</button>
                 </div>
-                  <!-- Grid column -->
+                <!-- Extended default form grid -->
+                <form method="POST" action="/profile/editBasic">
+                    <!-- Grid column -->
                     <!-- Grid row -->
                     <div class="form-row">
                         <!-- Default input -->
                         <div class="form-group col-md-6">
                             <label for="firstName">First Name</label>
-                            <input type="text" class="form-control" id="firstName" placeholder="First Name">
+                            <input type="text" class="form-control" name="firstName" placeholder="First Name">
+                            <% if(typeof  error !== 'undefined'){ %>
+                              <div class="error-input">
+                                  <% if (typeof  error.firstName !== 'undefined') %>
+                                  <%= error.firstName %>
+                              </div>
+                            <% } %>
                         </div>
                         <!-- Default input -->
                         <div class="form-group col-md-6">
                             <label for="lastName">Last Name</label>
-                            <input type="text" class="form-control" id="lastName" placeholder="Last Name">
+                            <input type="text" class="form-control" name="lastName" placeholder="Last Name">
+                            <% if(typeof  error !== 'undefined'){ %>
+                              <div class="error-input">
+                                  <% if (typeof  error.lastName !== 'undefined') %>
+                                  <%= error.lastName %>
+                              </div>
+                            <% } %>
                         </div>
-                        </div>
-                        <!-- Grid row -->
+                    </div>
+                    <!-- Grid row -->
                     <!-- Grid row -->
                     <div class="form-row">
                     <!-- Default input -->
                     <div class="form-group col-md-6">
                         <label for="username">Username</label>
-                        <input type="text" class="form-control" id="username" placeholder="Username">
+                        <input type="text" class="form-control" name="username" placeholder="Username">
+                        <% if(typeof  error !== 'undefined'){ %>
+                          <div class="error-input">
+                              <% if (typeof  error.username !== 'undefined') %>
+                              <%= error.username %>
+                          </div>
+                        <% } %>
                     </div>
                     <!-- Default input -->
                     <div class="form-group col-md-6">
                         <label for="birthday">Birth Day</label>
-                        <input type="date" class="form-control" id="birthday" placeholder="Birth Day">
+                        <input type="date" class="form-control" name="birthDay" placeholder="Birth Day">
+                        <% if(typeof  error !== 'undefined'){ %>
+                          <div class="error-input">
+                              <% if (typeof  error.birthDay !== 'undefined') %>
+                              <%= error.birthDay %>
+                          </div>
+                        <% } %>
                     </div>
                     </div>
                     <!-- Grid row -->
@@ -74,21 +116,33 @@
                         <!-- Default input -->
                         <div class="form-group col-md-6">
                             <label for="gender">Gender</label>
-                            <select class="browser-default custom-select">
+                            <select class="browser-default custom-select" name="gender">
                                 <option selected>Select your gender</option>
                                 <option value="1">Male</option>
                                 <option value="2">Female</option>
                               </select>
+                              <% if(typeof  error !== 'undefined'){ %>
+                                <div class="error-input">
+                                    <% if (typeof  error.gender !== 'undefined') %>
+                                    <%= error.gender %>
+                                </div>
+                              <% } %>
                         </div>
                         <!-- Default input -->
                         <div class="form-group col-md-6">
                             <label for="orientation">Orientation</label>
-                            <select class="browser-default custom-select">
+                            <select class="browser-default custom-select" name="orientation">
                                 <option selected>Select your Orientation</option>
                                 <option value="1">Heterosexual</option>
                                 <option value="2">Homosexual</option>
                                 <option value="3">Bisexual</option>
                               </select>
+                              <% if(typeof  error !== 'undefined'){ %>
+                                <div class="error-input">
+                                    <% if (typeof  error.orientation !== 'undefined') %>
+                                    <%= error.orientation %>
+                                </div>
+                              <% } %>
                         </div>
                         </div>
                         <!-- Grid row -->
@@ -96,28 +150,24 @@
                     <!-- Default input -->
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" placeholder="E-mail">
+                        <input type="email" class="form-control" name="email" placeholder="E-mail">
+                        <% if(typeof  error !== 'undefined'){ %>
+                          <div class="error-input">
+                              <% if (typeof  error.email !== 'undefined') %>
+                              <%= error.email %>
+                          </div>
+                        <% } %>
                     </div>
                     <!-- Default input -->
                     <div class="form-group">
                         <label for="bio">Bio</label>
-                        <textarea class="form-control" id="bio" rows="7"></textarea>
-                    </div>
-                    <!-- Grid row -->
-                    <div class="form-row">
-                    <!-- Default input -->
-                    <div class="form-group col-md-6">
-                        <label for="tags">Tags</label> <br>
-                        <div class="tag">
-                          <label for="">Tag 220</label>
-                          <!-- <button type="button" class="close" aria-label="Close"> -->
-                            <!-- <span aria-hidden="true">×</span> -->
-                            <i class="fa fa-times"></i>
-                          </button>
-                        </div>
-                        <input type="text" class="form-control" id="tag" placeholder="Tag">
-                        <!-- <button type="submit" class="btn btn-primary btn-md">Add Tag</button> -->
-                    </div>
+                        <textarea class="form-control" name="bio" rows="7"></textarea>
+                        <% if(typeof  error !== 'undefined'){ %>
+                          <div class="error-input">
+                              <% if (typeof  error.bio !== 'undefined') %>
+                              <%= error.bio %>
+                          </div>
+                        <% } %>
                     </div>
                     <!-- Grid row -->
                     <button type="submit" class="btn btn-primary btn-md">Submit</button>
@@ -130,17 +180,17 @@
                 <!-- Password input -->
                 <div class="form-group">
                     <label for="oldPassword">Old Password</label>
-                    <input type="passowrd" class="form-control" id="oldPassword" placeholder="Old Password">
+                    <input type="passowrd" class="form-control" name="oldPassword" placeholder="Old Password">
                 </div>
                 <!-- Password input -->
                 <div class="form-group">
                   <label for="newPassword">New Password</label>
-                  <input type="passowrd" class="form-control" id="newPassword" placeholder="New Password">
+                  <input type="passowrd" class="form-control" name="newPassword" placeholder="New Password">
                 </div>
                 <!-- Confirm Password input -->
                 <div class="form-group">
                   <label for="confirmPassword">Confirm New Password</label>
-                  <input type="passowrd" class="form-control" id="confirmPassword" placeholder="Confirm New Password">
+                  <input type="passowrd" class="form-control" name="confirmPassword" placeholder="Confirm New Password">
                 </div>
                 <!-- Grid row -->
                 <button type="submit" class="btn btn-primary btn-md">Submit</button>
@@ -174,11 +224,34 @@
                 <button type="button" class="btn btn-rounded btn-primary"><i class="fa fa-plus-circle pr-2" aria-hidden="true"></i>ADD</button>
 
             </div>
+            <!-- Tags Tab -->
+            <div class="tab-pane fade" id="tag" role="tabpanel" aria-labelledby="tag-tab">
+              <!-- Default input -->
+              <form action="" method="post">
+                <!-- Grid row -->
+                <div class="form-row">
+                  <!-- Default input -->
+                  <div class="form-group col-md-6">
+                      <label for="tags">Tags</label> <br>
+                      <div class="tag">
+                        <label for="">Tag 220</label>
+                        <!-- <button type="button" class="close" aria-label="Close"> -->
+                          <!-- <span aria-hidden="true">×</span> -->
+                          <i class="fa fa-times"></i>
+                        <!-- </button> -->
+                      </div>
+                      <input type="text" class="form-control" id="tag" placeholder="Tag">
+                      <button type="submit" class="btn btn-primary btn-md">Add Tag</button>
+                  </div>
+                  </div>
+              </form>
+            </div>
+            <!-- Localisation Tab -->
               <div class="tab-pane fade" id="location" role="tabpanel" aria-labelledby="location-tab">
                 <!-- Default input -->
                 <div class="form-group">
                   <label for="localisation">Localisation</label>
-                  <input type="text" class="form-control" id="localisation" placeholder="Localisation">
+                  <input type="text" class="form-control" name="localisation" placeholder="Localisation">
                 </div>
               </div>
                 <div class="tab-pane fade" id="preview" role="tabpanel" aria-labelledby="preview-tab">E22tsy mixtape
