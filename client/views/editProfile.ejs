@@ -36,29 +36,17 @@
             <% if(typeof  error !== 'undefined'){ %>
                 <% if (typeof  error.error != 'undefined') { %>
                     <div class="alert alert-danger" role="alert">
-                    <%= error.error %>
+                    <%=  error.error %>
                     </div>
                 <% } }
-                if (typeof  success !== 'undefined') { %>
+                if (typeof  success.successMessage !== 'undefined') { %>
                     <div class="alert alert-success" role="alert">
                         <%= success.successMessage %>
                       </div>
                <% } %>
           </div>
-                  <!-- Grid column -->
-                  <div class="d-flex justify-content-center">
-                    <img src="https://mdbootstrap.com/img/Photos/Avatars/img(31).jpg" class="img-fluid z-depth-1 rounded-circle"
-                      alt="Responsive image">
-                  </div>
-                  <div class="row d-flex justify-content-center">
-                    <button type="button" class="btn btn-rounded btn-green"><i class="fas fa-edit pr-2" aria-hidden="true"></i>Change</button>
-                  </div>
-                  <div class="row d-flex justify-content-center">
-                    <button type="button" class="btn btn-rounded btn-red"><i class="fas fa-trash-alt pr-2" aria-hidden="true"></i>Remove</button>
-                </div>
-                <!-- Extended default form grid -->
-                <form method="POST" action="/profile/editBasic">
-                    <!-- Grid column -->
+          <!-- Extended default form grid -->
+          <form method="POST" action="/profile/editProfile">
                     <!-- Grid row -->
                     <div class="form-row">
                         <!-- Default input -->
@@ -170,7 +158,7 @@
                         <% } %>
                     </div>
                     <!-- Grid row -->
-                    <button type="submit" class="btn btn-primary btn-md">Submit</button>
+                    <input type="submit" class="btn btn-primary btn-md" name="basic" value="Submit">
                 </form>
                 <!-- Extended default form grid -->
             </div>
@@ -193,12 +181,41 @@
                   <input type="passowrd" class="form-control" name="confirmPassword" placeholder="Confirm New Password">
                 </div>
                 <!-- Grid row -->
-                <button type="submit" class="btn btn-primary btn-md">Submit</button>
+                <button type="submit" class="btn btn-primary btn-md" name="basic" >Submit</button>
             </form>
 
 
             </div>
             <div class="tab-pane fade" id="picture" role="tabpanel" aria-labelledby="picture-tab">
+               <!-- Grid column -->
+               <!-- Profile Picture -->
+                  <div class="d-flex justify-content-center">
+                      <img src="<%= typeof file != 'undefined' ? file : '/uploads/avatar.jpg' %>" class="img-fluid z-depth-1"
+                      alt="Responsive image" style="width: 200px">
+                  </div>
+                  <div class="d-flex justify-content-center">
+                    <form action="/profile/uploadProfile" method="post" enctype="multipart/form-data">
+                      <div class="btn btn-rounded btn-green upload-btn-wrapper">
+                        <span><i class="fas fa-edit pr-2" aria-hidden="true"></i>Change</span>
+                        <!-- <input type="file" id="profilePic" name="myImage" accept="image/*"> -->
+                        <!-- <input type="submit" class="btn btn-rounded btn-green" name="profilePic" value="Change"> -->
+                        <input name="profileImg" type="file" accept="image/*" id="profilePic" onchange='this.form.submit();'>
+                      </div>
+                    </form>
+                    <form action="/profile/deleteProfile" method="post" enctype="multipart/form-data">
+                      <button type="button" class="btn btn-rounded btn-red" onclick='this.form.submit();'>
+                        <i class="fas fa-trash-alt pr-2" aria-hidden="true"></i>Remove</button>
+                    </form>
+                  </div>
+              <hr>
+               <!-- <div class="row d-flex justify-content-center">
+
+                    <button type="button" class="btn btn-rounded btn-green"><i class="fas fa-edit pr-2" aria-hidden="true"></i>Change</button>
+                  </div>
+                  <div class="row d-flex justify-content-center">
+                    <button type="button" class="btn btn-rounded btn-red"><i class="fas fa-trash-alt pr-2" aria-hidden="true"></i>Remove</button>
+                </div> -->
+              <!-- Other Pictures -->
               <!-- Grid row -->
                 <div class="row">
 
