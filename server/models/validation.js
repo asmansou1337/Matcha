@@ -58,12 +58,12 @@ const Valid = {
         return true
       },
       isGender: (gender) => {
-        if(gender !== '1' && gender !== '2')
+        if(gender !== 'male' && gender !== 'female')
             return false
         return true
       },
       isOrientation: (orientation) => {
-        if(orientation !== '1' && orientation !== '2' && orientation !== '3')
+        if(orientation !== 'heterosexual' && orientation !== 'homosexual' && orientation !== 'bisexual')
             return false
         return true
       },

@@ -58,7 +58,7 @@ ________________________________________________________________________
   - [ ] app must be compatible at least with Firefox (>= 41) and Chrome (>= 46)
   - [X] Relational Database or graph oriented Database (I used Mysql in this project)
   - [X] “micro-framework” has a router, and eventually templating, but no ORM, validators or User Accounts Manager.(Using express)
-  - [ ] Your website must have a decent layout: at least a header, a main section and a footer.
+  - [X] Your website must have a decent layout: at least a header, a main section and a footer.
   - [ ] Your website must be usable on a mobile phone and keep an acceptable layout on small resolutions (Responsive).
   - [ ] Security: storing hashed passwords, protection against injection and bad files uploaded and unprotected js vars
 
@@ -66,17 +66,17 @@ ________________________________________________________________________
 
 Part 1:
   - [X] Project structure
-  - [ ] Classes
   - [ ] Modules: validation , Database Manager, ..
-  - [ ] Authentication
+  - [X] Authentication
   - [ ] Access Management & Session
   - [ ] Force user to fill basic required info (Redirect to user profile)
   - [ ] User info and ability to edit them  
-    - [ ] Edit basic required info : username, email, password, first name, last name, gender, sexual preference, bio,
-    - [ ] Edit gender and sexual preferences
-    - [ ] Change pictures max 5 (1 is for profile)
-    - [ ] Set picture as profile picture
-    - [ ] Edit interests (tags)
+    - [X] Edit basic required info : username, email, password, first name, last name, gender, sexual preference, bio,
+    - [X] Edit gender and sexual preferences
+    - [X] Change pictures max 5 (1 is for profile)
+    - [X] Set picture as profile picture
+    - [X] Edit interests (tags)
+    - [ ] Autocomplete interests (tags)
     - [ ] Locating the position of user automatically
     - [ ] Edit location
   - [ ] User profile: All info except mail and pass
@@ -105,12 +105,12 @@ Part 2:
   - **Pages**
 
     - [X] Setup:Create Database, Creates tables if not exists , Install dummy data: users
-    - [ ] Sign up
-    - [ ] Sign in
-    - [ ] Reset password (Email form)
-    - [ ] Reset password (new password form)
-    - [ ] Profile
-    - [ ] Edit profile (edit infos + update password)
+    - [X] Sign up
+    - [X] Sign in
+    - [X] Reset password (Email form)
+    - [X] Reset password (new password form)
+    - [X] Profile
+    - [X] Edit profile (edit infos + update password)
     - [ ] Visits history
     - [ ] Likes history
     - [ ] Welcome page (Visitors list + likes list)
@@ -121,29 +121,34 @@ Part 2:
 
   - **Components**
 
-    - [ ] Header (Nav)
+    - [X] Header (Nav)
       - Non connected user
         - signup
         - signin
       - connected user
         -  Links to : Home, logout, profile, edit profile, search, match, chat
         -  Notifications: Messages , general (connecting , likes, visits ..)
-    - [ ] Footer
+    - [X] Footer
 
   - **Design** 
 
     - [ ] Template (Layout & Theme)
     - [ ] Responsive
 
-### Backend:
-
   - **Functions**
 
     - [ ] Routing
     - [ ] Rendering
+    - [ ] Controllers
+    - [ ] Models
+
+### Backend:
+
+  - **Functions**
+
     - [ ] Validation
-      - [ ] Sign in , Sign up, Reset, Confirm
-      - [ ] Edit profile
+      - [X] Sign in , Sign up, Reset, Confirm
+      - [X] Edit profile
       - [ ] Picture
       - [ ] Search
       - [ ] Message
@@ -163,11 +168,8 @@ Part 2:
   - **Tables**
 
     - [X] users
-    - [X] preferences
-    - [X] genders
     - [X] pictures
     - [X] tags
-    - [X] user_tags
     - [X] reported_users
     - [X] blocked_users
     - [X] liked_profiles
@@ -181,23 +183,23 @@ ________________________________________________________________________
 
   - **Registration**
 
-    - [ ] at least an email address, a username, a last name, a first name and a password
-    - [ ] After the registration, an e-mail with an unique link must be sent to the registered user to verify his account
+    - [X] at least an email address, a username, a last name, a first name and a password
+    - [X] After the registration, an e-mail with an unique link must be sent to the registered user to verify his account
   
   - **Signing-in** 
 
-    - [ ] connect with his/her username and password
-    - [ ] able to receive an email allowing him/her to re-initialize his/her password in case of forgetting his/her password 
+    - [X] connect with his/her username and password
+    - [X] able to receive an email allowing him/her to re-initialize his/her password in case of forgetting his/her password 
     - [ ] Disconnect with 1 click from any pages on the site.
 
   - **User profile**
 
     - [ ] Once connected user must complete his or her profile:
-      ◦ [ ] The gender.
-      ◦ [ ] Sexual preferences.
-      ◦ [ ] A short biography.
+      ◦ [X] The gender.
+      ◦ [X] Sexual preferences.
+      ◦ [X] A short biography.
       ◦ [ ] A list of interests with tags (ex: #vegan, #geek, #piercing etc...). These tags must be reusable.
-      ◦ [ ] Pictures, max 5, including 1 as profile picture.
+      ◦ [X] Pictures, max 5, including 1 as profile picture.
     - [ ] At any time, the user must be able to modify these information, as well as the last name, first name, email and password.
     - [ ] The user should be able to change or reinitialize his password despite been connected or not.
     - [ ] The user must be able to check who visited his/her profile as well as who “liked” him/her.

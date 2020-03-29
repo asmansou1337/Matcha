@@ -1,50 +1,51 @@
 <%- include('header'); %>
+<%- include('./navs/navAuth'); %>
 
 <!-- Intro -->
 <section class="view">
       <div >
         <ul class="nav nav-tabs d-flex justify-content-center" id="myTab" role="tablist">
             <li class="nav-item">
-              <a class="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic"
+              <a class="nav-link <%- (nav.path == 'basic') ? 'active' : '' %>" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic"
                 aria-selected="true">Basic Infos</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="passowrd-tab" data-toggle="tab" href="#passowrd" role="tab" aria-controls="passowrd"
+              <a class="nav-link <%- (nav.path == 'password') ? 'active' : '' %>" id="passowrd-tab" data-toggle="tab" href="#passowrd" role="tab" aria-controls="passowrd"
                 aria-selected="false">Password</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="picture-tab" data-toggle="tab" href="#picture" role="tab" aria-controls="picture"
+              <a class="nav-link <%- (nav.path == 'picture') ? 'active' : '' %>" id="picture-tab" data-toggle="tab" href="#picture" role="tab" aria-controls="picture"
                 aria-selected="false">Pictures</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="tag-tab" data-toggle="tab" href="#tag" role="tab" aria-controls="tag"
+              <a class="nav-link <%- (nav.path == 'tag') ? 'active' : '' %>" id="tag-tab" data-toggle="tab" href="#tag" role="tab" aria-controls="tag"
                 aria-selected="false">Tags</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="location-tab" data-toggle="tab" href="#location" role="tab" aria-controls="location"
+                <a class="nav-link <%- (nav.path == 'location') ? 'active' : '' %>" id="location-tab" data-toggle="tab" href="#location" role="tab" aria-controls="location"
                   aria-selected="false">Location</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="preview-tab" data-toggle="tab" href="#preview" role="tab" aria-controls="preview"
+                <a class="nav-link <%- (nav.path == 'preview') ? 'active' : '' %>" id="preview-tab" data-toggle="tab" href="#preview" role="tab" aria-controls="preview"
                   aria-selected="false">Preview</a>
             </li>
           </ul>
-          <div class="tab-content col-12" id="myTabContent">
-            <div class="tab-pane fade show active" id="basic" role="tabpanel" aria-labelledby="basic-tab">
-              <!-- Error & messages section -->
-          <div>
+           <!-- Error & messages section -->
+           <div style="margin-top: 10px;">
             <% if(typeof  error !== 'undefined'){ %>
                 <% if (typeof  error.error != 'undefined') { %>
                     <div class="alert alert-danger" role="alert">
                     <%=  error.error %>
                     </div>
                 <% } }
-                if (typeof  success.successMessage !== 'undefined') { %>
+                if (typeof  success !== 'undefined') { %>
                     <div class="alert alert-success" role="alert">
                         <%= success.successMessage %>
                       </div>
                <% } %>
           </div>
+          <div class="tab-content col-12" id="myTabContent">
+          <div class="tab-pane fade <%- (nav.path == 'basic') ?  'show active'  : '' %>" id="basic" role="tabpanel" aria-labelledby="basic-tab">
           <!-- Extended default form grid -->
           <form method="POST" action="/profile/editProfile">
                     <!-- Grid row -->
@@ -52,7 +53,7 @@
                         <!-- Default input -->
                         <div class="form-group col-md-6">
                             <label for="firstName">First Name</label>
-                            <input type="text" class="form-control" name="firstName" placeholder="First Name">
+                            <input type="text" class="form-control" name="firstName" placeholder="First Name" value="<%= (typeof userInfos !== 'undefined') ? userInfos.firstName : '' %>">
                             <% if(typeof  error !== 'undefined'){ %>
                               <div class="error-input">
                                   <% if (typeof  error.firstName !== 'undefined') %>
@@ -63,7 +64,7 @@
                         <!-- Default input -->
                         <div class="form-group col-md-6">
                             <label for="lastName">Last Name</label>
-                            <input type="text" class="form-control" name="lastName" placeholder="Last Name">
+                            <input type="text" class="form-control" name="lastName" placeholder="Last Name" value="<%= (typeof userInfos !== 'undefined') ? userInfos.lastName : '' %>">
                             <% if(typeof  error !== 'undefined'){ %>
                               <div class="error-input">
                                   <% if (typeof  error.lastName !== 'undefined') %>
@@ -78,7 +79,7 @@
                     <!-- Default input -->
                     <div class="form-group col-md-6">
                         <label for="username">Username</label>
-                        <input type="text" class="form-control" name="username" placeholder="Username">
+                        <input type="text" class="form-control" name="username" placeholder="Username" value="<%= (typeof userInfos !== 'undefined') ? userInfos.username : '' %>">
                         <% if(typeof  error !== 'undefined'){ %>
                           <div class="error-input">
                               <% if (typeof  error.username !== 'undefined') %>
@@ -89,7 +90,7 @@
                     <!-- Default input -->
                     <div class="form-group col-md-6">
                         <label for="birthday">Birth Day</label>
-                        <input type="date" class="form-control" name="birthDay" placeholder="Birth Day">
+                        <input type="date" class="form-control" name="birthDay" placeholder="Birth Day" value="<%= (typeof userInfos !== 'undefined') ? userInfos.born_date : '' %>">
                         <% if(typeof  error !== 'undefined'){ %>
                           <div class="error-input">
                               <% if (typeof  error.birthDay !== 'undefined') %>
@@ -105,9 +106,12 @@
                         <div class="form-group col-md-6">
                             <label for="gender">Gender</label>
                             <select class="browser-default custom-select" name="gender">
-                                <option selected>Select your gender</option>
-                                <option value="1">Male</option>
-                                <option value="2">Female</option>
+                              <option
+                              <%= (typeof userInfos !== 'undefined') ? ((userInfos.gender == null) ?  'selected'  : '') : '' %>>Select Your Gender</option>
+                                <option value="male"
+                                            <%= (typeof userInfos !== 'undefined') ? ((userInfos.gender == 'male') ?  'selected'  : '') : '' %>>male</option>
+                                <option value="female"
+                                            <%= (typeof userInfos !== 'undefined') ? ((userInfos.gender == 'female') ?  'selected'  : '') : '' %>>female</option>
                               </select>
                               <% if(typeof  error !== 'undefined'){ %>
                                 <div class="error-input">
@@ -120,10 +124,14 @@
                         <div class="form-group col-md-6">
                             <label for="orientation">Orientation</label>
                             <select class="browser-default custom-select" name="orientation">
-                                <option selected>Select your Orientation</option>
-                                <option value="1">Heterosexual</option>
-                                <option value="2">Homosexual</option>
-                                <option value="3">Bisexual</option>
+                              <option
+                              <%= (typeof userInfos !== 'undefined') ? ((userInfos.preference == null) ?  'selected'  : '') : '' %>>Select Your Orientation</option>
+                              <option value="heterosexual"
+                                            <%= (typeof userInfos !== 'undefined') ? ((userInfos.preference == 'heterosexual') ?  'selected'  : '') : '' %>>Heterosexual</option>
+                              <option value="homosexual"
+                                    <%= (typeof userInfos !== 'undefined') ? ((userInfos.preference == 'homosexual') ?  'selected'  : '') : '' %>>Homosexual</option>
+                              <option value="bisexual"
+                                    <%= (typeof userInfos !== 'undefined') ? ((userInfos.preference == 'bisexual') ?  'selected'  : '') : '' %>>Bisexual</option>
                               </select>
                               <% if(typeof  error !== 'undefined'){ %>
                                 <div class="error-input">
@@ -138,7 +146,7 @@
                     <!-- Default input -->
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" name="email" placeholder="E-mail">
+                        <input type="email" class="form-control" name="email" placeholder="E-mail" value="<%= (typeof userInfos !== 'undefined') ? userInfos.email : '' %>">
                         <% if(typeof  error !== 'undefined'){ %>
                           <div class="error-input">
                               <% if (typeof  error.email !== 'undefined') %>
@@ -149,7 +157,7 @@
                     <!-- Default input -->
                     <div class="form-group">
                         <label for="bio">Bio</label>
-                        <textarea class="form-control" name="bio" rows="7"></textarea>
+                        <textarea class="form-control" name="bio" rows="7"><%- (typeof userInfos !== 'undefined') ? userInfos.biography : '' %></textarea>
                         <% if(typeof  error !== 'undefined'){ %>
                           <div class="error-input">
                               <% if (typeof  error.bio !== 'undefined') %>
@@ -163,7 +171,7 @@
                 <!-- Extended default form grid -->
             </div>
             <!-- Password Reset form-->
-            <div class="tab-pane fade" id="passowrd" role="tabpanel" aria-labelledby="passowrd-tab">
+            <div class="tab-pane fade <%- (nav.path == 'password') ?  'show active'  : '' %>" id="passowrd" role="tabpanel" aria-labelledby="passowrd-tab">
               <form>
                 <!-- Password input -->
                 <div class="form-group">
@@ -186,20 +194,27 @@
 
 
             </div>
-            <div class="tab-pane fade" id="picture" role="tabpanel" aria-labelledby="picture-tab">
+            <div class="tab-pane fade <%- (nav.path == 'picture') ?  'show active'  : '' %>" id="picture" role="tabpanel" aria-labelledby="picture-tab">
                <!-- Grid column -->
                <!-- Profile Picture -->
-                  <div class="d-flex justify-content-center">
-                      <img src="<%= typeof file != 'undefined' ? file : '/uploads/avatar.jpg' %>" class="img-fluid z-depth-1"
-                      alt="Responsive image" style="width: 200px">
-                  </div>
+                  <section class="section pb-3 text-center">
+                      <!--Section heading-->
+                      <h1 class="section-heading h3 pt-4">Your Profile Picture</h1>
+                      <!--Section description-->
+                      <p class="section-description"></p>
+                    <div class="d-flex justify-content-center">
+                      <img src="<%= (userInfos.profilePic != null) ? `/uploads/${userInfos.profilePic}` : '/uploads/avatar.jpg' %>" class="img-fluid z-depth-1"
+                      alt="Responsive image" style="width: 200px" name="pic">
+                    </div>
+                  </section>
+    
                   <div class="d-flex justify-content-center">
                     <form action="/profile/uploadProfile" method="post" enctype="multipart/form-data">
                       <div class="btn btn-rounded btn-green upload-btn-wrapper">
                         <span><i class="fas fa-edit pr-2" aria-hidden="true"></i>Change</span>
                         <!-- <input type="file" id="profilePic" name="myImage" accept="image/*"> -->
                         <!-- <input type="submit" class="btn btn-rounded btn-green" name="profilePic" value="Change"> -->
-                        <input name="profileImg" type="file" accept="image/*" id="profilePic" onchange='this.form.submit();'>
+                        <input name="userImg" type="file" accept="image/*" id="profilePic" onchange='this.form.submit();'>
                       </div>
                     </form>
                     <form action="/profile/deleteProfile" method="post" enctype="multipart/form-data">
@@ -216,62 +231,81 @@
                     <button type="button" class="btn btn-rounded btn-red"><i class="fas fa-trash-alt pr-2" aria-hidden="true"></i>Remove</button>
                 </div> -->
               <!-- Other Pictures -->
+              <section class="section pb-3 text-center">
+                  <!--Section heading-->
+                  <h1 class="section-heading h3 pt-4">Other Pictures</h1>
+                  <!--Section description-->
+                  <p class="section-description"> Add more pictures to your profile (max 4)</p>
+              </section>
               <!-- Grid row -->
                 <div class="row">
-
-                  <!-- Grid column -->
-                  <div class="col-lg-4 col-md-12 mb-3">
-
-                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(115).jpg" class="img-fluid z-depth-1"
-                      alt="Responsive image">
-
-                  </div>
-                  <!-- Grid column -->
-
-                  <!-- Grid column -->
-                  <div class="col-lg-4 col-md-6 mb-3">
-
-                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(116).jpg" class="img-fluid z-depth-1"
-                      alt="Responsive image">
-
-                  </div>
-                  <!-- Grid column -->
-
+                  <% if(typeof userInfos !== 'undefined' && userInfos.otherPictures !== null) {
+                    let pics = userInfos.otherPictures.split(',')
+                    pics.forEach(pic => { %>
+                      <div class="col-lg-4 col-md-12 mb-3">
+                        <form action="/profile/deletePicture" method="post">
+                              <input type="hidden" name="img" value="<%= `${pic}` %>">
+                              <img src="<%= `/uploads/${pic}` %>" class="img-fluid z-depth-1" alt="Responsive image" style="width: 550px;height: 300px;">
+                              <button type="button" class="btn btn-danger px-3" onclick='this.form.submit();'>
+                                <i class="fas fa-times" aria-hidden="true"></i></button>
+                        </form>
+                      </div>
+                    <% }); 
+                  } %>
                 </div>
-                <button type="button" class="btn btn-rounded btn-primary"><i class="fa fa-plus-circle pr-2" aria-hidden="true"></i>ADD</button>
-
+                <div class="d-flex justify-content-center">
+                  <form action="/profile/uploadPicture" method="post" enctype="multipart/form-data">
+                    <div class="btn btn-rounded btn-primary upload-btn-wrapper">
+                      <span><i class="fa fa-plus-circle pr-2" aria-hidden="true"></i>Add</span>
+                      <input name="userImg" type="file" accept="image/*" id="otherPic" onchange='this.form.submit();'>
+                    </div>
+                  </form>
+                </div>
             </div>
             <!-- Tags Tab -->
-            <div class="tab-pane fade" id="tag" role="tabpanel" aria-labelledby="tag-tab">
-              <!-- Default input -->
-              <form action="" method="post">
-                <!-- Grid row -->
-                <div class="form-row">
-                  <!-- Default input -->
-                  <div class="form-group col-md-6">
-                      <label for="tags">Tags</label> <br>
-                      <div class="tag">
-                        <label for="">Tag 220</label>
-                        <!-- <button type="button" class="close" aria-label="Close"> -->
-                          <!-- <span aria-hidden="true">×</span> -->
-                          <i class="fa fa-times"></i>
-                        <!-- </button> -->
-                      </div>
-                      <input type="text" class="form-control" id="tag" placeholder="Tag">
-                      <button type="submit" class="btn btn-primary btn-md">Add Tag</button>
-                  </div>
-                  </div>
+            <div class="tab-pane fade <%- (nav.path == 'tag') ?  'show active'  : '' %>" id="tag" role="tabpanel" aria-labelledby="tag-tab">
+              <section class="section pb-3 text-center">
+                <!--Section heading-->
+                <h1 class="section-heading h3 pt-4">List of Interests</h1>
+                <!--Section description-->
+                <p class="section-description"> Write your tag (or many tags separeted by , ) then press Enter to add it</p>
+            </section>
+            <!-- Grid row -->
+              <div class="row">
+                <div class="container-fluid border rounded mb-0 tag-container" style="padding: 10px;">
+                  <!-- User existing tags -->
+                  <% if(typeof userInfos !== 'undefined' && userInfos.tags !== null) {
+                    let tags = userInfos.tags.split(',')
+                    tags.forEach(tag => { %>
+                  <span class="badge grey lighten-1 tag">
+                      <h6><span><%= tag %></span>
+                      <i class="far fa-times-circle" aria-hidden="true" data-item="<%= tag %>"></i></h6>
+                      </span>
+                  <% }); 
+                  } %>
+                  <input placeholder ="Ex: html,php"/>
+                </div>
+              </div>
+              <form action="/profile/addTags" method="post" id="tagsform">
+                <% if(typeof userInfos !== 'undefined' && userInfos.tags !== null) {
+                  %>
+                <input type="hidden" name="TagsTab" id="tagsTab" value="<%= userInfos.tags %>">
+                <% 
+                  } else { %>
+                    <input type="hidden" name="TagsTab" id="tagsTab" value="[]">
+                 <% } %>
+                <input type="submit" class="btn btn-primary btn-md" name="tagBtn" value="Submit">
               </form>
             </div>
             <!-- Localisation Tab -->
-              <div class="tab-pane fade" id="location" role="tabpanel" aria-labelledby="location-tab">
+              <div class="tab-pane fade <%- (nav.path == 'location') ?  'show active'  : '' %>" id="location" role="tabpanel" aria-labelledby="location-tab">
                 <!-- Default input -->
                 <div class="form-group">
                   <label for="localisation">Localisation</label>
                   <input type="text" class="form-control" name="localisation" placeholder="Localisation">
                 </div>
               </div>
-                <div class="tab-pane fade" id="preview" role="tabpanel" aria-labelledby="preview-tab">E22tsy mixtape
+                <div class="tab-pane fade <%- (nav.path == 'preview') ?  'show active'  : '' %>" id="preview" role="tabpanel" aria-labelledby="preview-tab">E22tsy mixtape
                   wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack
                   lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard
                   locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify
@@ -281,6 +315,6 @@
           </div>
       </div>
   </section>
-
-
+  <script type="text/javascript" src="/javascripts/tag.js"></script>
+</div>
 <%- include('footer'); %>

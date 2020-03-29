@@ -5,8 +5,8 @@ const chalk = require('chalk');
 
 /* GET home page. */
 router.get('/', (req, res) => {
-  res.render('test');
-  //res.render('index', { title: 'Express' });
+  //res.render('test');
+  res.render('index');
 });
 
 /* GET SignUp page. */

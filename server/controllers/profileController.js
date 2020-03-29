@@ -18,9 +18,9 @@ const Profile = {
             errorMessage: {}
         };
         let userData = {
-            "userId": 23,
+            "userId": 1,
             "username":"hajar12",
-            "email":"tabinoc939@newe-mail.com"
+            "email":"yaveya8441@rushmails.com"
         }
         // get the form infos from the request body
         let { firstName, lastName, username, email, birthDay, gender, orientation, bio } = req.body;
@@ -105,8 +105,6 @@ const Profile = {
 
         // Update user basic infos
         if (responseData.isValid === true) {
-            gender = Number(gender);
-            orientation = Number(orientation)
             const updateUser = await profileManager.updatebasic(firstName, lastName, username, email, gender, orientation, birthDay, bio, userData['userId'])
             if (updateUser) {
                 responseData.successMessage = "Your infos are updated successfully";
@@ -115,35 +113,204 @@ const Profile = {
                 responseData.errorMessage.error= 'Error Updating your infos, Please try again!';
             }
         }
-
-        // if (responseData.isValid === true) {
-        //     // Creation of hashed password
-        //     password = await bcrypt.hash(password, 10);
-        //     // Creation of token
-        //     let token = crypto.randomBytes(40).toString('hex');
-        //     const register = await authManager.register({firstName, lastName, username, email, password, token});
-        //     if (register) {
-        //         // Send Activation MAIL
-        //         const subject = 'Matcha: Account Activation';
-        //         const content = `Hi ${username}, <br>Folow the link below to activate your account: 
-        //         <a href='http://${process.env.HOST}:${process.env.PORT_FRONT}/activateAccount?token=${token}'>Link</a><br>`;
-        //         const m = await mail.sendMail(email, subject, content);
-        //         if (m) {
-        //             responseData.successMessage = "Your Account has been created successfully, Please check your Email for the activation link";
-        //         } else {
-        //             responseData.isValid = false;
-        //             responseData.errorMessage.error= 'Error Creating your account, Please try again!';
-        //         }
-        //     } else {
-        //         responseData.isValid = false;
-        //         responseData.errorMessage.error= 'Error Creating your account, Please try again!';
-        //     }
-        // }
         if (responseData.isValid === true)
-            res.status(201).send(responseData);
+            res.status(200).send(responseData);
         else
             res.status(400).send(responseData);
     },
+    updateProfilePic:  async (req, res) => {
+        let responseData = {
+            isValid : true,
+            successMessage: null,
+            errorMessage: {}
+        };
+        let userData = {
+            "userId": 1,
+            "username":"hajar12",
+            "email":"yaveya8441@rushmails.com"
+        }
+        console.log(chalk.red(JSON.stringify(req.body)));
+        const updatePic = await profileManager.updateProfilePic(req.body.name, userData['userId'])
+            if (updatePic) {
+                responseData.successMessage = "Your Profile Image Is Updated Successfully!";
+            } else {
+                responseData.isValid = false;
+                responseData.errorMessage.error= 'Error Updating your Profile Picture, Please try again!';
+            }
+        if (responseData.isValid === true)
+            res.status(200).send(responseData);
+        else
+            res.status(400).send(responseData);
+    },
+    addNewPic:  async (req, res) => {
+        let responseData = {
+            isValid : true,
+            successMessage: null,
+            errorMessage: {}
+        };
+        let userData = {
+            "userId": 1,
+            "username":"hajar12",
+            "email":"yaveya8441@rushmails.com"
+        }
+        console.log(chalk.red(JSON.stringify(req.body)));
+        let name = req.body.name;
+        let user_id =  userData['userId'];
+        const addPic = await profileManager.addNewPic({name, user_id});
+            if (addPic) {
+                responseData.successMessage = "Your Image Is Added Successfully!";
+            } else {
+                responseData.isValid = false;
+                responseData.errorMessage.error= 'Error adding your picture, Please try again!';
+            }
+        if (responseData.isValid === true)
+            res.status(200).send(responseData);
+        else
+            res.status(400).send(responseData);
+    },
+    deletePic:  async (req, res) => {
+        let responseData = {
+            isValid : true,
+            successMessage: null,
+            errorMessage: {}
+        };
+        let userData = {
+            "userId": 1,
+            "username":"hajar12",
+            "email":"yaveya8441@rushmails.com"
+        }
+        let name = req.body.name;
+        let user_id =  userData['userId'];
+        const deletePic = await profileManager.deletePic(name, user_id);
+            if (deletePic) {
+                responseData.successMessage = "Your Image Is Deleted Successfully!";
+            } else {
+                responseData.isValid = false;
+                responseData.errorMessage.error= 'Error deleting your picture, Please try again!';
+            }
+        if (responseData.isValid === true)
+            res.status(200).send(responseData);
+        else
+            res.status(400).send(responseData);
+    },
+    getCurrentUserAllInfos: async (req, res) => {
+        let responseData = {
+            isValid : true,
+            successMessage: null,
+            errorMessage: {}
+        };
+        let userData = {
+            "userId": 1,
+            "username":"hajar12",
+            "email":"yaveya8441@rushmails.com"
+        }
+        const currentUser = await profileManager.getUserProfile(userData['userId']);
+            if (currentUser) {
+               // console.log(chalk.red(JSON.stringify(currentUser)));
+                responseData.user = currentUser[0];
+                //responseData.successMessage = "Success!";
+            } else {
+                responseData.isValid = false;
+                responseData.errorMessage.error= 'Error, Please try again!';
+            }
+        if (responseData.isValid === true)
+            res.status(200).send(responseData);
+        else
+            res.status(400).send(responseData);
+    },
+    getCurrentUserProfilePic: async (req, res) => {
+        let responseData = {
+            isValid : true,
+            successMessage: null,
+            errorMessage: {}
+        };
+        let userData = {
+            "userId": 1,
+            "username":"hajar12",
+            "email":"yaveya8441@rushmails.com"
+        }
+        const currentUser = await profileManager.getProfilePic(userData['userId']);
+            if (currentUser) {
+                console.log(chalk.red(JSON.stringify(currentUser)));
+                responseData.user = currentUser[0];
+                //responseData.successMessage = "Success!";
+            } else {
+                responseData.isValid = false;
+                responseData.errorMessage.error= 'Error, Please try again!';
+            }
+        if (responseData.isValid === true)
+            res.status(200).send(responseData);
+        else
+            res.status(400).send(responseData);
+    },
+    getCurrentUserPicturesCount: async (req, res) => {
+        let responseData = {
+            isValid : true,
+            errorMessage: {}
+        };
+        let userData = {
+            "userId": 1,
+            "username":"hajar12",
+            "email":"yaveya8441@rushmails.com"
+        }
+        const images = await profileManager.getCountPics(userData['userId']);
+        console.log(chalk.yellow(images[0].count));
+        if (images[0].count == 4) {
+            responseData.isValid = false;
+            responseData.errorMessage.error = "You are allowed to upload 4 pictures maximum!!";
+        }
+        if (responseData.isValid === true)
+            res.status(200).send(responseData);
+        else
+            res.status(400).send(responseData);
+    },
+    updateTags:  async (req, res) => {
+        let responseData = {
+            isValid : true,
+            successMessage: null,
+            errorMessage: {}
+        };
+        let userData = {
+            "userId": 1,
+            "username":"hajar12",
+            "email":"yaveya8441@rushmails.com"
+        }
+        //console.log(chalk.yellow(JSON.stringify(req.body)));
+        let userTags = req.body;
+        let err = validation.isTags(userTags);
+        if (err !== "success") {
+            responseData.isValid = false;
+            responseData.errorMessage.error = err;
+        }
+        if (responseData.isValid === true) {
+            let user_id =  userData['userId'];
+            let insertedTags = [];
+            userTags.forEach(tag => {
+                insertedTags.push([tag, user_id]);
+            });
+            console.log(chalk.yellow(JSON.stringify(insertedTags)));
+            const deleteTags = await profileManager.deleteTags(user_id);
+                if (deleteTags) {
+                    if (insertedTags.length != 0) {
+                        const addTags = await profileManager.addTags(insertedTags);
+                        if (addTags) {
+                            responseData.successMessage = "Your Tags Are Updated Successfully!";
+                        } else {
+                            responseData.isValid = false;
+                            responseData.errorMessage.error= 'Error updating your tags, Please try again!';
+                        }
+                    } 
+                } else {
+                    responseData.isValid = false;
+                    responseData.errorMessage.error= 'Error updating your tags, Please try again!';
+                }
+        }
+        if (responseData.isValid === true)
+            res.status(200).send(responseData);
+        else
+            res.status(400).send(responseData);
+    },
+
 }
 
 module.exports = Profile;

@@ -73,7 +73,8 @@ const Auth = {
             password = await bcrypt.hash(password, 10);
             // Creation of token
             let token = crypto.randomBytes(40).toString('hex');
-            const register = await authManager.register({firstName, lastName, username, email, password, token});
+            let preference = 'bisexual';
+            const register = await authManager.register({firstName, lastName, username, email, password, token, preference});
             if (register) {
                 // Send Activation MAIL
                 const subject = 'Matcha: Account Activation';

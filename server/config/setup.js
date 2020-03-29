@@ -6,7 +6,8 @@ var cnx = mysql.createConnection({
 	host     : 'localhost',
 	port	 : 3306,
     user     : 'root',
-    password : '', 
+	password : '', 
+	charset : 'utf8mb4'
 });
 
 //Catching errors
@@ -28,7 +29,7 @@ cnx.query('CREATE DATABASE IF NOT EXISTS matcha_db', (error, results, fields) =>
         console.log(chalk.red("Error Creating Database"));
         return;
     }
-    console.log(chalk.green('Database matcha Created !'));
+    console.log(chalk.green('Database matcha_db Created !'));
 });
 
 // Choosing matcha_db
@@ -44,13 +45,14 @@ sql += '`username`  varchar(100)  NOT NULL,';
 sql += '`email`  varchar(300)  NOT NULL,';
 sql += '`password` varchar(200) NOT NULL,';
 sql += '`is_active` int(11) NOT NULL DEFAULT 0,';
-sql += '`gender_id` int(11) NOT NULL DEFAULT 1,';
-sql += '`preference_id` int(11) NOT NULL DEFAULT 3,';
+sql += '`gender`  ENUM ("male", "female"),';
+sql += '`preference` ENUM ("heterosexual", "homosexual", "bisexual"),';
 sql += '`firstName` varchar(100) NOT NULL,';
 sql += '`lastName` varchar(100) NOT NULL,';
 sql += '`token` varchar(100)  NOT NULL,';
 sql += '`biography` TEXT,';
 sql += '`gps_location` varchar(200),';
+sql += '`profilePic` varchar(300),';
 sql += '`last_connection` datetime,';
 sql += '`born_date` datetime,';
 sql += '`notify` int(11)  NOT NULL DEFAULT 1,';
@@ -64,36 +66,37 @@ cnx.query(sql, function(err) {
 });
 
 
-// Table genders
-var sql = 'CREATE TABLE IF NOT EXISTS genders (';
-sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
-sql += '`title` varchar(300) NOT NULL,';
-sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') CHARACTER SET utf8 COLLATE utf8_general_ci';
-cnx.query(sql, function(err) {
-	if (err) throw err;
-	else {
-		console.log(chalk.green('Table genders created !'));
-	}
-});
+// // Table genders
+// var sql = 'CREATE TABLE IF NOT EXISTS genders (';
+// sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
+// sql += '`title` varchar(300) NOT NULL,';
+// sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
+// sql += ') CHARACTER SET utf8 COLLATE utf8_general_ci';
+// cnx.query(sql, function(err) {
+// 	if (err) throw err;
+// 	else {
+// 		console.log(chalk.green('Table genders created !'));
+// 	}
+// });
 
-// Table preferences
-var sql = 'CREATE TABLE IF NOT EXISTS preferences (';
-sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
-sql += '`title` varchar(300) NOT NULL,';
-sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') CHARACTER SET utf8 COLLATE utf8_general_ci';
-cnx.query(sql, function(err) {
-	if (err) throw err;
-	else {
-		console.log(chalk.green('Table preferences created !'));
-	}
-});
+// // Table preferences
+// var sql = 'CREATE TABLE IF NOT EXISTS preferences (';
+// sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
+// sql += '`title` varchar(300) NOT NULL,';
+// sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
+// sql += ') CHARACTER SET utf8 COLLATE utf8_general_ci';
+// cnx.query(sql, function(err) {
+// 	if (err) throw err;
+// 	else {
+// 		console.log(chalk.green('Table preferences created !'));
+// 	}
+// });
 
 // Table tags
 var sql = 'CREATE TABLE IF NOT EXISTS tags (';
 sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
-sql += '`title` varchar(300) NOT NULL,';
+sql += '`name` varchar(300) NOT NULL,';
+sql += '`user_id` int(11) NOT NULL,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
 sql += ') CHARACTER SET utf8 COLLATE utf8_general_ci';
 cnx.query(sql, function(err) {
@@ -103,27 +106,11 @@ cnx.query(sql, function(err) {
 	}
 });
 
-// Table user tags
-var sql = 'CREATE TABLE IF NOT EXISTS user_tags (';
-sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
-sql += '`tag_id` int(11) NOT NULL,';
-sql += '`user_id` int(11) NOT NULL,';
-sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') CHARACTER SET utf8 COLLATE utf8_general_ci';
-cnx.query(sql, function(err) {
-	if (err) throw err;
-	else {
-		console.log(chalk.green('Table user tags created !'));
-	}
-});
-
 // Table picture
 var sql = 'CREATE TABLE IF NOT EXISTS pictures (';
 sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
-sql += '`title` varchar(300) NOT NULL,';
-sql += '`pic_path` varchar(300),';
+sql += '`name` varchar(300) NOT NULL,';
 sql += '`user_id` int(11) NOT NULL,';
-sql += '`is_profile` int(11) DEFAULT 0,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
 sql += ') CHARACTER SET utf8 COLLATE utf8_general_ci';
 cnx.query(sql, function(err) {
@@ -235,38 +222,38 @@ cnx.query(sql, function(err) {
 	}
 });
 
-// Fill Tabe gender
-genders = [
-    {title: "male"},
-    {title: "female"}
-];
+// // Fill Tabe gender
+// genders = [
+//     {title: "male"},
+//     {title: "female"}
+// ];
 
-genders.forEach(g => {
-    var sql = 'INSERT INTO genders SET ?';
-    cnx.query(sql, g, function(err) {
-      if (err) throw err;
-      else {
-          console.log(chalk.green('Infos inserted into genders table !'));
-      }
-    });
-  });
+// genders.forEach(g => {
+//     var sql = 'INSERT INTO genders SET ?';
+//     cnx.query(sql, g, function(err) {
+//       if (err) throw err;
+//       else {
+//           console.log(chalk.green('Infos inserted into genders table !'));
+//       }
+//     });
+//   });
 
-// Fill Tabe preference
-preferences = [
-    {title: "heterosexual"},
-    {title: "homosexual"},
-    {title: "bisexual"}
-];
+// // Fill Tabe preference
+// preferences = [
+//     {title: "heterosexual"},
+//     {title: "homosexual"},
+//     {title: "bisexual"}
+// ];
 
-preferences.forEach(p => {
-    var sql = 'INSERT INTO preferences SET ?';
-    cnx.query(sql, p, function(err) {
-      if (err) throw err;
-      else {
-          console.log(chalk.green('Infos inserted into preferences table !'));
-      }
-    });
-  });
+// preferences.forEach(p => {
+//     var sql = 'INSERT INTO preferences SET ?';
+//     cnx.query(sql, p, function(err) {
+//       if (err) throw err;
+//       else {
+//           console.log(chalk.green('Infos inserted into preferences table !'));
+//       }
+//     });
+//   });
 
 
 //End of cnx

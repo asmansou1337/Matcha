@@ -9,9 +9,44 @@ const Auth = {
         return db.updateDB([password, token], sql)
     },
     updatebasic: async (firstName, lastName, username, email, gender, orientation, birthDay, bio, id) => {
-        const sql = 'UPDATE users SET firstName = ?, lastName = ?, username = ?, email = ?, gender_id = ?, '+
-        'preference_id = ?, born_date = ?, biography = ? WHERE id = ?';
+        const sql = 'UPDATE users SET firstName = ?, lastName = ?, username = ?, email = ?, gender = ?, '+
+        'preference = ?, born_date = ?, biography = ? WHERE id = ?';
         return db.updateDB([firstName, lastName, username, email, gender, orientation, birthDay, bio, id], sql)
+    },
+    updateProfilePic: async (name, id) => {
+        const sql = 'UPDATE users SET profilePic = ? WHERE id = ?';
+        return db.updateDB([name, id], sql)
+    },
+    getUserProfile: async (id) => {
+        const sql = `SELECT id, username, firstName, lastName, email, gender, preference, biography, ` +
+        `gps_location, profilePic, last_connection, DATE_FORMAT(born_date, "%Y-%m-%d") as born_date, notify, ` +
+        `(SELECT GROUP_CONCAT(name SEPARATOR ',') FROM pictures WHERE user_id = ?) as otherPictures, ` +
+        `(SELECT GROUP_CONCAT(name SEPARATOR ',') FROM tags WHERE user_id = ?) as tags FROM users WHERE id = ?`;
+        return db.selectDB([id, id, id], sql)
+    },
+    getProfilePic: async (id) => {
+        const sql = `SELECT profilePic FROM users WHERE id = ?`;
+        return db.selectDB(id, sql)
+    },
+    addNewPic: async (data) => {
+        const sql = 'INSERT INTO pictures SET ?';
+        return db.updateDB(data, sql)
+    },
+    deletePic: async (name, id) => {
+        const sql = 'DELETE FROM pictures WHERE name = ? AND user_id = ?';
+        return db.updateDB([name, id], sql)
+    },
+    getCountPics: async (id) => {
+        const sql = `SELECT count(*) as count FROM pictures WHERE user_id = ?`;
+        return db.selectDB(id, sql)
+    },
+    deleteTags: async (id) => {
+        const sql = 'DELETE FROM tags WHERE user_id = ?';
+        return db.updateDB(id, sql)
+    },
+    addTags: async (data) => {
+        const sql = 'INSERT INTO tags (name, user_id) VALUES ?';
+        return db.updateDB([data], sql)
     },
     // addTags: async () => {
     //     const sql = 'INSERT INTO tags (title, created_at) \

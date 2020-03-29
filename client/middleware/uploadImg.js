@@ -8,7 +8,7 @@ const storage = multer.diskStorage({
     cb(null, './public/uploads/')
   },
   filename: (req, file, cb) => {
-    cb(null, file.fieldname + '-' + Date.now() + '-' +file.originalname);
+    cb(null, file.fieldname + '-' + Date.now() + '-' + file.originalname);
   }
 });
 
@@ -21,7 +21,7 @@ const uploadProfile = multer({
     fileFilter: function(req, file, cb){
       checkFileType(file, cb);
     },
-}).single('profileImg');
+}).single('userImg');
 
 
 // Check File Type
@@ -33,13 +33,12 @@ function checkFileType(file, cb){
   // Check mime
   const mimetype = filetypes.test(file.mimetype);
 
-  console.log(chalk.blue('path :' + path.extname(file.originalname).toLowerCase()));
-  console.log(chalk.blue('mime :' + file.mimetype));
-
   if(mimetype && extname){
     return cb(null,true);
+  } else if (file.originalname.length > 150) {
+    cb('File Name Too Long!');
   } else {
-    cb('Only Images Are Allowed!');
+    cb('Images Allowed (jpg, jpeg, png, gif), size: less than 10MB');
   }
 }
 
