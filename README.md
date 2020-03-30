@@ -2,45 +2,54 @@
 
 ## Description:
 
-  - Matcha is a dating web app that is made with NodeJs, Express Js, Ejs Template Engine/ Bootstrap, and MySQL.
+  - Matcha is a dating web app that is made with NodeJs, Express Js, Ejs Template Engine/ Material Design Bootstrap, and MySQL.
   
 ## Installing:
 
 Install the app through the setup page to create automatically the database, steps:
 
-1. **Change database credentials and create database with it's tables**
+1. **Change database credentials and create database with it's tables - Change project env variables**
 
     1. Copy and rename the file:
-      - cp config/database.example.js config/database.js
+      - cp server/.env.example server/.env
+      
+    2. Edit File Infos
+      - vim server/.env
 
-    1. Edit database credentials:
-      - vim config/database.js
+    3. Edit database credentials:
+      - vim server/config/database.js
 
-    1. Copy and rename the file:
-      - cp config/setup.example.js config/setup.js
-
-    1. Edit database credentials:
-      - vim config/setup.js
+    4. Edit database credentials:
+      - vim server/config/setup.js
     
-    1. Allow permission to the project folder and enclosed files:
+    5. Allow permission to the project folder and enclosed files:
       - chmod -R 777 .
       
-1. **Install the project dependencies:**
+    6. Copy and rename the file:
+      - cp client/.env.example client/.env
+      
+    7. Edit File Infos
+      - vim client/.env
 
+**To Run The backend server **
+  0. ** cd server folder**
+  1. **Install the project dependencies:**
     - In terminal lauch the command: npm install
-
-2. **Lunch setup page:**
-
+  2. **Lunch setup page:**
     - In terminal lauch the command: npm run setup
-    
-3. **Run the server:**
-
-    - In terminal lauch the command: npm run dev
+  3. **Run the server:**
+     - In terminal lauch the command: npm run dev
+     
+ **To Run The frontend server **
+  0. ** cd client folder**
+  1. **Install the project dependencies:**
+    - In terminal lauch the command: npm install
+  3. **Run the server:**
+     - In terminal lauch the command: npm run dev
 
 1. **Authentication**
-    - Login page: http://localhost/matcha/signin
-        > Created user in setup page: user1:helloWorld10$$
-    - Sign up page : http://localhost/matcha/signup
+    - Login page: http://localhost:8080/login
+    - Sign up page : http://localhost:8080/signup
         > After signing up you will need to activate you account through email
 
 ________________________________________________________________________
@@ -66,13 +75,12 @@ ________________________________________________________________________
 
 Part 1:
   - [X] Project structure
-  - [ ] Modules: validation , Database Manager, ..
-  - [X] Authentication
-  - [ ] Access Management & Session
+  - [X] Authentification (signup & login)
+  - [ ] Access Management & Session (token Autorization)
   - [ ] Force user to fill basic required info (Redirect to user profile)
   - [ ] User info and ability to edit them  
-    - [X] Edit basic required info : username, email, password, first name, last name, gender, sexual preference, bio,
-    - [X] Edit gender and sexual preferences
+    - [X] Edit basic required info : username, email, first name, last name, gender, sexual preference, birthday, bio
+    - [ ] Edit password
     - [X] Change pictures max 5 (1 is for profile)
     - [X] Set picture as profile picture
     - [X] Edit interests (tags)
@@ -80,12 +88,13 @@ Part 1:
     - [ ] Locating the position of user automatically
     - [ ] Edit location
   - [ ] User profile: All info except mail and pass
+  - [ ] like/like back/unlike profiles 
+  - [ ] Block/ unblock user
+  - [ ] report user
+  - [ ] User statut (online or offline) - see last connected time if offline
+  - [ ] fame rating (calculated)
   - [ ] Visits history
   - [ ] Like history
-  - [ ] like/like back/unlike profiles 
-  - [ ] Block and report user
-  - [ ] Check when user last connected
-  - [ ] has fame rating (calculated)
 
 Part 2: 
   - [ ] Chat: real time chat (10 secs max)
@@ -102,18 +111,17 @@ Part 2:
 
 ### Frontend:
 
-  - **Pages**
+  - **Pages (Views) **
 
-    - [X] Setup:Create Database, Creates tables if not exists , Install dummy data: users
     - [X] Sign up
     - [X] Sign in
     - [X] Reset password (Email form)
     - [X] Reset password (new password form)
     - [X] Profile
     - [X] Edit profile (edit infos + update password)
+    - [ ] Welcome page (Visits history +  Likes history)
     - [ ] Visits history
     - [ ] Likes history
-    - [ ] Welcome page (Visitors list + likes list)
     - [ ] Suggested profiles Discover people (like or not)
     - [ ] Search
     - [ ] Chat
@@ -132,36 +140,28 @@ Part 2:
 
   - **Design** 
 
-    - [ ] Template (Layout & Theme)
+    - [ ] Template (Layout & Theme) - Material Design Bootstrap
     - [ ] Responsive
 
   - **Functions**
 
     - [ ] Routing
     - [ ] Rendering
-    - [ ] Controllers
-    - [ ] Models
+    - [ ] Middlewares
 
 ### Backend:
 
   - **Functions**
 
     - [ ] Validation
-      - [X] Sign in , Sign up, Reset, Confirm
-      - [X] Edit profile
-      - [ ] Picture
-      - [ ] Search
-      - [ ] Message
     - [ ] Controllers
     - [ ] Models
 
   - **Modules**
 
-    - [ ] Database
-    - [ ] Session
-    - [ ] Mailer
-    - [ ] Validation
-    - [ ] Picture
+    - [X] DatabaseManager
+    - [X] Mailer
+    - [X] Validation
 
 ### Database:
 
@@ -177,6 +177,8 @@ Part 2:
     - [X] notifications
     - [X] conversations
     - [X] messages
+    
+  - [X] Setup : Create Database, Creates tables if not exists
 ________________________________________________________________________
 
 ### Project details:
