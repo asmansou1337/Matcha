@@ -299,11 +299,25 @@
             </div>
             <!-- Localisation Tab -->
               <div class="tab-pane fade <%- (nav.path == 'location') ?  'show active'  : '' %>" id="location" role="tabpanel" aria-labelledby="location-tab">
+                <section class="section pb-3 text-center">
+                  <!--Section description-->
+                  <p class="section-description"> Write your address (Ex: ) OR click on 'locate Me' to locate you automatically</p>
+              </section>
                 <!-- Default input -->
-                <div class="form-group">
+                <form action="/profile/addLocation" method="post">
                   <label for="localisation">Localisation</label>
-                  <input type="text" class="form-control" name="localisation" placeholder="Localisation">
-                </div>
+                  <div class="form-row align-items-center">
+                    <div class="col-8">
+                      <input type="text" class="form-control" name="localisation" placeholder="Localisation">
+                    </div>
+                    <div class="col">
+                      <input type="hidden" name="lat">
+                      <input type="hidden" name="long">
+                      <button class="btn btn-primary btn-md" name="locateme" >Locate Me</button>
+                  </div>
+                  </div>
+                  <input type="submit" class="btn btn-primary btn-md" name="locationBtn" value="Change Location">
+                </form>
               </div>
                 <div class="tab-pane fade <%- (nav.path == 'preview') ?  'show active'  : '' %>" id="preview" role="tabpanel" aria-labelledby="preview-tab">E22tsy mixtape
                   wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack

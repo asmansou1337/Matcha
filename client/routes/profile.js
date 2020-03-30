@@ -5,6 +5,10 @@ const chalk = require('chalk');
 const upload = require('../middleware/uploadImg');
 const fs = require('fs');
 const multer = require('multer');
+let nodeGeocoder = require('node-geocoder');
+let options = {
+  provider: 'openstreetmap'
+};
 
 /* GET Welcome Page */
 router.get('/welcome', function(req, res) {
