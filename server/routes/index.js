@@ -14,12 +14,12 @@ router.post('/reinitializePassword', authentification.reinitializePassword);
 router.get('/welcome', checkAuth, authentification.welcome);
 
 
-router.post('/profile/editBasic', profile.editBasic);
-router.post('/profile/updateProfilePic', profile.updateProfilePic);
-router.get('/profile/getInfos', profile.getCurrentUserAllInfos);
-router.get('/profile/getProfilePic', profile.getCurrentUserProfilePic);
-router.post('/profile/addNewPic', profile.addNewPic);
-router.post('/profile/deletePic', profile.deletePic);
-router.get('/profile/picturesCount', profile.getCurrentUserPicturesCount);
-router.post('/profile/updateTags', profile.updateTags);
+router.post('/profile/editBasic', checkAuth, profile.editBasic);
+router.post('/profile/updateProfilePic', checkAuth, profile.updateProfilePic);
+router.get('/profile/getInfos', checkAuth, profile.getCurrentUserAllInfos);
+router.get('/profile/getProfilePic', checkAuth, profile.getCurrentUserProfilePic);
+router.post('/profile/addNewPic', checkAuth, profile.addNewPic);
+router.post('/profile/deletePic', checkAuth, profile.deletePic);
+router.get('/profile/picturesCount', checkAuth, profile.getCurrentUserPicturesCount);
+router.post('/profile/updateTags', checkAuth, profile.updateTags);
 module.exports = router;

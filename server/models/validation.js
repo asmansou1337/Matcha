@@ -11,7 +11,7 @@ const errorTab = {
   "birthday": "Your BirthDay is Invalid (Format: YYYY-MM-DD) / You Should be at least 18 & less than 120",
   "gender": "Your Gender is Invalid",
   "orientation": "Your Orientation is Invalid",
-  "bio": "Your biography should be less than 200 caracter",
+  "bio": "Your biography should be less than 200 caracters",
   "tags": "Your tags should be alphanumerique caracteres only!"
 }
 
@@ -95,13 +95,13 @@ const Valid = {
             if((tag.length < 1) || (tag.length > 20) || !util.isAlphaNum(tag))
               return errorTab['tags']
         }
-        // if (!Array.isArray(tags) || !tags.length)
-        //     return `Your tags should not be empty!`
-        // tags.forEach((tag) => {
-        //   if((tag.length < 1) || (tag.length > 20) || !util.isAlphaNum(tag))
-        //     return errorTab['tags']
-        //   })
         return "success"
+      },
+      isPictureName: (name) => {
+        let ext = name.split('.')[1];
+        if (/jpeg|jpg|png|gif/.test(ext.toLowerCase()))
+          return true
+        return false
       }
 }
 

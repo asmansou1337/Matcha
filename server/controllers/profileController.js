@@ -17,14 +17,10 @@ const Profile = {
             successMessage: null,
             errorMessage: {}
         };
-        let userData = {
-            "userId": 1,
-            "username":"hajar12",
-            "email":"yaveya8441@rushmails.com"
-        }
+        // get connected user data from token
+        let userData = req.userData;
         // get the form infos from the request body
         let { firstName, lastName, username, email, birthDay, gender, orientation, bio } = req.body;
-        //console.log(chalk.redBright(typeof tags));
         // Validate First Name
         let err = validation.validate(firstName, "first Name", validation.isName);
         if (err !== "success") {
@@ -74,16 +70,6 @@ const Profile = {
             responseData.errorMessage.bio = err;
         } else
             bio = util.escapeHtml(bio.trim());
-        // Validate Tags
-        // tags = {
-        //     0: 'tag1',
-        //     1: 'tag2'
-        // }
-        // err = validation.isTags(tags);
-        // if (err !== "success") {
-        //     responseData.isValid = false;
-        //     responseData.errorMessage.tags = err;
-        // }
 
         if (responseData.isValid === true) {
             // Verify if new username & email does not exists already
@@ -124,12 +110,8 @@ const Profile = {
             successMessage: null,
             errorMessage: {}
         };
-        let userData = {
-            "userId": 1,
-            "username":"hajar12",
-            "email":"yaveya8441@rushmails.com"
-        }
-        console.log(chalk.red(JSON.stringify(req.body)));
+        let userData = req.userData;
+        //console.log(chalk.green(JSON.stringify(req.body)));
         const updatePic = await profileManager.updateProfilePic(req.body.name, userData['userId'])
             if (updatePic) {
                 responseData.successMessage = "Your Profile Image Is Updated Successfully!";
@@ -148,12 +130,8 @@ const Profile = {
             successMessage: null,
             errorMessage: {}
         };
-        let userData = {
-            "userId": 1,
-            "username":"hajar12",
-            "email":"yaveya8441@rushmails.com"
-        }
-        console.log(chalk.red(JSON.stringify(req.body)));
+        let userData = req.userData;
+        //console.log(chalk.red(JSON.stringify(req.body)));
         let name = req.body.name;
         let user_id =  userData['userId'];
         const addPic = await profileManager.addNewPic({name, user_id});
@@ -174,11 +152,7 @@ const Profile = {
             successMessage: null,
             errorMessage: {}
         };
-        let userData = {
-            "userId": 1,
-            "username":"hajar12",
-            "email":"yaveya8441@rushmails.com"
-        }
+        let userData = req.userData;
         let name = req.body.name;
         let user_id =  userData['userId'];
         const deletePic = await profileManager.deletePic(name, user_id);
@@ -199,11 +173,7 @@ const Profile = {
             successMessage: null,
             errorMessage: {}
         };
-        let userData = {
-            "userId": 1,
-            "username":"hajar12",
-            "email":"yaveya8441@rushmails.com"
-        }
+        let userData = req.userData;
         const currentUser = await profileManager.getUserProfile(userData['userId']);
             if (currentUser) {
                // console.log(chalk.red(JSON.stringify(currentUser)));
@@ -224,14 +194,10 @@ const Profile = {
             successMessage: null,
             errorMessage: {}
         };
-        let userData = {
-            "userId": 1,
-            "username":"hajar12",
-            "email":"yaveya8441@rushmails.com"
-        }
+        let userData = req.userData;
         const currentUser = await profileManager.getProfilePic(userData['userId']);
             if (currentUser) {
-                console.log(chalk.red(JSON.stringify(currentUser)));
+                //console.log(chalk.red(JSON.stringify(currentUser)));
                 responseData.user = currentUser[0];
                 //responseData.successMessage = "Success!";
             } else {
@@ -248,13 +214,9 @@ const Profile = {
             isValid : true,
             errorMessage: {}
         };
-        let userData = {
-            "userId": 1,
-            "username":"hajar12",
-            "email":"yaveya8441@rushmails.com"
-        }
+        let userData = req.userData;
         const images = await profileManager.getCountPics(userData['userId']);
-        console.log(chalk.yellow(images[0].count));
+        //console.log(chalk.yellow(images[0].count));
         if (images[0].count == 4) {
             responseData.isValid = false;
             responseData.errorMessage.error = "You are allowed to upload 4 pictures maximum!!";
@@ -270,11 +232,7 @@ const Profile = {
             successMessage: null,
             errorMessage: {}
         };
-        let userData = {
-            "userId": 1,
-            "username":"hajar12",
-            "email":"yaveya8441@rushmails.com"
-        }
+        let userData = req.userData;
         //console.log(chalk.yellow(JSON.stringify(req.body)));
         let userTags = req.body;
         let err = validation.isTags(userTags);

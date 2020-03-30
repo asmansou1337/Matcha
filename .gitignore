@@ -1,3 +1,4 @@
 node_modules
 .env
 server/config/setup.js
+server/config/database.js
