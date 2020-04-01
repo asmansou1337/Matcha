@@ -233,8 +233,9 @@ const Profile = {
         let userData = req.userData;
         const currentUser = await profileManager.getUserProfile(userData['userId']);
             if (currentUser) {
-               // console.log(chalk.red(JSON.stringify(currentUser)));
+                currentUser[0].age = util.calculateAge(currentUser[0].born_date);
                 responseData.user = currentUser[0];
+                console.log(chalk.red(JSON.stringify(currentUser)));
                 //responseData.successMessage = "Success!";
             } else {
                 responseData.isValid = false;

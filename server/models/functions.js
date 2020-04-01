@@ -36,6 +36,16 @@ const util = {
               '"': '&quot;'
             }[tag] || tag))
         return str
+      },
+      calculateAge: (birth) => {
+        let today = new Date();
+        let birthDate = new Date(birth);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        let mon = today.getMonth() - birthDate.getMonth();
+        if (mon < 0 || (mon === 0 && today.getDate() < birthDate.getDate())) {
+            age--
+        }
+        return age;
       }
 }
 

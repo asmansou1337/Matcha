@@ -34,8 +34,25 @@ router.get('/welcome', function(req, res) {
     });
 });
 
-router.get('/', (req,res) => {
-  return res.render('profile');
+// preview connected user profile
+router.get('/myProfile', (req,res) => {
+  // get user infos
+  axios.get(`${process.env.HostApi}/profile/getInfos`)
+    .then((response) => {
+        //console.log(chalk.greenBright(JSON.stringify(response.data.user)));
+        user = response.data.user;
+        console.log(chalk.greenBright(JSON.stringify(user)));
+        return res.render('myProfile', {userInfos: user});
+    }
+    ).catch((e) => {
+      //console.log(chalk.redBright('error1 ' + JSON.stringify(e.response.data)));
+      if(typeof e.response !== 'undefined') {
+        if(e.response.status === 400) {
+            console.log(e.response.data);
+            return;
+        }
+      }      
+    });
 })
 
 // edit basic infos form POST
