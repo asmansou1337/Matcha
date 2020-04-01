@@ -10,8 +10,8 @@ module.exports = (req, res, next) => {
         // console.log(chalk.blue(JSON.stringify(decoded)));
         req.userData = {
             "userId": 1,
-            "username":"hajar12",
-            "email":"nefoxa2935@itiomail.com"
+            "username":"asmansou",
+            "email":"xidabev790@itiomail.com"
         }
         next();
     } catch (error) {

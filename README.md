@@ -80,11 +80,11 @@ Part 1:
   - [ ] Force user to fill basic required info (Redirect to user profile)
   - [ ] User info and ability to edit them  
     - [X] Edit basic required info : username, email, first name, last name, gender, sexual preference, birthday, bio
-    - [ ] Edit password
+    - [X] Edit password
     - [X] Change pictures max 5 (1 is for profile)
     - [X] Set picture as profile picture
     - [X] Edit interests (tags)
-    - [ ] Autocomplete interests (tags)
+    - [X] Autocomplete interests (tags)
     - [ ] Locating the position of user automatically
     - [ ] Edit location
   - [ ] User profile: All info except mail and pass
@@ -200,10 +200,10 @@ ________________________________________________________________________
       ◦ [X] The gender.
       ◦ [X] Sexual preferences.
       ◦ [X] A short biography.
-      ◦ [ ] A list of interests with tags (ex: #vegan, #geek, #piercing etc...). These tags must be reusable.
+      ◦ [X] A list of interests with tags (ex: #vegan, #geek, #piercing etc...). These tags must be reusable.
       ◦ [X] Pictures, max 5, including 1 as profile picture.
     - [ ] At any time, the user must be able to modify these information, as well as the last name, first name, email and password.
-    - [ ] The user should be able to change or reinitialize his password despite been connected or not.
+    - [X] The user should be able to change or reinitialize his password despite been connected or not.
     - [ ] The user must be able to check who visited his/her profile as well as who “liked” him/her.
     - [ ] The user must have a public “fame rating”:
       ◦ Up to you to define what “fame rating” means as long as your criteria are consistent

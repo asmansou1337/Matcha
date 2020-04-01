@@ -4,9 +4,9 @@ const bcrypt = require('bcrypt');
 const db = require('../models/databaseModel')
 
 const Auth = {
-    updatePassword: async (password, token) => {
-        const sql = 'UPDATE users SET password = ? WHERE token = ?';
-        return db.updateDB([password, token], sql)
+    updatePassword: async (password, value, str) => {
+        const sql = `UPDATE users SET password = ? WHERE ${str} = ?`;
+        return db.updateDB([password, value], sql)
     },
     updatebasic: async (firstName, lastName, username, email, gender, orientation, birthDay, bio, id) => {
         const sql = 'UPDATE users SET firstName = ?, lastName = ?, username = ?, email = ?, gender = ?, '+
@@ -19,7 +19,7 @@ const Auth = {
     },
     getUserProfile: async (id) => {
         const sql = `SELECT id, username, firstName, lastName, email, gender, preference, biography, ` +
-        `gps_location, profilePic, last_connection, DATE_FORMAT(born_date, "%Y-%m-%d") as born_date, notify, ` +
+        `latitude, longitude, profilePic, last_connection, DATE_FORMAT(born_date, "%Y-%m-%d") as born_date, notify, ` +
         `(SELECT GROUP_CONCAT(name SEPARATOR ',') FROM pictures WHERE user_id = ?) as otherPictures, ` +
         `(SELECT GROUP_CONCAT(name SEPARATOR ',') FROM tags WHERE user_id = ?) as tags FROM users WHERE id = ?`;
         return db.selectDB([id, id, id], sql)
@@ -47,6 +47,10 @@ const Auth = {
     addTags: async (data) => {
         const sql = 'INSERT INTO tags (name, user_id) VALUES ?';
         return db.updateDB([data], sql)
+    },
+    getTagsList: async () => {
+        const sql = 'SELECT DISTINCT name FROM tags';
+        return db.selectDB('', sql)
     },
     // addTags: async () => {
     //     const sql = 'INSERT INTO tags (title, created_at) \

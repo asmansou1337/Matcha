@@ -9,6 +9,9 @@ let nodeGeocoder = require('node-geocoder');
 let options = {
   provider: 'openstreetmap'
 };
+let geoCoder = nodeGeocoder(options);
+const iplocate = require("node-iplocate");
+const publicIp = require('public-ip');
 
 /* GET Welcome Page */
 router.get('/welcome', function(req, res) {
@@ -37,7 +40,6 @@ router.get('/', (req,res) => {
 
 // edit basic infos form POST
 router.post('/editProfile', (req, res) => {
-  //console.log(chalk.green(JSON.stringify(req.body)));
   let userInfos = req.body
   let user = undefined
   let success = undefined
@@ -72,6 +74,25 @@ router.post('/editProfile', (req, res) => {
             }
           }      
         });
+})
+
+// Update password
+router.post('/updatePassword', (req, res) => {
+  console.log(JSON.stringify(req.body));
+  axios.post(`${process.env.HostApi}/profile/updatePassword`, req.body)
+  .then((response) => {
+    req.flash('path', 'password');
+    console.log(chalk.blue(response.data.successMessage)); 
+    req.flash('successMessage', response.data.successMessage);
+    res.redirect('/profile/editProfile'); 
+  }
+  ).catch((e) => {
+    if(typeof e.response !== 'undefined') {
+      if(e.response.status === 400) {
+        res.render('editProfile', {error:e.response.data.errorMessage, nav: {path:'password'}});
+      }
+    }      
+  });
 })
 
 // Upload profile picture form
@@ -265,8 +286,7 @@ router.post('/addTags', (req, res) => {
           res.redirect('/profile/editProfile');
         }
       }      
-    });
-    
+    }); 
 })
 
 
@@ -277,6 +297,7 @@ router.get('/editProfile', (req, res) => {
   let err = req.flash('error');
   let successMessage = req.flash('successMessage');
   let error = {}, success = {}, user = undefined;
+  let tagsList = [];
 
   if (JSON.stringify(err) === '[]') 
     error = undefined;
@@ -288,13 +309,43 @@ router.get('/editProfile', (req, res) => {
     success.successMessage = successMessage;
   if (JSON.stringify(path) === '[]')
     path = 'basic';
+
+  // Get list of all tags for autocompletion 
+  axios.get(`${process.env.HostApi}/tagsList`)
+  .then((response) => {
+    //console.log(chalk.greenBright(JSON.stringify(response.data.tags)));
+    // response.data.tags.forEach(element => {
+    //   tagsLists.push(element.name);
+    // });
+    tagsList = response.data.tags;
+    // console.log(chalk.blue(JSON.stringify(tagsList)));   
+  })
+  
   // get user infos
   axios.get(`${process.env.HostApi}/profile/getInfos`)
     .then((response) => {
         //console.log(chalk.greenBright(JSON.stringify(response.data.user)));
         user = response.data.user;
-        console.log(chalk.greenBright(JSON.stringify(user)));
-        res.render('editProfile', { success, error, userInfos: user , nav: {path}});
+        // console.log(chalk.greenBright(JSON.stringify(user)));
+        res.render('editProfile', { success, error, userInfos: user , nav: {path}, tagsList});
+    }
+    ).catch((e) => {
+      //console.log(chalk.redBright('error1 ' + JSON.stringify(e.response.data)));
+      if(typeof e.response !== 'undefined') {
+        if(e.response.status === 400) {
+            // console.log(error.response.data);
+            return;
+        }
+      }      
+    });
+});
+
+// get list of tags
+router.get('/tagsList', function(req, res) {
+  axios.get(`${process.env.HostApi}/tagsList`)
+    .then((response) => {
+      console.log(chalk.greenBright(JSON.stringify(response.data.tags)));
+      return JSON.stringify(response.data.tags);   
     }
     ).catch((e) => {
       //console.log(chalk.redBright('error1 ' + JSON.stringify(e.response.data)));
@@ -306,5 +357,46 @@ router.get('/editProfile', (req, res) => {
       }      
     });
 });
+
+// Update user location
+router.post('/updateLocation', async (req, res) => {
+  req.flash('path', 'location');
+  console.log(chalk.yellow(JSON.stringify(req.body)));
+  // geoCoder.geocode(req.body.localisation)
+  // .then((response)=> {
+  //   console.log(chalk.green(JSON.stringify(response)));
+  //  // res.redirect('/profile/editProfile'); 
+  // })
+  // .catch((err)=> {
+  //   console.log(err);
+  // });
+  let ip = await publicIp.v4();
+  iplocate(ip).then(function(results) {
+    console.log("IP Address: " + results.ip);
+    console.log("Country: " + results.country + " (" + results.country_code + ")");
+    console.log("Continent: " + results.continent);
+    console.log("Organisation: " + results.org + " (" + results.asn + ")");
+   
+    console.log(JSON.stringify(results, null, 2));
+  });
+  
+  // let userTags = JSON.parse(req.body.TagsTab);
+  // axios.post(`${process.env.HostApi}/profile/updateTags`, userTags)
+  //   .then((response) => {
+  //     req.flash('successMessage', response.data.successMessage);
+  //     res.redirect('/profile/editProfile');    
+  //   }
+  //   ).catch((e) => {
+  //     if(typeof e.response !== 'undefined') {
+  //       if(e.response.status === 400) {
+  //         req.flash('error', e.response.data.errorMessage.error);
+  //         res.redirect('/profile/editProfile');
+  //       }
+  //     }      
+  //   });
+    
+})
+
+
 
 module.exports = router;

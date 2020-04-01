@@ -104,6 +104,63 @@ const Profile = {
         else
             res.status(400).send(responseData);
     },
+    updatePassword:  async (req, res) => {
+        let responseData = {
+            isValid : true,
+            successMessage: null,
+            errorMessage: {}
+        };
+        let userData = req.userData;
+        let { oldPassword, newPassword, confirmPassword } = req.body;
+        // Validate Old Password
+        let err = validation.validate(oldPassword, "password", validation.isPassword);
+        if (err !== "success") {
+            responseData.isValid = false;
+            responseData.errorMessage.oldPassword =  err;
+        }
+        // Validate New Password
+        err = validation.validate(newPassword, "password", validation.isPassword);
+        if (err !== "success") {
+            responseData.isValid = false;
+            responseData.errorMessage.newPassword =  err;
+        }
+        // Validate Password Confirmation
+        err = validation.isConfirmPassword(newPassword, confirmPassword);
+        if (err !== "success") {
+            responseData.isValid = false;
+            responseData.errorMessage.confirmPassword = err;
+        }
+        // Verify if the old password is correct
+        if (responseData.isValid === true) {
+             const user = await authManager.getUserInfos('id', userData['userId']);
+             if (user[0]) {
+                // Verify password is correct
+                const match = await bcrypt.compare(oldPassword, user[0].password);
+                if (match) {
+                    // Creation of hashed password
+                    let password = await bcrypt.hash(newPassword, 10);
+                    const update = await profileManager.updatePassword(password, userData['userId'], 'id');
+                    if (update) {
+                        responseData.successMessage = "Your password has changed successfuly.";
+                    } else {
+                        responseData.isValid = false;
+                        responseData.errorMessage.error = 'Error Updating your password, Please try again!';
+                    }
+                } else {
+                    // Passwords don't match
+                    responseData.isValid = false;
+                    responseData.errorMessage.oldPassword = "Wrong Password!";
+                }
+             } else {
+                 responseData.isValid = false;
+                 responseData.errorMessage.username = "This user does not exist!";
+             }
+         }
+        if (responseData.isValid === true)
+            res.status(200).send(responseData);
+        else
+            res.status(400).send(responseData);
+    },
     updateProfilePic:  async (req, res) => {
         let responseData = {
             isValid : true,
@@ -233,8 +290,11 @@ const Profile = {
             errorMessage: {}
         };
         let userData = req.userData;
-        //console.log(chalk.yellow(JSON.stringify(req.body)));
+        console.log(chalk.yellow(JSON.stringify(req.body)));
         let userTags = req.body;
+        // remove duplicate from userTags array
+        userTags = [...new Set(userTags)];
+        // userTags = (userTags) => userTags.filter((v,i) => userTags.indexOf(v) === i)
         let err = validation.isTags(userTags);
         if (err !== "success") {
             responseData.isValid = false;
@@ -268,6 +328,25 @@ const Profile = {
         else
             res.status(400).send(responseData);
     },
+    getTagsList:  async (req, res) => { 
+        let responseData = {
+            isValid : true,
+            tags: null,
+            errorMessage: {}
+        };
+        const tags = await profileManager.getTagsList();
+        if (tags) {
+            console.log(chalk.magenta(JSON.stringify(tags)))
+            responseData.tags = tags;
+        } else {
+            responseData.isValid = false;
+            responseData.errorMessage.error= 'Error, Please try again!';
+        }
+        if (responseData.isValid === true)
+            res.status(200).send(responseData);
+        else
+            res.status(400).send(responseData);
+    }
 
 }
 

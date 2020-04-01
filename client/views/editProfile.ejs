@@ -53,7 +53,7 @@
                         <!-- Default input -->
                         <div class="form-group col-md-6">
                             <label for="firstName">First Name</label>
-                            <input type="text" class="form-control" name="firstName" placeholder="First Name" value="<%= (typeof userInfos !== 'undefined') ? userInfos.firstName : '' %>">
+                            <input type="text" class="form-control" name="firstName" placeholder="First Name" value="<%= (typeof userInfos !== 'undefined') ? userInfos.firstName : '' %>" required maxlength="30">
                             <% if(typeof  error !== 'undefined'){ %>
                               <div class="error-input">
                                   <% if (typeof  error.firstName !== 'undefined') %>
@@ -64,7 +64,7 @@
                         <!-- Default input -->
                         <div class="form-group col-md-6">
                             <label for="lastName">Last Name</label>
-                            <input type="text" class="form-control" name="lastName" placeholder="Last Name" value="<%= (typeof userInfos !== 'undefined') ? userInfos.lastName : '' %>">
+                            <input type="text" class="form-control" name="lastName" placeholder="Last Name" value="<%= (typeof userInfos !== 'undefined') ? userInfos.lastName : '' %>" required maxlength="30">
                             <% if(typeof  error !== 'undefined'){ %>
                               <div class="error-input">
                                   <% if (typeof  error.lastName !== 'undefined') %>
@@ -79,7 +79,7 @@
                     <!-- Default input -->
                     <div class="form-group col-md-6">
                         <label for="username">Username</label>
-                        <input type="text" class="form-control" name="username" placeholder="Username" value="<%= (typeof userInfos !== 'undefined') ? userInfos.username : '' %>">
+                        <input type="text" class="form-control" name="username" placeholder="Username" value="<%= (typeof userInfos !== 'undefined') ? userInfos.username : '' %>" required maxlength="20" minlength="2">
                         <% if(typeof  error !== 'undefined'){ %>
                           <div class="error-input">
                               <% if (typeof  error.username !== 'undefined') %>
@@ -90,7 +90,7 @@
                     <!-- Default input -->
                     <div class="form-group col-md-6">
                         <label for="birthday">Birth Day</label>
-                        <input type="date" class="form-control" name="birthDay" placeholder="Birth Day" value="<%= (typeof userInfos !== 'undefined') ? userInfos.born_date : '' %>">
+                        <input type="date" class="form-control" name="birthDay" placeholder="Birth Day" value="<%= (typeof userInfos !== 'undefined') ? userInfos.born_date : '' %>" required>
                         <% if(typeof  error !== 'undefined'){ %>
                           <div class="error-input">
                               <% if (typeof  error.birthDay !== 'undefined') %>
@@ -146,7 +146,7 @@
                     <!-- Default input -->
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" name="email" placeholder="E-mail" value="<%= (typeof userInfos !== 'undefined') ? userInfos.email : '' %>">
+                        <input type="email" class="form-control" name="email" placeholder="E-mail" value="<%= (typeof userInfos !== 'undefined') ? userInfos.email : '' %>" required>
                         <% if(typeof  error !== 'undefined'){ %>
                           <div class="error-input">
                               <% if (typeof  error.email !== 'undefined') %>
@@ -157,7 +157,7 @@
                     <!-- Default input -->
                     <div class="form-group">
                         <label for="bio">Bio</label>
-                        <textarea class="form-control" name="bio" rows="7"><%- (typeof userInfos !== 'undefined') ? userInfos.biography : '' %></textarea>
+                        <textarea class="form-control" name="bio" rows="7" required maxlength="200" minlength="2"><%- (typeof userInfos !== 'undefined') ? userInfos.biography : '' %></textarea>
                         <% if(typeof  error !== 'undefined'){ %>
                           <div class="error-input">
                               <% if (typeof  error.bio !== 'undefined') %>
@@ -172,27 +172,43 @@
             </div>
             <!-- Password Reset form-->
             <div class="tab-pane fade <%- (nav.path == 'password') ?  'show active'  : '' %>" id="passowrd" role="tabpanel" aria-labelledby="passowrd-tab">
-              <form>
+              <form action="/profile/updatePassword" method="post">
                 <!-- Password input -->
                 <div class="form-group">
                     <label for="oldPassword">Old Password</label>
-                    <input type="passowrd" class="form-control" name="oldPassword" placeholder="Old Password">
+                    <input type="password" class="form-control" name="oldPassword" placeholder="Old Password" required>
+                    <% if(typeof  error !== 'undefined'){ %>
+                      <div class="error-input">
+                          <% if (typeof  error.oldPassword !== 'undefined') %>
+                          <%= error.oldPassword %>
+                      </div>
+                    <% } %>
                 </div>
                 <!-- Password input -->
                 <div class="form-group">
                   <label for="newPassword">New Password</label>
-                  <input type="passowrd" class="form-control" name="newPassword" placeholder="New Password">
+                  <input type="password" class="form-control" name="newPassword" placeholder="New Password" required>
+                  <% if(typeof  error !== 'undefined'){ %>
+                    <div class="error-input">
+                        <% if (typeof  error.newPassword !== 'undefined') %>
+                        <%= error.newPassword %>
+                    </div>
+                  <% } %>
                 </div>
                 <!-- Confirm Password input -->
                 <div class="form-group">
                   <label for="confirmPassword">Confirm New Password</label>
-                  <input type="passowrd" class="form-control" name="confirmPassword" placeholder="Confirm New Password">
+                  <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm New Password" required>
+                  <% if(typeof  error !== 'undefined'){ %>
+                    <div class="error-input">
+                        <% if (typeof  error.confirmPassword !== 'undefined') %>
+                        <%= error.confirmPassword %>
+                    </div>
+                  <% } %>
                 </div>
                 <!-- Grid row -->
                 <button type="submit" class="btn btn-primary btn-md" name="basic" >Submit</button>
             </form>
-
-
             </div>
             <div class="tab-pane fade <%- (nav.path == 'picture') ?  'show active'  : '' %>" id="picture" role="tabpanel" aria-labelledby="picture-tab">
                <!-- Grid column -->
@@ -203,7 +219,7 @@
                       <!--Section description-->
                       <p class="section-description"></p>
                     <div class="d-flex justify-content-center">
-                      <img src="<%= (userInfos.profilePic != null) ? `/uploads/${userInfos.profilePic}` : '/uploads/avatar.jpg' %>" class="img-fluid z-depth-1"
+                      <img src="<%= (typeof userInfos !== 'undefined') ? ((userInfos.profilePic != null) ? `/uploads/${userInfos.profilePic}` : '/uploads/avatar.jpg') : '/uploads/avatar.jpg'  %>" class="img-fluid z-depth-1"
                       alt="Responsive image" style="width: 200px" name="pic">
                     </div>
                   </section>
@@ -223,13 +239,6 @@
                     </form>
                   </div>
               <hr>
-               <!-- <div class="row d-flex justify-content-center">
-
-                    <button type="button" class="btn btn-rounded btn-green"><i class="fas fa-edit pr-2" aria-hidden="true"></i>Change</button>
-                  </div>
-                  <div class="row d-flex justify-content-center">
-                    <button type="button" class="btn btn-rounded btn-red"><i class="fas fa-trash-alt pr-2" aria-hidden="true"></i>Remove</button>
-                </div> -->
               <!-- Other Pictures -->
               <section class="section pb-3 text-center">
                   <!--Section heading-->
@@ -272,7 +281,7 @@
             </section>
             <!-- Grid row -->
               <div class="row">
-                <div class="container-fluid border rounded mb-0 tag-container" style="padding: 10px;">
+                <div class="container-fluid border rounded mb-0 tag-container autocomplete" style="padding: 10px;">
                   <!-- User existing tags -->
                   <% if(typeof userInfos !== 'undefined' && userInfos.tags !== null) {
                     let tags = userInfos.tags.split(',')
@@ -283,7 +292,13 @@
                       </span>
                   <% }); 
                   } %>
-                  <input placeholder ="Ex: html,php"/>
+                  <!-- <input type="hidden" name="tagsList" id="tagsList" value=""> -->
+                  
+                    <input placeholder ="Ex: html,php" id="myInput"/>
+                  
+                  <!-- <div class="search">
+
+                  </div> -->
                 </div>
               </div>
               <form action="/profile/addTags" method="post" id="tagsform">
@@ -304,7 +319,7 @@
                   <p class="section-description"> Write your address (Ex: ) OR click on 'locate Me' to locate you automatically</p>
               </section>
                 <!-- Default input -->
-                <form action="/profile/addLocation" method="post">
+                <form action="/profile/updateLocation" method="post">
                   <label for="localisation">Localisation</label>
                   <div class="form-row align-items-center">
                     <div class="col-8">
@@ -313,7 +328,9 @@
                     <div class="col">
                       <input type="hidden" name="lat">
                       <input type="hidden" name="long">
-                      <button class="btn btn-primary btn-md" name="locateme" >Locate Me</button>
+                      <button class="btn btn-primary btn-md" name="locateme" onclick='locate();'>Locate Me</button>
+                      <h1 id = 'posStatus'></h1>
+                      <a id = 'locInfo' target="#"></a>
                   </div>
                   </div>
                   <input type="submit" class="btn btn-primary btn-md" name="locationBtn" value="Change Location">
@@ -329,6 +346,8 @@
           </div>
       </div>
   </section>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
   <script type="text/javascript" src="/javascripts/tag.js"></script>
+  <script type="text/javascript" src="/javascripts/locate.js"></script>
 </div>
 <%- include('footer'); %>

@@ -262,7 +262,7 @@ const Auth = {
                 } else {
                     // Creation of hashed password
                     password = await bcrypt.hash(password, 10);
-                    const update = await profileManager.updatePassword(password, token);
+                    const update = await profileManager.updatePassword(password, token, 'token');
                     if (update) {
                         responseData.successMessage = "Your password has changed successfuly.";
                         // Reset token
