@@ -235,7 +235,7 @@ const Profile = {
             if (currentUser) {
                 currentUser[0].age = util.calculateAge(currentUser[0].born_date);
                 responseData.user = currentUser[0];
-                console.log(chalk.red(JSON.stringify(currentUser)));
+                // console.log(chalk.red(JSON.stringify(currentUser)));
                 //responseData.successMessage = "Success!";
             } else {
                 responseData.isValid = false;
@@ -337,7 +337,7 @@ const Profile = {
         };
         const tags = await profileManager.getTagsList();
         if (tags) {
-            console.log(chalk.magenta(JSON.stringify(tags)))
+            // console.log(chalk.magenta(JSON.stringify(tags)))
             responseData.tags = tags;
         } else {
             responseData.isValid = false;
@@ -347,7 +347,39 @@ const Profile = {
             res.status(200).send(responseData);
         else
             res.status(400).send(responseData);
-    }
+    },
+    updateLocation:  async (req, res) => {
+        let responseData = {
+            isValid : true,
+            successMessage: null,
+            errorMessage: {}
+        };
+        let userData = req.userData;
+        //console.log(chalk.red(JSON.stringify(req.body)));
+        let latitude = req.body.latitude;
+        let longitude = req.body.longitude;
+        console.log('lat :' + latitude);
+        console.log('lgt :' + longitude);
+        let id =  userData['userId'];
+        // validate latitude & longitude
+        if (!validation.isLatitude(Number(latitude)) || !validation.isLongitude(Number(longitude))) {
+            responseData.isValid = false;
+            responseData.errorMessage.error = 'Unvalid Coordinates!!';
+        }
+        if (responseData.isValid === true) {
+             const updateLocation = await profileManager.updateLocation(latitude, longitude, id);
+            if (updateLocation) {
+                responseData.successMessage = "Your Location Is updated Successfully!";
+            } else {
+                responseData.isValid = false;
+                responseData.errorMessage.error= 'Error updating your location, Please try again!';
+            }
+        }
+        if (responseData.isValid === true)
+            res.status(200).send(responseData);
+        else
+            res.status(400).send(responseData);
+    },
 
 }
 

@@ -52,6 +52,10 @@ const Auth = {
         const sql = 'SELECT DISTINCT name FROM tags';
         return db.selectDB('', sql)
     },
+    updateLocation: async (lat, long, id) => {
+        const sql = 'UPDATE users SET latitude = ?, longitude = ? WHERE id = ?';
+        return db.updateDB([lat, long, id], sql)
+    },
     // addTags: async () => {
     //     const sql = 'INSERT INTO tags (title, created_at) \
     //     SELECT  @title,@SoftwareType \

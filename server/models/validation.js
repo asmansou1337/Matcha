@@ -97,6 +97,16 @@ const Valid = {
         }
         return "success"
       },
+      isLatitude: (latitude) => {
+        if(latitude >= -90 && latitude <= 90 && (util.isNumeric(latitude) || util.isFloat(latitude)))
+            return true
+        return false
+      },
+      isLongitude: (longitude) => {
+        if(longitude >= -180 && longitude <= 180 && (util.isNumeric(longitude) || util.isFloat(longitude)))
+            return true
+        return false
+      },
       isPictureName: (name) => {
         let ext = name.split('.')[1];
         if (/jpeg|jpg|png|gif/.test(ext.toLowerCase()))

@@ -26,6 +26,12 @@ const util = {
       isUppercase: (value) => {
         return /[A-Z]/.test(value)
       },
+      isNumeric: (value) => {
+        return /^-{0,1}\d+$/.test(value)
+      },
+      isFloat: (value) => {
+        return Number(value) === value && value % 1 !== 0
+      },
       escapeHtml: (str) => {
         str  = str.replace(/[&<>'"]/g, 
           tag => ({

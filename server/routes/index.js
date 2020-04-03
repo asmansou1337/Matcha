@@ -23,5 +23,6 @@ router.post('/profile/addNewPic', checkAuth, profile.addNewPic);
 router.post('/profile/deletePic', checkAuth, profile.deletePic);
 router.get('/profile/picturesCount', checkAuth, profile.getCurrentUserPicturesCount);
 router.post('/profile/updateTags', checkAuth, profile.updateTags);
+router.post('/profile/updateLocation', checkAuth, profile.updateLocation);
 router.get('/tagsList', checkAuth, profile.getTagsList);
 module.exports = router;

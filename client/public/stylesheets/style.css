@@ -113,3 +113,8 @@ a {
     background-color: DodgerBlue !important;
     color: #ffffff;
   }
+
+  #map{
+    height:400px;
+    width:100%;
+  }

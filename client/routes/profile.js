@@ -5,11 +5,6 @@ const chalk = require('chalk');
 const upload = require('../middleware/uploadImg');
 const fs = require('fs');
 const multer = require('multer');
-let nodeGeocoder = require('node-geocoder');
-let options = {
-  provider: 'openstreetmap'
-};
-let geoCoder = nodeGeocoder(options);
 const iplocate = require("node-iplocate");
 const publicIp = require('public-ip');
 
@@ -343,7 +338,7 @@ router.get('/editProfile', (req, res) => {
     .then((response) => {
         //console.log(chalk.greenBright(JSON.stringify(response.data.user)));
         user = response.data.user;
-        // console.log(chalk.greenBright(JSON.stringify(user)));
+        //  console.log(chalk.greenBright(JSON.stringify(user)));
         res.render('editProfile', { success, error, userInfos: user , nav: {path}, tagsList});
     }
     ).catch((e) => {
@@ -378,39 +373,38 @@ router.get('/tagsList', function(req, res) {
 // Update user location
 router.post('/updateLocation', async (req, res) => {
   req.flash('path', 'location');
-  console.log(chalk.yellow(JSON.stringify(req.body)));
-  // geoCoder.geocode(req.body.localisation)
-  // .then((response)=> {
-  //   console.log(chalk.green(JSON.stringify(response)));
-  //  // res.redirect('/profile/editProfile'); 
-  // })
-  // .catch((err)=> {
-  //   console.log(err);
-  // });
-  let ip = await publicIp.v4();
-  iplocate(ip).then(function(results) {
-    console.log("IP Address: " + results.ip);
-    console.log("Country: " + results.country + " (" + results.country_code + ")");
-    console.log("Continent: " + results.continent);
-    console.log("Organisation: " + results.org + " (" + results.asn + ")");
-   
-    console.log(JSON.stringify(results, null, 2));
-  });
-  
-  // let userTags = JSON.parse(req.body.TagsTab);
-  // axios.post(`${process.env.HostApi}/profile/updateTags`, userTags)
-  //   .then((response) => {
-  //     req.flash('successMessage', response.data.successMessage);
-  //     res.redirect('/profile/editProfile');    
-  //   }
-  //   ).catch((e) => {
-  //     if(typeof e.response !== 'undefined') {
-  //       if(e.response.status === 400) {
-  //         req.flash('error', e.response.data.errorMessage.error);
-  //         res.redirect('/profile/editProfile');
-  //       }
-  //     }      
-  //   });
+  let userCoor = {latitude: req.body.latitude, longitude: req.body.longitude}
+  // if (!userCoor.latitude || userCoor.latitude.length == 0 || !userCoor.longitude || userCoor.longitude.length == 0) {
+  //   console.log("lat Address: " + typeof req.body.latitude);
+  //   console.log("long Address: " + typeof req.body.longitude);
+  //   let ip = await publicIp.v4();
+  //   let results = await iplocate(ip);
+  //   //iplocate(ip).then(function(results) {
+  //     userCoor = {latitude: results.latitude, longitude: results.longitude}
+  //     // console.log("IP Address: " + results.ip);
+  //     console.log("lat Address: " + results.latitude);
+  //     console.log("long Address: " + results.longitude);
+  //     // console.log("Country: " + results.country + " (" + results.country_code + ")");
+  //     // console.log("Continent: " + results.continent);
+  //     // console.log("Organisation: " + results.org + " (" + results.asn + ")");
+    
+  //     // console.log(JSON.stringify(results, null, 2));
+  //  // });
+  // }
+  console.log(chalk.magenta(JSON.stringify(userCoor)));
+  axios.post(`${process.env.HostApi}/profile/updateLocation`, userCoor)
+    .then((response) => {
+      req.flash('successMessage', response.data.successMessage);
+      res.redirect('/profile/editProfile');    
+    }
+    ).catch((e) => {
+      if(typeof e.response !== 'undefined') {
+        if(e.response.status === 400) {
+          req.flash('error', e.response.data.errorMessage.error);
+          res.redirect('/profile/editProfile');
+        }
+      }      
+    });
     
 })
 

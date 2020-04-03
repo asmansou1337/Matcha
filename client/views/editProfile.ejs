@@ -312,25 +312,18 @@
               <div class="tab-pane fade <%- (nav.path == 'location') ?  'show active'  : '' %>" id="location" role="tabpanel" aria-labelledby="location-tab">
                 <section class="section pb-3 text-center">
                   <!--Section description-->
-                  <p class="section-description"> Write your address (Ex: ) OR click on 'locate Me' to locate you automatically</p>
+                  <p class="section-description"> Choose your location on the Map OR click on 'locate Me' to locate you automatically</p>
               </section>
                 <!-- Default input -->
-                <form action="/profile/updateLocation" method="post">
-                  <label for="localisation">Localisation</label>
-                  <div class="form-row align-items-center">
-                    <div class="col-8">
-                      <input type="text" class="form-control" name="localisation" placeholder="Localisation">
-                    </div>
-                    <div class="col">
-                      <input type="hidden" name="lat">
-                      <input type="hidden" name="long">
-                      <button class="btn btn-primary btn-md" name="locateme" onclick='locate();'>Locate Me</button>
-                      <h1 id = 'posStatus'></h1>
-                      <a id = 'locInfo' target="#"></a>
-                  </div>
-                  </div>
-                  <input type="submit" class="btn btn-primary btn-md" name="locationBtn" value="Change Location">
-                </form>
+                <div class="text-center">
+                  <button class="btn btn-primary btn-md" name="locateme" onclick='locate();'>Locate Me</button>
+                  <div id="map"></div>
+                  <form action="/profile/updateLocation" method="post">
+                    <input type="hidden" name="latitude" id="lat" value="<%= (typeof userInfos !== 'undefined') ? userInfos.latitude : '31.794525' %>">
+                    <input type="hidden" name="longitude" id="long" value="<%= (typeof userInfos !== 'undefined') ? userInfos.longitude : '-7.0849336' %>">
+                    <input type="submit" class="btn btn-primary btn-md" name="locationBtn" value="Change Location">
+                  </form>
+                </div>
               </div>
           </div>
       </div>
@@ -338,5 +331,8 @@
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
   <script type="text/javascript" src="/javascripts/tag.js"></script>
   <script type="text/javascript" src="/javascripts/locate.js"></script>
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD21--MXSlrUq9EHOI4PbxcWuTfsV7RpAs&callback=initMap">
+  </script>
 </div>
 <%- include('footer'); %>
