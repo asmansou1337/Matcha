@@ -2,20 +2,27 @@ var express = require('express');
 var router = express.Router();
 const axios = require('axios');
 const chalk = require('chalk');
+const headerAuth = require('../middleware/authHeader')
 
 /* GET home page. */
 router.get('/', (req, res) => {
+  let err = req.flash('error');
+  let error = {};
+  if (JSON.stringify(err) === '[]') 
+    error = undefined;
+  else
+    error.error = err;
   //res.render('test');
-  res.render('index');
+  res.render('index', {error});
 });
 
 /* GET SignUp page. */
-router.get('/signup', (req, res) => {
-  res.render('signup', {error: undefined, success: undefined});
+router.get('/signup', headerAuth.nonConnected, (req, res) => {
+  res.render('signup');
 });
 
 /* POST SignUp page. */
-router.post('/signup', async (req, res) => {
+router.post('/signup', headerAuth.nonConnected, async (req, res) => {
   let signupform = {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -24,6 +31,12 @@ router.post('/signup', async (req, res) => {
     password: req.body.password,
     confirmPassword: req.body.confirmPassword
   }
+   // locate the user automatically
+   await axios.get(`http://ip-api.com/json`)
+   .then((response) => {
+     signupform.longitude = response.data.lon;
+     signupform.latitude = response.data.lat;  
+   })
   axios.post(`${process.env.HostApi}/signup`, signupform)
     .then((response) => {
         return res.render('signup', {success: response.data});     
@@ -34,36 +47,22 @@ router.post('/signup', async (req, res) => {
             const error = e.response.data.errorMessage;
             return res.render('signup', {error});
         }
-      } else if (e.request) {
-              // The request was made but no response was received
-              // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-              // http.ClientRequest in node.js
-              console.log(e.request);
-      } else {
-              // Something happened in setting up the request that triggered an Error
-              console.log('Error', e.message);
-      }       
+      }      
     });
 });
 
 /* GET Activation page. */
-router.get('/activateAccount', async (req, res) => {
+router.get('/activateAccount', headerAuth.nonConnected, async (req, res) => {
   const token = req.query.token;
   if(typeof token !== 'undefined' && token.match(/^[0-9a-zA-Z]+$/)){ 
     axios.get(`${process.env.HostApi}/activateAccount?token=${token}`)
       .then((response) => {
-        //console.log(chalk.yellow(JSON.stringify(response.data)));
-        //return;
         return res.render('signup', {success: response.data});     
       })
       .catch((e) => {
         if(typeof e.response !== 'undefined') {
-          //console.log(chalk.yellow(JSON.stringify(e.response.data)));
-          //console.log(chalk.yellow(JSON.stringify(e.response.headers)));
           if(e.response.status === 400) {
               const error = e.response.data.errorMessage;
-              //console.log(chalk.green(JSON.stringify(error)));
-              //   //console.log(chalk.blue(error));
               return res.render('signup', {error});
           }
         } 
@@ -72,17 +71,21 @@ router.get('/activateAccount', async (req, res) => {
     const error = {error: "Unvalid link, Please Try Again!"};
     return res.render('signup', {error});
   }
-  //token.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
-  //res.render('signup', {error: undefined, success: undefined});
 });
 
 /* GET Login page. */
-router.get('/login', (req, res) => {
-  res.render('login');
+router.get('/login', headerAuth.nonConnected, (req, res) => {
+  let err = req.flash('error');
+  let error = {}
+  if (JSON.stringify(err) === '[]') 
+    error = undefined;
+  else
+    error.error = err;
+  res.render('login', {error});
 });
 
 /* POST Login page. */
-router.post('/login', async (req, res) => {
+router.post('/login', headerAuth.nonConnected, async (req, res) => {
   let loginform = {
     username: req.body.username,
     password: req.body.password,
@@ -101,7 +104,7 @@ router.post('/login', async (req, res) => {
         res.cookie('jwt', response.data.authToken, cookieOptions)
         // res.cookie('user', JSON.stringify(response.data.user), cookieOptions)
         // res.cookie('currentUser', response.data.user.username) //// added march 12
-        return res.render('login', {success: response.data});     
+        return res.redirect('/');     
     }
     ).catch((e) => {
       if(typeof e.response !== 'undefined') {
@@ -109,25 +112,17 @@ router.post('/login', async (req, res) => {
             const error = e.response.data.errorMessage;
             return res.render('login', {error});
         }
-      } else if (e.request) {
-              // The request was made but no response was received
-              // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-              // http.ClientRequest in node.js
-              console.log(e.request);
-      } else {
-              // Something happened in setting up the request that triggered an Error
-              console.log('Error', e.message);
-      }       
+      }    
     });
 });
 
 /* GET Reset Email page. */
-router.get('/resetEmail', (req, res) => {
+router.get('/resetEmail', headerAuth.nonConnected, (req, res) => {
   res.render('resetEmail');
 });
 
 /* POST Reset Email page. */
-router.post('/resetEmail', (req, res) => {
+router.post('/resetEmail', headerAuth.nonConnected, (req, res) => {
   let resetEmail = {
     email: req.body.email,
   }
@@ -146,12 +141,12 @@ router.post('/resetEmail', (req, res) => {
 });
 
 /* GET Reset Password page. */
-router.get('/reinitializePassword', (req, res) => {
+router.get('/reinitializePassword', headerAuth.nonConnected, (req, res) => {
   res.render('resetPassword', {token: req.query.token});
 });
 
 /* POST Reset Password page. */
-router.post('/reinitializePassword', (req, res) => {
+router.post('/reinitializePassword', headerAuth.nonConnected, (req, res) => {
   let resetPass = {
     token: req.body.token,
     password: req.body.password,

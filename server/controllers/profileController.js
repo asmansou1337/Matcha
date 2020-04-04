@@ -168,7 +168,6 @@ const Profile = {
             errorMessage: {}
         };
         let userData = req.userData;
-        //console.log(chalk.green(JSON.stringify(req.body)));
         const updatePic = await profileManager.updateProfilePic(req.body.name, userData['userId'])
             if (updatePic) {
                 responseData.successMessage = "Your Profile Image Is Updated Successfully!";
@@ -188,7 +187,6 @@ const Profile = {
             errorMessage: {}
         };
         let userData = req.userData;
-        //console.log(chalk.red(JSON.stringify(req.body)));
         let name = req.body.name;
         let user_id =  userData['userId'];
         const addPic = await profileManager.addNewPic({name, user_id});
@@ -235,8 +233,6 @@ const Profile = {
             if (currentUser) {
                 currentUser[0].age = util.calculateAge(currentUser[0].born_date);
                 responseData.user = currentUser[0];
-                // console.log(chalk.red(JSON.stringify(currentUser)));
-                //responseData.successMessage = "Success!";
             } else {
                 responseData.isValid = false;
                 responseData.errorMessage.error= 'Error, Please try again!';
@@ -257,7 +253,6 @@ const Profile = {
             if (currentUser) {
                 //console.log(chalk.red(JSON.stringify(currentUser)));
                 responseData.user = currentUser[0];
-                //responseData.successMessage = "Success!";
             } else {
                 responseData.isValid = false;
                 responseData.errorMessage.error= 'Error, Please try again!';
@@ -274,7 +269,6 @@ const Profile = {
         };
         let userData = req.userData;
         const images = await profileManager.getCountPics(userData['userId']);
-        //console.log(chalk.yellow(images[0].count));
         if (images[0].count == 4) {
             responseData.isValid = false;
             responseData.errorMessage.error = "You are allowed to upload 4 pictures maximum!!";
@@ -291,11 +285,10 @@ const Profile = {
             errorMessage: {}
         };
         let userData = req.userData;
-        console.log(chalk.yellow(JSON.stringify(req.body)));
+        // console.log(chalk.yellow(JSON.stringify(req.body)));
         let userTags = req.body;
         // remove duplicate from userTags array
         userTags = [...new Set(userTags)];
-        // userTags = (userTags) => userTags.filter((v,i) => userTags.indexOf(v) === i)
         let err = validation.isTags(userTags);
         if (err !== "success") {
             responseData.isValid = false;
@@ -307,7 +300,7 @@ const Profile = {
             userTags.forEach(tag => {
                 insertedTags.push([tag, user_id]);
             });
-            console.log(chalk.yellow(JSON.stringify(insertedTags)));
+            // console.log(chalk.yellow(JSON.stringify(insertedTags)));
             const deleteTags = await profileManager.deleteTags(user_id);
                 if (deleteTags) {
                     if (insertedTags.length != 0) {
@@ -337,7 +330,6 @@ const Profile = {
         };
         const tags = await profileManager.getTagsList();
         if (tags) {
-            // console.log(chalk.magenta(JSON.stringify(tags)))
             responseData.tags = tags;
         } else {
             responseData.isValid = false;
@@ -355,11 +347,10 @@ const Profile = {
             errorMessage: {}
         };
         let userData = req.userData;
-        //console.log(chalk.red(JSON.stringify(req.body)));
         let latitude = req.body.latitude;
         let longitude = req.body.longitude;
-        console.log('lat :' + latitude);
-        console.log('lgt :' + longitude);
+        // console.log('lat :' + latitude);
+        // console.log('lgt :' + longitude);
         let id =  userData['userId'];
         // validate latitude & longitude
         if (!validation.isLatitude(Number(latitude)) || !validation.isLongitude(Number(longitude))) {

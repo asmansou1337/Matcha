@@ -7,30 +7,32 @@ const fs = require('fs');
 const multer = require('multer');
 const iplocate = require("node-iplocate");
 const publicIp = require('public-ip');
+ const headerAuth = require('../middleware/authHeader')
+ const handle = require('../middleware/functions')
 
 /* GET Welcome Page */
-router.get('/welcome', function(req, res) {
-  //axios.defaults.headers.common['Authorization'] = 'Bearer ' + req.headers.cookie;
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + req.cookies.jwt;
-  console.log(chalk.yellow(JSON.stringify(axios.defaults.headers)));
-  axios.get(`${process.env.HostApi}/welcome`)
-    .then((response) => {
-      console.log(chalk.greenBright(JSON.stringify(response)));
-        return res.send(response);   
-    }
-    ).catch((e) => {
-      //console.log(chalk.redBright('error1 ' + JSON.stringify(e.response.data)));
-      if(typeof e.response !== 'undefined') {
-        if(e.response.status === 400) {
-            console.log(error.response.data);
-            return;
-        }
-      }      
-    });
-});
+// router.get('/welcome', function(req, res) {
+//   //axios.defaults.headers.common['Authorization'] = 'Bearer ' + req.headers.cookie;
+//   axios.defaults.headers.common['Authorization'] = 'Bearer ' + req.cookies.jwt;
+//   console.log(chalk.yellow(JSON.stringify(axios.defaults.headers)));
+//   axios.get(`${process.env.HostApi}/welcome`)
+//     .then((response) => {
+//       console.log(chalk.greenBright(JSON.stringify(response)));
+//         return res.send(response);   
+//     }
+//     ).catch((e) => {
+//       //console.log(chalk.redBright('error1 ' + JSON.stringify(e.response.data)));
+//       if(typeof e.response !== 'undefined') {
+//         if(e.response.status === 400) {
+//             console.log(error.response.data);
+//             return;
+//         }
+//       }      
+//     });
+// });
 
 // preview connected user profile
-router.get('/myProfile', (req,res) => {
+router.get('/myProfile', headerAuth.connectedHeader, (req,res) => {
   // get user infos
   axios.get(`${process.env.HostApi}/profile/getInfos`)
     .then((response) => {
@@ -40,18 +42,12 @@ router.get('/myProfile', (req,res) => {
         return res.render('myProfile', {userInfos: user});
     }
     ).catch((e) => {
-      //console.log(chalk.redBright('error1 ' + JSON.stringify(e.response.data)));
-      if(typeof e.response !== 'undefined') {
-        if(e.response.status === 400) {
-            console.log(e.response.data);
-            return;
-        }
-      }      
+      handle.errorHandle(e, req, res)     
     });
 })
 
 // edit basic infos form POST
-router.post('/editProfile', (req, res) => {
+router.post('/editProfile', headerAuth.connectedHeader, (req, res) => {
   let userInfos = req.body
   let user = undefined
   let success = undefined
@@ -62,13 +58,7 @@ router.post('/editProfile', (req, res) => {
       //  return res.render('editProfile', {success: response.data});     
     }
     ).catch((e) => {
-      if(typeof e.response !== 'undefined') {
-        if(e.response.status === 400) {
-            error = e.response.data.errorMessage;
-            console.log(chalk.red(JSON.stringify(error)));
-            //return res.render('editProfile', {error, userInfos });
-        }
-      }      
+      handle.errorHandle(e, req, res)       
     });
     axios.get(`${process.env.HostApi}/profile/getInfos`)
         .then((resp) => {
@@ -78,18 +68,12 @@ router.post('/editProfile', (req, res) => {
             res.render('editProfile', { success, error, userInfos: user, nav: {path: 'basic'} });
         }
         ).catch((e) => {
-          //console.log(chalk.redBright('error1 ' + JSON.stringify(e.response.data)));
-          if(typeof e.resp !== 'undefined') {
-            if(e.resp.status === 400) {
-                console.log(error.resp.data);
-                return;
-            }
-          }      
+          handle.errorHandle(e, req, res)      
         });
 })
 
 // Update password
-router.post('/updatePassword', (req, res) => {
+router.post('/updatePassword', headerAuth.connectedHeader, (req, res) => {
   console.log(JSON.stringify(req.body));
   axios.post(`${process.env.HostApi}/profile/updatePassword`, req.body)
   .then((response) => {
@@ -103,12 +87,13 @@ router.post('/updatePassword', (req, res) => {
       if(e.response.status === 400) {
         res.render('editProfile', {error:e.response.data.errorMessage, nav: {path:'password'}});
       }
+      handle.authError(e)
     }      
   });
 })
 
 // Upload profile picture form
-router.post('/uploadProfile', (req, res) => {
+router.post('/uploadProfile', headerAuth.connectedHeader, (req, res) => {
     req.flash('path', 'picture');
     let oldProfilePic = '';
     // Get The old profile picture name if exists
@@ -116,8 +101,10 @@ router.post('/uploadProfile', (req, res) => {
         .then((resp) => {
             console.log(chalk.magenta(JSON.stringify(resp.data.user.profilePic)));
             oldProfilePic = resp.data.user.profilePic;
-        }
-        )
+        }).catch((e) => {
+          handle.authError(e)
+        })
+        
     // upload new picture
     upload(req, res, (err) => {
       if (err instanceof multer.MulterError) {
@@ -152,6 +139,7 @@ router.post('/uploadProfile', (req, res) => {
                 req.flash('error', e.response.data.errorMessage.error);
                 res.redirect('/profile/editProfile');
               }
+              handle.authError(e)
             }      
           });
         }
@@ -160,7 +148,7 @@ router.post('/uploadProfile', (req, res) => {
  })
 
 // Delete profile picture form
- router.post('/deleteProfile', (req, res) => {
+ router.post('/deleteProfile', headerAuth.connectedHeader, (req, res) => {
     req.flash('path', 'picture');
     axios.get(`${process.env.HostApi}/profile/getProfilePic`)
     .then((resp) => {
@@ -182,23 +170,19 @@ router.post('/uploadProfile', (req, res) => {
                     req.flash('error', e.response.data.errorMessage.error);
                     res.redirect('/profile/editProfile');
                   }
-                }      
+                }  
+                handle.authError(e, req, res)    
               });
               req.flash('successMessage', 'Your profile picture is deleted successfully.');
               res.redirect('/profile/editProfile');
     }
     ).catch((e) => {
-      if(typeof e.resp !== 'undefined') {
-        if(e.resp.status === 400) {
-            console.log(error.resp.data);
-            return;
-        }
-      }      
+     handle.errorHandle(e, req, res)    
     });
 })
 
 // Upload other picture form (max 4)
-router.post('/uploadPicture', (req, res) => {
+router.post('/uploadPicture', headerAuth.connectedHeader, (req, res) => {
   req.flash('path', 'picture');
   axios.get(`${process.env.HostApi}/profile/picturesCount`)
     .then((resp) => {
@@ -234,7 +218,8 @@ router.post('/uploadPicture', (req, res) => {
                   req.flash('error', e.response.data.errorMessage.error);
                   res.redirect('/profile/editProfile');
                 }
-              }      
+              }
+              handle.authError(e, req, res)      
             });
           }
         }
@@ -245,12 +230,13 @@ router.post('/uploadPicture', (req, res) => {
         req.flash('error', e.response.data.errorMessage.error);
         res.redirect('/profile/editProfile');
       }
-    }      
+    }
+    handle.authError(e, req, res)      
   });
 })
 
 // Delete profile picture form
-router.post('/deletePicture', (req, res) => {
+router.post('/deletePicture', headerAuth.connectedHeader, (req, res) => {
   req.flash('path', 'picture');
   let img = req.body.img
   //console.log(chalk.magenta(JSON.stringify(req.body)));
@@ -273,7 +259,8 @@ router.post('/deletePicture', (req, res) => {
           req.flash('error', e.response.data.errorMessage.error);
           res.redirect('/profile/editProfile');
         }
-      }      
+      }  
+      handle.authError(e, req, res)    
     });
   } else {
     req.flash('error', 'This image does not exists!!');
@@ -282,7 +269,7 @@ router.post('/deletePicture', (req, res) => {
 })
 
 // edit tags infos form POST
-router.post('/addTags', (req, res) => {
+router.post('/addTags', headerAuth.connectedHeader, (req, res) => {
   req.flash('path', 'tag');
   console.log(chalk.yellow(req.body.TagsTab));
   let userTags = JSON.parse(req.body.TagsTab);
@@ -297,13 +284,14 @@ router.post('/addTags', (req, res) => {
           req.flash('error', e.response.data.errorMessage.error);
           res.redirect('/profile/editProfile');
         }
-      }      
+      }   
+      handle.authError(e, req, res)   
     }); 
 })
 
 
 /* GET edit profile page. */
-router.get('/editProfile', (req, res) => {
+router.get('/editProfile', headerAuth.connectedHeader, (req, res) => {
   // getting success/error messages from redirect
   let path = req.flash('path');
   let err = req.flash('error');
@@ -321,77 +309,36 @@ router.get('/editProfile', (req, res) => {
     success.successMessage = successMessage;
   if (JSON.stringify(path) === '[]')
     path = 'basic';
-
-  // Get list of all tags for autocompletion 
-  axios.get(`${process.env.HostApi}/tagsList`)
-  .then((response) => {
-    //console.log(chalk.greenBright(JSON.stringify(response.data.tags)));
-    // response.data.tags.forEach(element => {
-    //   tagsLists.push(element.name);
-    // });
-    tagsList = response.data.tags;
-    // console.log(chalk.blue(JSON.stringify(tagsList)));   
-  })
   
   // get user infos
   axios.get(`${process.env.HostApi}/profile/getInfos`)
     .then((response) => {
-        //console.log(chalk.greenBright(JSON.stringify(response.data.user)));
         user = response.data.user;
         //  console.log(chalk.greenBright(JSON.stringify(user)));
         res.render('editProfile', { success, error, userInfos: user , nav: {path}, tagsList});
     }
     ).catch((e) => {
-      //console.log(chalk.redBright('error1 ' + JSON.stringify(e.response.data)));
-      if(typeof e.response !== 'undefined') {
-        if(e.response.status === 400) {
-            // console.log(error.response.data);
-            return;
-        }
-      }      
+      handle.errorHandle(e, req, res)     
     });
 });
 
-// get list of tags
-router.get('/tagsList', function(req, res) {
-  axios.get(`${process.env.HostApi}/tagsList`)
-    .then((response) => {
-      console.log(chalk.greenBright(JSON.stringify(response.data.tags)));
-      return JSON.stringify(response.data.tags);   
-    }
-    ).catch((e) => {
-      //console.log(chalk.redBright('error1 ' + JSON.stringify(e.response.data)));
-      if(typeof e.response !== 'undefined') {
-        if(e.response.status === 400) {
-            console.log(error.response.data);
-            return;
-        }
-      }      
-    });
-});
+
 
 // Update user location
-router.post('/updateLocation', async (req, res) => {
+router.post('/updateLocation', headerAuth.connectedHeader, async (req, res) => {
   req.flash('path', 'location');
   let userCoor = {latitude: req.body.latitude, longitude: req.body.longitude}
-  // if (!userCoor.latitude || userCoor.latitude.length == 0 || !userCoor.longitude || userCoor.longitude.length == 0) {
-  //   console.log("lat Address: " + typeof req.body.latitude);
-  //   console.log("long Address: " + typeof req.body.longitude);
-  //   let ip = await publicIp.v4();
-  //   let results = await iplocate(ip);
-  //   //iplocate(ip).then(function(results) {
-  //     userCoor = {latitude: results.latitude, longitude: results.longitude}
-  //     // console.log("IP Address: " + results.ip);
-  //     console.log("lat Address: " + results.latitude);
-  //     console.log("long Address: " + results.longitude);
-  //     // console.log("Country: " + results.country + " (" + results.country_code + ")");
-  //     // console.log("Continent: " + results.continent);
-  //     // console.log("Organisation: " + results.org + " (" + results.asn + ")");
-    
-  //     // console.log(JSON.stringify(results, null, 2));
-  //  // });
-  // }
-  console.log(chalk.magenta(JSON.stringify(userCoor)));
+  if (handle.isEmpty(userCoor.latitude) || handle.isEmpty(userCoor.longitude)) {
+    // locate the user automatically
+    await axios.get(`http://ip-api.com/json`)
+    .then((response) => {
+      //console.log(chalk.cyan(JSON.stringify(response.data)));
+      userCoor.longitude = response.data.lon;
+      userCoor.latitude = response.data.lat;  
+    })
+  }
+  //console.log(chalk.magenta(JSON.stringify(userCoor)));
+  // update user location on the backend
   axios.post(`${process.env.HostApi}/profile/updateLocation`, userCoor)
     .then((response) => {
       req.flash('successMessage', response.data.successMessage);
@@ -403,9 +350,9 @@ router.post('/updateLocation', async (req, res) => {
           req.flash('error', e.response.data.errorMessage.error);
           res.redirect('/profile/editProfile');
         }
-      }      
+      } 
+      handle.authError(e, req, res)     
     });
-    
 })
 
 

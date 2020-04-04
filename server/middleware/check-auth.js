@@ -3,16 +3,16 @@ const chalk = require('chalk');
 
 module.exports = (req, res, next) => {
     try {
-        // const token = req.headers.authorization.split(" ")[1];
+        const token = req.headers.authorization.split(" ")[1];
         // console.log(chalk.magenta("token " + token));
-        // const decoded = jwt.verify(token, process.env.JWT_KEY);
-        // req.userData = decoded;
-        // console.log(chalk.blue(JSON.stringify(decoded)));
-        req.userData = {
-            "userId": 1,
-            "username":"asmansou",
-            "email":"xidabev790@itiomail.com"
-        }
+        const decoded = jwt.verify(token, process.env.JWT_KEY);
+        req.userData = decoded;
+        console.log(chalk.blue(JSON.stringify(decoded)));
+        // req.userData = {
+        //     "userId": 1,
+        //     "username":"asmansou",
+        //     "email":"xidabev790@itiomail.com"
+        // }
         next();
     } catch (error) {
         return res.status(401).send({

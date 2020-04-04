@@ -16,7 +16,7 @@ const Auth = {
             errorMessage: {}
         };
         // get the form infos from the request body
-        let { firstName, lastName, username, email, password, confirmPassword } = req.body;
+        let { firstName, lastName, username, email, password, confirmPassword, latitude, longitude } = req.body;
         // Validate First Name
         let err = validation.validate(firstName, "first Name", validation.isName);
         if (err !== "success") {
@@ -74,7 +74,7 @@ const Auth = {
             // Creation of token
             let token = crypto.randomBytes(40).toString('hex');
             let preference = 'bisexual';
-            const register = await authManager.register({firstName, lastName, username, email, password, token, preference});
+            const register = await authManager.register({firstName, lastName, username, email, password, token, preference, latitude, longitude});
             if (register) {
                 // Send Activation MAIL
                 const subject = 'Matcha: Account Activation';
