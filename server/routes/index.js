@@ -5,6 +5,7 @@ const checkAuth = require('../middleware/check-auth');
 // List of routes
 const authentification = require('../controllers/authentificationController');
 const profile = require('../controllers/profileController');
+const user = require('../controllers/usersController');
 
 router.post('/signup', authentification.signup);
 router.get('/activateAccount', authentification.activateAccount);
@@ -25,4 +26,6 @@ router.get('/profile/picturesCount', checkAuth, profile.getCurrentUserPicturesCo
 router.post('/profile/updateTags', checkAuth, profile.updateTags);
 router.post('/profile/updateLocation', checkAuth, profile.updateLocation);
 router.get('/tagsList', profile.getTagsList);
+
+router.get('/user', user.getUserAllInfos);
 module.exports = router;

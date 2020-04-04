@@ -78,16 +78,16 @@ Part 1:
   - [X] Authentification (signup & login)
   - [ ] Access Management & Session (token Autorization)
   - [ ] Force user to fill basic required info (Redirect to user profile)
-  - [ ] User info and ability to edit them  
+  - [X] User info and ability to edit them  
     - [X] Edit basic required info : username, email, first name, last name, gender, sexual preference, birthday, bio
     - [X] Edit password
     - [X] Change pictures max 5 (1 is for profile)
     - [X] Set picture as profile picture
     - [X] Edit interests (tags)
     - [X] Autocomplete interests (tags)
-    - [ ] Locating the position of user automatically
-    - [ ] Edit location
-  - [ ] User profile: All info except mail and pass
+    - [X] Locating the position of user automatically
+    - [X] Edit location
+  - [X] User profile: All info except mail and pass
   - [ ] like/like back/unlike profiles 
   - [ ] Block/ unblock user
   - [ ] report user
@@ -196,18 +196,18 @@ ________________________________________________________________________
 
   - **User profile**
 
-    - [ ] Once connected user must complete his or her profile:
+    - [X] Once connected user must complete his or her profile:
       ◦ [X] The gender.
       ◦ [X] Sexual preferences.
       ◦ [X] A short biography.
       ◦ [X] A list of interests with tags (ex: #vegan, #geek, #piercing etc...). These tags must be reusable.
       ◦ [X] Pictures, max 5, including 1 as profile picture.
-    - [ ] At any time, the user must be able to modify these information, as well as the last name, first name, email and password.
+    - [X] At any time, the user must be able to modify these information, as well as the last name, first name, email and password.
     - [X] The user should be able to change or reinitialize his password despite been connected or not.
     - [ ] The user must be able to check who visited his/her profile as well as who “liked” him/her.
     - [ ] The user must have a public “fame rating”:
       ◦ Up to you to define what “fame rating” means as long as your criteria are consistent
-    - [ ] The user must be located using GPS positioning, up to his/her neighborhood. If the user does not want to be positioned, you must find a way to locate him/her even without his/her consent.2 The user must be able to modify his/her position in his/her profile.
+    - [X] The user must be located using GPS positioning, up to his/her neighborhood. If the user does not want to be positioned, you must find a way to locate him/her even without his/her consent.2 The user must be able to modify his/her position in his/her profile.
 
 
   - **Matching**
@@ -236,7 +236,7 @@ ________________________________________________________________________
 
   - **Profile of other users**
 
-    - [ ] A user must be able to consult the profile of other users. Profiles must contain all the information available about them, except for the email address and the password.
+    - [X] A user must be able to consult the profile of other users. Profiles must contain all the information available about them, except for the email address and the password.
     - [ ] When a user consults a profile, it must appear in his/her visit history.
     - [ ] The user must also be able to:
       - Like or Unlike the another user profile if this one has at least one picture.

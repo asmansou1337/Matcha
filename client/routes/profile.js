@@ -5,11 +5,15 @@ const chalk = require('chalk');
 const upload = require('../middleware/uploadImg');
 const fs = require('fs');
 const multer = require('multer');
-const iplocate = require("node-iplocate");
-const publicIp = require('public-ip');
- const headerAuth = require('../middleware/authHeader')
- const handle = require('../middleware/functions')
-
+const headerAuth = require('../middleware/authHeader')
+const handle = require('../middleware/functions')
+const NodeGeocoder = require('node-geocoder');
+const options = {
+  provider: 'google',
+  apiKey: 'AIzaSyBg-g_Rb35tPbOZf4MVrXSpNP08hrVmhO0',
+  formatter: 'json'
+};
+var geocoder = NodeGeocoder(options);
 /* GET Welcome Page */
 // router.get('/welcome', function(req, res) {
 //   //axios.defaults.headers.common['Authorization'] = 'Bearer ' + req.headers.cookie;
@@ -32,14 +36,19 @@ const publicIp = require('public-ip');
 // });
 
 // preview connected user profile
-router.get('/myProfile', headerAuth.connectedHeader, (req,res) => {
+router.get('/myProfile', headerAuth.connectedHeader, async (req,res) => {
   // get user infos
   axios.get(`${process.env.HostApi}/profile/getInfos`)
     .then((response) => {
-        //console.log(chalk.greenBright(JSON.stringify(response.data.user)));
+        // console.log(chalk.greenBright(JSON.stringify(response.data.user)));
         user = response.data.user;
-        console.log(chalk.greenBright(JSON.stringify(user)));
-        return res.render('myProfile', {userInfos: user});
+         geocoder.reverse({lat:user.latitude, lon:user.longitude}).then((result) => {
+          //  console.log(result[0].city);
+          user.city = result[0].city;
+          user.country = result[0].country;
+          // console.log(chalk.greenBright(JSON.stringify(user)));
+          return res.render('myProfile', {userInfos: user});
+        })
     }
     ).catch((e) => {
       handle.errorHandle(e, req, res)     

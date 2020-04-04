@@ -8,7 +8,7 @@
                         <div class="card">
                             
                             <!-- Profile picture -->
-                            <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/43.jpg" alt="Card image cap">
+                            <img class="card-img-top" src="<%= (typeof userInfos !== 'undefined') ? ((userInfos.profilePic != null) ? `/uploads/${userInfos.profilePic}` : '/uploads/avatar.jpg') : '/uploads/avatar.jpg'  %>" alt="Profile">
 
                             <!-- Facebook -->
                             <button class="btn btn-primary"><i class="fas fa-thumbs-up"></i> Like</button>
@@ -20,60 +20,60 @@
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-4 mb-4">
                         <div class="card">
-                                <div class="card-body card-body-cascade text-center">
-                                    <!-- Frist Name & Last Name  -->
-                                    <h4 class="card-title"><strong>Billy Coleman</strong></h4>
-                                    <!-- Username  -->
-                                    <h6 class="font-weight-bold indigo-text py-2">@Username</h6>
-                                    <h3><span class="badge rgba-purple-strong"><i class="fab fa-gratipay"></i>&nbsp;4.2</span></h3>
-                                    <h3><span class="badge  light-blue lighten-4"><i class="fas fa-user-friends"></i></span></h3>
-                                    <!-- Location -->
-                                    <p><strong>Located At : </strong> Khouribga, Morocco</p>
-                                    <!-- Age -->
-                                    <p><strong>Age : </strong> 25</p>
-                                    <!-- Gender -->
-                                    <p><strong>Gender : </strong> Male</p>
-                                    <!-- Orientation -->
-                                    <p><strong>Orientation : </strong> Bisexual</p>
-
-                                    <!-- Bio -->
-                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus, ex, recusandae.
-                                    Facere modi sunt, quod quibusdam.
-                                    </p>
-                                    <hr>
-                                     <!-- Tags -->
-                                     <h4 class="card-title"><strong>Interests</strong></h4>
-                                    <h3><span class="badge grey lighten-1">New</span>
-                                        <span class="badge grey lighten-1">New</span>
-                                        <span class="badge grey lighten-1">New</span>
-                                    </h3>
-                            </div>
+                            <div class="card-body card-body-cascade text-center">
+                                <!-- Frist Name & Last Name  -->
+                                <h4 class="card-title"><strong><%= (typeof userInfos !== 'undefined') ? userInfos.firstName+' '+userInfos.lastName : '' %></strong></h4>
+                                <!-- Username  -->
+                                <h6 class="font-weight-bold indigo-text py-2">@<%= (typeof userInfos !== 'undefined') ? userInfos.username : '' %></h6>
+                                <h3><span class="badge rgba-purple-strong"><i class="fab fa-gratipay"></i>&nbsp;4.2</span></h3>
+                                <h3><span class="badge  light-blue lighten-4"><i class="fas fa-user-friends"></i></span></h3>
+                                <!-- Location -->
+                                <p><strong>Located At : </strong><%= (typeof userInfos !== 'undefined') ? userInfos.city+', '+userInfos.country : '' %></p>
+                                <!-- Age -->
+                                <p><strong>Age : </strong> <%= (typeof userInfos !== 'undefined') ? userInfos.age : '' %></p>
+                                <!-- Gender -->
+                                <p><strong>Gender : </strong> <%= (typeof userInfos !== 'undefined') ? userInfos.gender : '' %></p>
+                                <!-- Orientation -->
+                                <p><strong>Orientation : </strong> <%= (typeof userInfos !== 'undefined') ? userInfos.preference : '' %></p>
+                                <!-- Bio -->
+                                <strong>Biography : </strong>
+                                <p class="card-text"><%= (typeof userInfos !== 'undefined') ? userInfos.biography : '' %></p>
+                                <hr>
+                                 <!-- Tags -->
+                                 <h4 class="card-title"><strong>Interests</strong></h4>
+                                 <% if(typeof userInfos !== 'undefined' && userInfos.tags !== null) {
+                                    let tags = userInfos.tags.split(',')
+                                    tags.forEach(tag => { %>
+                                  <span class="badge grey lighten-1">
+                                      <h6><span><%= tag %></span></h6>
+                                      </span>
+                                  <% }); 
+                                  } else { %>
+                                    <div class="col">
+                                        <p>No Interests here yet</p>
+                                    </div>
+                                    <% } %>
+                        </div>
                         </div>
                     </div>
                     
                     <!-- Other images -->
-                    <div class="card">
+                    <div class="card" style="width: 100%;">
                         <div class="card-body card-body-cascade text-center">
                             <h4 class="card-title"><strong>Gallery</strong></h4>
                     <div class="row">
-                        <!-- <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
-                            <div class="col"><img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(115).jpg" class="img-fluid z-depth-1" alt="Responsive image" style="width: 550px;height: 300px;"></div>
-                            <div class="col"><img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(115).jpg" class="img-fluid z-depth-1" alt="Responsive image" style="width: 550px;height: 300px;"></div>
-                            <div class="col"><img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(115).jpg" class="img-fluid z-depth-1" alt="Responsive image" style="width: 550px;height: 300px;"></div>
-                            <div class="col"><img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(115).jpg" class="img-fluid z-depth-1" alt="Responsive image" style="width: 550px;height: 300px;"></div>
-                          </div> -->
-                            <div class="col-lg-4 col-md-12 mb-4">
-                                <img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(115).jpg" class="img-fluid z-depth-1" alt="Responsive image" style="width: 550px;height: 300px;">
+                        <% if(typeof userInfos !== 'undefined' && userInfos.otherPictures !== null) {
+                            let pics = userInfos.otherPictures.split(',')
+                            pics.forEach(pic => { %>
+                                <div class="col-lg-4 col-md-12 mb-4">
+                                    <img src="<%= `/uploads/${pic}` %>" class="img-fluid z-depth-1" alt="Responsive image" style="width: 550px;height: 300px;">
+                                </div>
+                            <% }); 
+                            } else { %>
+                            <div class="col">
+                                <p>No pictures here yet</p>
                             </div>
-                            <div class="col-lg-4 col-md-12 mb-4">
-                                <img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(115).jpg" class="img-fluid z-depth-1" alt="Responsive image" style="width: 550px;height: 300px;">
-                            </div>
-                            <div class="col-lg-4 col-md-12 mb-4">
-                                <img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(115).jpg" class="img-fluid z-depth-1" alt="Responsive image" style="width: 550px;height: 300px;">
-                            </div>
-                            <div class="col-lg-4 col-md-12 mb-4">
-                                <img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img(115).jpg" class="img-fluid z-depth-1" alt="Responsive image" style="width: 550px;height: 300px;">
-                            </div>
+                            <% } %>
                       </div>
                     </div>
                     </div>

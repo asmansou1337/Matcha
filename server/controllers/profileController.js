@@ -1,13 +1,9 @@
 let validation = require('../models/validation');
 let authManager = require('../models/authentificationModel');
-let tokenManager = require('../models/autorizationModel');
 let verifManager = require('../models/verificationModel');
 let chalk = require('chalk');
 const bcrypt = require('bcrypt');
-const crypto = require('crypto');
-const mail = require('../models/mailModel');
 const profileManager = require('../models/profileModel');
-const jwt = require("jsonwebtoken");
 const util = require('../models/functions');
 
 const Profile = {
@@ -231,7 +227,10 @@ const Profile = {
         let userData = req.userData;
         const currentUser = await profileManager.getUserProfile(userData['userId']);
             if (currentUser) {
-                currentUser[0].age = util.calculateAge(currentUser[0].born_date);
+                if (currentUser[0].born_date !== null)
+                    currentUser[0].age = util.calculateAge(currentUser[0].born_date);
+                else
+                    currentUser[0].age = null;
                 responseData.user = currentUser[0];
             } else {
                 responseData.isValid = false;
