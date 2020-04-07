@@ -27,8 +27,12 @@
                             <!-- Block / Unblock -->
                             <form action="/user/block" method="post">
                                 <input type="hidden" name="userId" value="<%= (typeof userInfos !== 'undefined') ? userInfos.id : '' %>">
-                                <button class="btn red darken-1"><i class="fas fa-ban"></i> Block</button>
-                                <button class="btn btn-default"><i class="fas fa-ban"></i> Unblock</button>
+                                <% if(typeof userInfos !== 'undefined') {
+                                    if(userInfos.isBlocked === 1) { %>
+                                        <button class="btn btn-default" type="submit"><i class="fas fa-ban"></i> Unblock</button>
+                                   <% } else { %>
+                                    <button class="btn red darken-1" type="submit"><i class="fas fa-ban"></i> Block</button>
+                                <% }} %>
                             </form>
                         </div>
                     </div>
@@ -37,11 +41,20 @@
                             <div class="card-body card-body-cascade text-center">
                                 <% if(typeof error !== 'undefined') { %>
                                 <h5><span class="badge danger-color"><%= error.error %></span></h5><hr>
-                                <%  }%>
-                                <% if(typeof userInfos !== 'undefined') {
-                                    if(userInfos.likesMessage !== null) { %>
-                                <h5><span class="badge default-color"><%= userInfos.likesMessage %></span></h5><hr>
-                                <% } }%>
+                                <%  } %>
+                                <% if(typeof message.err !== 'undefined') { %>
+                                    <h5><span class="badge danger-color"><%= message.err %></span></h5><hr>
+                                    <%  } %>
+                                <% if(typeof message.blockMessage !== 'undefined') { %>
+                                <span class="badge red darken-1"><%= message.blockMessage %></span>
+                                <% } %>
+                                <% if(typeof message.reportMessage !== 'undefined') { %>
+                                <span class="badge yellow darken-2"><%= message.reportMessage %></span>
+                                <% } %>
+                                <% if(typeof message.likesMessage !== 'undefined') { %>
+                                <span class="badge default-color"><%= userInfos.likesMessage %></span>
+                                <% } %>
+                                <hr>
                                 <!-- Frist Name & Last Name  -->
                                 <h4 class="card-title"><strong><%= (typeof userInfos !== 'undefined') ? userInfos.firstName+' '+userInfos.lastName : '' %></strong></h4>
                                 <!-- Username  -->

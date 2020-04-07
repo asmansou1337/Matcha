@@ -63,6 +63,8 @@ const User = {
             isValid : true,
             likesMessage: null,
             isLiked: 0,
+            isBlocked: 0,
+            isReported: 0,
             errorMessage: {}
         };
         let iLiked, iGotLiked;
@@ -89,6 +91,18 @@ const User = {
         } else {
             responseData.message = 'No relationship!';
         }
+        // check block
+        let checkBlock = await userManager.checkBlocked(connectedUserDataID, otherUserId);
+        if (checkBlock.length > 0) {
+            responseData.blockMessage = 'You blocked this user';
+            responseData.isBlocked = 1
+        }
+        // check report
+        let checkReported = await userManager.checkReported(connectedUserDataID, otherUserId);
+        if (checkReported.length > 0) {
+                responseData.reportMessage = 'You reported this user';
+                responseData.isReported = 1
+        } 
         //console.log(chalk.blue(JSON.stringify(checkLike)))
         res.status(200).send(responseData);
     },
@@ -129,6 +143,67 @@ const User = {
                     responseData.errorMessage.error= 'Error, Please try again!';
                 }
             }
+        }
+        if (responseData.isValid === true)
+            res.status(200).send(responseData);
+        else
+            res.status(400).send(responseData);
+    },
+    blockUser: async (req, res) => {
+        let responseData = {
+            isValid : true,
+            successMessage: null,
+            errorMessage: {}
+        };
+        const blocker_user_id = req.userData['userId'];
+        const blocked_user_id = req.query.id;
+        // check block
+        let checkBlock = await userManager.checkBlocked(blocker_user_id, blocked_user_id);
+        if (checkBlock.length > 0) {
+                // unblock the user
+                let delBlock = await userManager.deleteBlock(blocker_user_id, blocked_user_id);
+                if (delBlock) {
+                    responseData.successMessage = 'Block deleted successfully';
+                } else {
+                    responseData.isValid = false;
+                    responseData.errorMessage.error= 'Error, Please try again!';
+                }
+        } else {
+                // block the user
+                let addBlock = await userManager.addBlock({blocker_user_id, blocked_user_id});
+                if (addBlock) {
+                    responseData.successMessage = 'Block added successfully';
+                } else {
+                    responseData.isValid = false;
+                    responseData.errorMessage.error= 'Error, Please try again!';
+                }
+        }
+        if (responseData.isValid === true)
+            res.status(200).send(responseData);
+        else
+            res.status(400).send(responseData);
+    },
+    reportUser: async (req, res) => {
+        let responseData = {
+            isValid : true,
+            successMessage: null,
+            errorMessage: {}
+        };
+        const reporter_user_id = req.userData['userId'];
+        const reported_user_id = req.query.id;
+        // check if the user is already reported 
+        let checkReported = await userManager.checkReported(reporter_user_id, reported_user_id);
+        if (checkReported.length > 0) {
+                responseData.message = 'You already reported this user';
+        } else {
+                // report the user
+                let addReport = await userManager.addReport({reporter_user_id, reported_user_id});
+                if (addReport) {
+                    responseData.successMessage = 'Report added successfully';
+                } else {
+                    responseData.isValid = false;
+                    responseData.errorMessage.error= 'Error, Please try again!';
+                }
         }
         if (responseData.isValid === true)
             res.status(200).send(responseData);

@@ -245,10 +245,10 @@ ________________________________________________________________________
       - [ ] See if the user is online, and if not see the date and time of the last connection.
       When two people “like” each other, we will say that they are “connected” and are now able to chat.
       If the current user does not have a picture, he/she cannot complete this action.
-      - [ ] Report the user as a “fake account”.
-      - [ ] Block the user. A blocked user won’t appear anymore in the research results and won’t generate additional notifications.
+      - [X] Report the user as a “fake account”.
+      - [X] Block the user. A blocked user won’t appear anymore in the research results and won’t generate additional notifications.
 
-    - [ ] A user can clearly see if the consulted profile is connected or “like” his/her profile and
+    - [X] A user can clearly see if the consulted profile is connected or “like” his/her profile and
     must be able to “unlike” or be disconnected from that profile.
 
   - **Chat**

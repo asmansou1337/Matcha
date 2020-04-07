@@ -8,6 +8,14 @@ const user = {
         const sql = "SELECT * FROM blocked_users WHERE (blocked_user_id = ? AND blocker_user_id = ?) OR (blocked_user_id = ? AND blocker_user_id = ?)"
         return db.selectDB([blockerID, blockedID, blockedID, blockerID], sql)
     },
+    checkBlocked: async (blockerID, blockedID) => {
+        const sql = "SELECT * FROM blocked_users WHERE blocker_user_id = ? AND blocked_user_id = ?"
+        return db.selectDB([blockerID, blockedID], sql)
+    },
+    checkReported: async (reporterID, reportedID) => {
+        const sql = "SELECT * FROM reported_users WHERE reporter_user_id = ? AND reported_user_id = ?"
+        return db.selectDB([reporterID, reportedID], sql)
+    },
     checkLiked: async (likerID, likedID) => {
         const sql = "SELECT * FROM liked_profiles WHERE liker_user_id = ? AND liked_user_id = ?"
         return db.selectDB([likerID, likedID], sql)
@@ -23,6 +31,18 @@ const user = {
     deleteLike: async (likerID, likedID) => {
         const sql = 'DELETE FROM liked_profiles WHERE liker_user_id = ? AND liked_user_id = ?';
         return db.updateDB([likerID, likedID], sql)
+    },
+    addBlock: async (data) => {
+        const sql = 'INSERT INTO blocked_users SET ?';
+        return db.updateDB(data, sql)
+    },
+    deleteBlock: async (blockerID, blockedID) => {
+        const sql = 'DELETE FROM blocked_users WHERE blocker_user_id = ? AND blocked_user_id = ?';
+        return db.updateDB([blockerID, blockedID], sql)
+    },
+    addReport: async (data) => {
+        const sql = 'INSERT INTO reported_users SET ?';
+        return db.updateDB(data, sql)
     },
     checkLikeRelation: async (likerID, likedID) => {
         const sql = "SELECT * FROM liked_profiles WHERE liker_user_id = ? OR liked_user_id = ?"
