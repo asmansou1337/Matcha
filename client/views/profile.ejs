@@ -9,18 +9,39 @@
                             
                             <!-- Profile picture -->
                             <img class="card-img-top" src="<%= (typeof userInfos !== 'undefined') ? ((userInfos.profilePic != null) ? `/uploads/${userInfos.profilePic}` : '/uploads/avatar.jpg') : '/uploads/avatar.jpg'  %>" alt="Profile">
-
-                            <!-- Facebook -->
-                            <button class="btn btn-primary"><i class="fas fa-thumbs-up"></i> Like</button>
-                            <button class="btn btn-primary"><i class="fas fa-thumbs-down"></i> Unlike</button>
-                            <button class="btn yellow darken-2"><i class="fas fa-exclamation-circle"></i> Report</button>
-                            <button class="btn red darken-1"><i class="fas fa-ban"></i> Block</button>
-                            <button class="btn btn-default"><i class="fas fa-ban"></i> Unblock</button>
+                            <!-- Like / Unlike -->
+                            <form action="/user/like" method="post">
+                                <input type="hidden" name="userId" value="<%= (typeof userInfos !== 'undefined') ? userInfos.id : '' %>">
+                                <% if(typeof userInfos !== 'undefined') {
+                                    if(userInfos.isLiked === 1) { %>
+                                        <button class="btn btn-primary" type="submit"><i class="fas fa-thumbs-down"></i> Unlike</button>
+                                   <% } else { %>
+                                <button class="btn btn-primary" type="submit"><i class="fas fa-thumbs-up"></i> Like</button>
+                                <% }} %>
+                            </form>
+                            <!-- Report -->
+                            <form action="/user/report" method="post">
+                                <input type="hidden" name="userId" value="<%= (typeof userInfos !== 'undefined') ? userInfos.id : '' %>">
+                                <button class="btn yellow darken-2"><i class="fas fa-exclamation-circle"></i> Report</button>
+                            </form>
+                            <!-- Block / Unblock -->
+                            <form action="/user/block" method="post">
+                                <input type="hidden" name="userId" value="<%= (typeof userInfos !== 'undefined') ? userInfos.id : '' %>">
+                                <button class="btn red darken-1"><i class="fas fa-ban"></i> Block</button>
+                                <button class="btn btn-default"><i class="fas fa-ban"></i> Unblock</button>
+                            </form>
                         </div>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-sm-4 mb-4">
+                    <div class="col-lg-8 col-md-8 col-sm-8 mb-4">
                         <div class="card">
                             <div class="card-body card-body-cascade text-center">
+                                <% if(typeof error !== 'undefined') { %>
+                                <h5><span class="badge danger-color"><%= error.error %></span></h5><hr>
+                                <%  }%>
+                                <% if(typeof userInfos !== 'undefined') {
+                                    if(userInfos.likesMessage !== null) { %>
+                                <h5><span class="badge default-color"><%= userInfos.likesMessage %></span></h5><hr>
+                                <% } }%>
                                 <!-- Frist Name & Last Name  -->
                                 <h4 class="card-title"><strong><%= (typeof userInfos !== 'undefined') ? userInfos.firstName+' '+userInfos.lastName : '' %></strong></h4>
                                 <!-- Username  -->

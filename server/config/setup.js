@@ -55,6 +55,7 @@ sql += '`latitude` int(200),';
 sql += '`longitude` int(200),';
 sql += '`profilePic` varchar(300) DEFAULT NULL,';
 sql += '`is_online` int(2) NOT NULL DEFAULT 0,';
+sql += '`is_complete` int(2) NOT NULL DEFAULT 0,';
 sql += '`last_connection` datetime,';
 sql += '`fame` int(11) NOT NULL,';
 sql += '`born_date` datetime,';

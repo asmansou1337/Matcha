@@ -239,10 +239,10 @@ ________________________________________________________________________
     - [X] A user must be able to consult the profile of other users. Profiles must contain all the information available about them, except for the email address and the password.
     - [ ] When a user consults a profile, it must appear in his/her visit history.
     - [ ] The user must also be able to:
-      - Like or Unlike the another user profile if this one has at least one picture.
-      - See if the other user has already liked the user and like him back.
-      - Check the “fame rating”.
-      - See if the user is online, and if not see the date and time of the last connection.
+      - [X] Like or Unlike the another user profile if this one has at least one picture.
+      - [X] See if the other user has already liked the user and like him back.
+      - [ ] Check the “fame rating”.
+      - [ ] See if the user is online, and if not see the date and time of the last connection.
       When two people “like” each other, we will say that they are “connected” and are now able to chat.
       If the current user does not have a picture, he/she cannot complete this action.
       - [ ] Report the user as a “fake account”.

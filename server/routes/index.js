@@ -27,5 +27,8 @@ router.post('/profile/updateTags', checkAuth, profile.updateTags);
 router.post('/profile/updateLocation', checkAuth, profile.updateLocation);
 router.get('/tagsList', profile.getTagsList);
 
-router.get('/user', user.getUserAllInfos);
+router.get('/user', checkAuth, user.getUserAllInfos);
+router.post('/user/like', checkAuth, user.likeUser);
+router.get('/user/getRelation', checkAuth, user.getRelation);
+router.get('/user/getProfileStatut', checkAuth, user.userProfileStatut);
 module.exports = router;
