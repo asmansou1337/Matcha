@@ -52,6 +52,9 @@ const util = {
             age--
         }
         return age;
+      },
+      calculateFame: (id) => {
+        //let totalUsers = 
       }
 }
 

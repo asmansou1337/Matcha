@@ -31,6 +31,7 @@ router.get('/user', checkAuth, user.getUserAllInfos);
 router.post('/user/like', checkAuth, user.likeUser);
 router.post('/user/block', checkAuth, user.blockUser);
 router.post('/user/report', checkAuth, user.reportUser);
+router.post('/user/visit', checkAuth, user.visitUser);
 router.get('/user/getRelation', checkAuth, user.getRelation);
 router.get('/user/getProfileStatut', checkAuth, user.userProfileStatut);
 module.exports = router;

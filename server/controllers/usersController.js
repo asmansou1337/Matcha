@@ -14,13 +14,27 @@ const User = {
             errorMessage: {}
         };
         const userId = req.query.id
+        const connectedUserData = req.userData;
         const selectedUser = await profileManager.getUserProfile(userId);
             if (selectedUser) {
                 if (selectedUser[0].born_date !== null)
                     selectedUser[0].age = util.calculateAge(selectedUser[0].born_date);
                 else
                     selectedUser[0].age = null;
-                console.log(chalk.red(JSON.stringify(selectedUser[0])))
+                // calculate fame rating
+                let calculate = await userManager.calculateFame(userId)
+                console.log(chalk.blue('rating :'+ JSON.stringify(calculate)))
+                let result;
+                if (calculate) {
+                    result = (Number(calculate[0].sum) / Number(calculate[0].totalUsers)) * 5
+                    if (result > 5)
+                        result = 5;
+                    else if (result < 0)
+                        result = 0;
+                    console.log(chalk.blue('rating :'+ result))
+                }
+                selectedUser[0].fame = result.toFixed(2); 
+                //console.log(chalk.red(JSON.stringify(selectedUser[0])))
                 responseData.user = selectedUser[0];
             } else {
                 responseData.isValid = false;
@@ -204,6 +218,41 @@ const User = {
                     responseData.isValid = false;
                     responseData.errorMessage.error= 'Error, Please try again!';
                 }
+        }
+        if (responseData.isValid === true)
+            res.status(200).send(responseData);
+        else
+            res.status(400).send(responseData);
+    },
+    visitUser: async (req, res) => {
+        let responseData = {
+            isValid : true,
+            successMessage: null,
+            errorMessage: {}
+        };
+        const visitor_user_id = req.userData['userId'];
+        const visited_user_id = req.query.id;
+        // check if it's the first time this user visit this profile
+        let checkVisited = await userManager.checkVisited(visitor_user_id, visited_user_id);
+        if (checkVisited.length > 0) {
+            // IN case is not the first visit
+            let updateVisit = await userManager.updateVisit(visitor_user_id, visited_user_id);
+            if (updateVisit) {
+                responseData.successMessage = 'visit updated successfully';
+            } else {
+                responseData.isValid = false;
+                responseData.errorMessage.error= 'Error, Please try again!';
+            }
+        } else {
+            // the first time visited
+            let nbr_visits = 1
+            let firstVisit = await userManager.addVisit({visitor_user_id, visited_user_id, nbr_visits});
+            if (firstVisit) {
+                responseData.successMessage = 'visit added successfully';
+            } else {
+                responseData.isValid = false;
+                responseData.errorMessage.error= 'Error, Please try again!';
+            }
         }
         if (responseData.isValid === true)
             res.status(200).send(responseData);

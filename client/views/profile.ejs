@@ -9,41 +9,53 @@
                             
                             <!-- Profile picture -->
                             <img class="card-img-top" src="<%= (typeof userInfos !== 'undefined') ? ((userInfos.profilePic != null) ? `/uploads/${userInfos.profilePic}` : '/uploads/avatar.jpg') : '/uploads/avatar.jpg'  %>" alt="Profile">
-                            <!-- Like / Unlike -->
-                            <form action="/user/like" method="post">
-                                <input type="hidden" name="userId" value="<%= (typeof userInfos !== 'undefined') ? userInfos.id : '' %>">
-                                <% if(typeof userInfos !== 'undefined') {
-                                    if(userInfos.isLiked === 1) { %>
-                                        <button class="btn btn-primary" type="submit"><i class="fas fa-thumbs-down"></i> Unlike</button>
-                                   <% } else { %>
-                                <button class="btn btn-primary" type="submit"><i class="fas fa-thumbs-up"></i> Like</button>
-                                <% }} %>
-                            </form>
-                            <!-- Report -->
-                            <form action="/user/report" method="post">
-                                <input type="hidden" name="userId" value="<%= (typeof userInfos !== 'undefined') ? userInfos.id : '' %>">
-                                <button class="btn yellow darken-2"><i class="fas fa-exclamation-circle"></i> Report</button>
-                            </form>
-                            <!-- Block / Unblock -->
-                            <form action="/user/block" method="post">
-                                <input type="hidden" name="userId" value="<%= (typeof userInfos !== 'undefined') ? userInfos.id : '' %>">
-                                <% if(typeof userInfos !== 'undefined') {
-                                    if(userInfos.isBlocked === 1) { %>
-                                        <button class="btn btn-default" type="submit"><i class="fas fa-ban"></i> Unblock</button>
-                                   <% } else { %>
-                                    <button class="btn red darken-1" type="submit"><i class="fas fa-ban"></i> Block</button>
-                                <% }} %>
-                            </form>
+                            <div class="row justify-content-center">
+                                <h4><span class="badge  badge-pill success-color">Online</span></h4>
+                                <h4><span class="badge  badge-pill grey">Offline</span>Since: 2 hours ago </h4>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-10">
+                                    <!-- Like / Unlike -->
+                                    <form action="/user/like" method="post">
+                                        <input type="hidden" name="userId" value="<%= (typeof userInfos !== 'undefined') ? userInfos.id : '' %>">
+                                        <% if(typeof userInfos !== 'undefined') {
+                                            if(userInfos.isLiked === 1) { %>
+                                                <button class="btn btn-primary btn-block" type="submit"><i class="fas fa-thumbs-down"></i> Unlike</button>
+                                        <% } else { %>
+                                        <button class="btn btn-primary btn-block" type="submit"><i class="fas fa-thumbs-up"></i> Like</button>
+                                        <% }} %>
+                                    </form>
+                                </div>
+                                <div class="col-10">
+                                    <!-- Report -->
+                                    <form action="/user/report" method="post">
+                                        <input type="hidden" name="userId" value="<%= (typeof userInfos !== 'undefined') ? userInfos.id : '' %>">
+                                        <button class="btn yellow darken-2 btn-block"><i class="fas fa-exclamation-circle"></i> Report</button>
+                                    </form>
+                                </div>
+                                <div class="col-10">
+                                     <!-- Block / Unblock -->
+                                    <form action="/user/block" method="post">
+                                        <input type="hidden" name="userId" value="<%= (typeof userInfos !== 'undefined') ? userInfos.id : '' %>">
+                                        <% if(typeof userInfos !== 'undefined') {
+                                            if(userInfos.isBlocked === 1) { %>
+                                                <button class="btn btn-default btn-block" type="submit"><i class="fas fa-ban"></i> Unblock</button>
+                                        <% } else { %>
+                                            <button class="btn red darken-1 btn-block" type="submit"><i class="fas fa-ban"></i> Block</button>
+                                        <% }} %>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 mb-4">
                         <div class="card">
                             <div class="card-body card-body-cascade text-center">
                                 <% if(typeof error !== 'undefined') { %>
-                                <h5><span class="badge danger-color"><%= error.error %></span></h5><hr>
+                                <h5><span class="badge danger-color"><%= error.error %></span></h5>
                                 <%  } %>
                                 <% if(typeof message.err !== 'undefined') { %>
-                                    <h5><span class="badge danger-color"><%= message.err %></span></h5><hr>
+                                    <h5><span class="badge danger-color"><%= message.err %></span></h5>
                                     <%  } %>
                                 <% if(typeof message.blockMessage !== 'undefined') { %>
                                 <span class="badge red darken-1"><%= message.blockMessage %></span>
@@ -59,8 +71,7 @@
                                 <h4 class="card-title"><strong><%= (typeof userInfos !== 'undefined') ? userInfos.firstName+' '+userInfos.lastName : '' %></strong></h4>
                                 <!-- Username  -->
                                 <h6 class="font-weight-bold indigo-text py-2">@<%= (typeof userInfos !== 'undefined') ? userInfos.username : '' %></h6>
-                                <h3><span class="badge rgba-purple-strong"><i class="fab fa-gratipay"></i>&nbsp;4.2</span></h3>
-                                <h3><span class="badge  light-blue lighten-4"><i class="fas fa-user-friends"></i></span></h3>
+                                <h3><span class="badge rgba-purple-strong"><i class="fab fa-gratipay"></i>&nbsp;<%= (typeof userInfos !== 'undefined') ? userInfos.fame : '' %></span></h3>
                                 <!-- Location -->
                                 <p><strong>Located At : </strong><%= (typeof userInfos !== 'undefined') ? userInfos.city+', '+userInfos.country : '' %></p>
                                 <!-- Age -->

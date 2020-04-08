@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
         // console.log(chalk.magenta("token " + token));
         const decoded = jwt.verify(token, process.env.JWT_KEY);
         req.userData = decoded;
-        console.log(chalk.blue(JSON.stringify(decoded)));
+        // console.log(chalk.blue(JSON.stringify(decoded)));
         // req.userData = {
         //     "userId": 1,
         //     "username":"asmansou",

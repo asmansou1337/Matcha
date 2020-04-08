@@ -88,11 +88,11 @@ Part 1:
     - [X] Locating the position of user automatically
     - [X] Edit location
   - [X] User profile: All info except mail and pass
-  - [ ] like/like back/unlike profiles 
-  - [ ] Block/ unblock user
-  - [ ] report user
+  - [X] like/like back/unlike profiles 
+  - [X] Block/ unblock user
+  - [X] report user
   - [ ] User statut (online or offline) - see last connected time if offline
-  - [ ] fame rating (calculated)
+  - [X] fame rating (calculated)
   - [ ] Visits history
   - [ ] Like history
 
@@ -237,11 +237,11 @@ ________________________________________________________________________
   - **Profile of other users**
 
     - [X] A user must be able to consult the profile of other users. Profiles must contain all the information available about them, except for the email address and the password.
-    - [ ] When a user consults a profile, it must appear in his/her visit history.
+    - [X] When a user consults a profile, it must appear in his/her visit history.
     - [ ] The user must also be able to:
       - [X] Like or Unlike the another user profile if this one has at least one picture.
       - [X] See if the other user has already liked the user and like him back.
-      - [ ] Check the “fame rating”.
+      - [X] Check the “fame rating”.
       - [ ] See if the user is online, and if not see the date and time of the last connection.
       When two people “like” each other, we will say that they are “connected” and are now able to chat.
       If the current user does not have a picture, he/she cannot complete this action.

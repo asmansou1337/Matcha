@@ -157,6 +157,7 @@ var sql = 'CREATE TABLE IF NOT EXISTS visited_profiles (';
 sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
 sql += '`visitor_user_id` int(11) NOT NULL,';
 sql += '`visited_user_id` int(11) NOT NULL,';
+sql += '`nbr_visits` int(100) NOT NULL,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
 sql += ') CHARACTER SET utf8 COLLATE utf8_general_ci';
 cnx.query(sql, function(err) {

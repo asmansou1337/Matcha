@@ -41,6 +41,13 @@ router.get('/user', headerAuth.connectedHeader, async (req,res) => {
       // get user infos
       axios.get(`${process.env.HostApi}/user?id=${id}`)
       .then((response) => {
+          // add the user to visitors list
+          axios.post(`${process.env.HostApi}/user/visit?id=${id}`)
+          .then((re) => {
+            console.log(chalk.green(JSON.stringify(re.data.successMessage)))
+          }).catch((e) => {
+            handle.errorHandle(e, req, res)     
+          });
           user = response.data.user;
           // get the city & country by reverse geocoding
           geocoder.reverse({lat:user.latitude, lon:user.longitude}).then((result) => {
@@ -80,9 +87,9 @@ router.get('/user', headerAuth.connectedHeader, async (req,res) => {
 // Like / Unlike 
 router.post('/user/like', headerAuth.connectedHeader, (req, res) => {
   const id = req.body.userId;
+  // check if user exists & his profile is completed
   axios.get(`${process.env.HostApi}/user/getProfileStatut?id=${id}`)
   .then((resp) => {
-    // console.log(chalk.magenta(JSON.stringify(resp.data)))
     // you can't like/unlike a profile if is not completed
     if (resp.data.successMessage == null) 
         res.redirect(`/user?id=${id}`);
@@ -119,9 +126,10 @@ router.post('/user/like', headerAuth.connectedHeader, (req, res) => {
 // Block / Unblock
 router.post('/user/block', headerAuth.connectedHeader, (req, res) => {
   const id = req.body.userId;
+  // check if user exists & his profile is completed
   axios.get(`${process.env.HostApi}/user/getProfileStatut?id=${id}`)
   .then((resp) => {
-    console.log(chalk.magenta(JSON.stringify(resp.data)))
+    // console.log(chalk.magenta(JSON.stringify(resp.data)))
      // console.log(chalk.red(id));
      axios.post(`${process.env.HostApi}/user/block?id=${id}`)
      .then((response) => {
@@ -147,6 +155,7 @@ router.post('/user/block', headerAuth.connectedHeader, (req, res) => {
 // Report
 router.post('/user/report', headerAuth.connectedHeader, (req, res) => {
   const id = req.body.userId;
+  // check if user exists & his profile is completed
   axios.get(`${process.env.HostApi}/user/getProfileStatut?id=${id}`)
   .then((resp) => {
     //console.log(chalk.magenta(JSON.stringify(resp.data)))
