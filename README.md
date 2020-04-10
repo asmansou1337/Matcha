@@ -76,7 +76,7 @@ ________________________________________________________________________
 Part 1:
   - [X] Project structure
   - [X] Authentification (signup & login)
-  - [ ] Access Management & Session (token Autorization)
+  - [X] Access Management & Session (token Autorization)
   - [ ] Force user to fill basic required info (Redirect to user profile)
   - [X] User info and ability to edit them  
     - [X] Edit basic required info : username, email, first name, last name, gender, sexual preference, birthday, bio
@@ -91,7 +91,7 @@ Part 1:
   - [X] like/like back/unlike profiles 
   - [X] Block/ unblock user
   - [X] report user
-  - [ ] User statut (online or offline) - see last connected time if offline
+  - [X] User statut (online or offline) - see last connected time if offline
   - [X] fame rating (calculated)
   - [ ] Visits history
   - [ ] Like history
@@ -192,7 +192,7 @@ ________________________________________________________________________
 
     - [X] connect with his/her username and password
     - [X] able to receive an email allowing him/her to re-initialize his/her password in case of forgetting his/her password 
-    - [ ] Disconnect with 1 click from any pages on the site.
+    - [X] Disconnect with 1 click from any pages on the site.
 
   - **User profile**
 
@@ -205,7 +205,7 @@ ________________________________________________________________________
     - [X] At any time, the user must be able to modify these information, as well as the last name, first name, email and password.
     - [X] The user should be able to change or reinitialize his password despite been connected or not.
     - [ ] The user must be able to check who visited his/her profile as well as who “liked” him/her.
-    - [ ] The user must have a public “fame rating”:
+    - [X] The user must have a public “fame rating”:
       ◦ Up to you to define what “fame rating” means as long as your criteria are consistent
     - [X] The user must be located using GPS positioning, up to his/her neighborhood. If the user does not want to be positioned, you must find a way to locate him/her even without his/her consent.2 The user must be able to modify his/her position in his/her profile.
 
@@ -242,7 +242,7 @@ ________________________________________________________________________
       - [X] Like or Unlike the another user profile if this one has at least one picture.
       - [X] See if the other user has already liked the user and like him back.
       - [X] Check the “fame rating”.
-      - [ ] See if the user is online, and if not see the date and time of the last connection.
+      - [X] See if the user is online, and if not see the date and time of the last connection.
       When two people “like” each other, we will say that they are “connected” and are now able to chat.
       If the current user does not have a picture, he/she cannot complete this action.
       - [X] Report the user as a “fake account”.

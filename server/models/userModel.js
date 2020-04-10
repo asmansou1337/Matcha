@@ -60,17 +60,6 @@ const user = {
         const sql = "SELECT * FROM liked_profiles WHERE liker_user_id = ? OR liked_user_id = ?"
         return db.selectDB([likerID, likedID], sql)
     },
-    getUserProfile: async (id) => {
-        const sql = `SELECT id, username, firstName, lastName, email, gender, preference, biography, ` +
-        `latitude, longitude, profilePic, last_connection, DATE_FORMAT(born_date, "%Y-%m-%d") as born_date, notify, ` +
-        `(SELECT GROUP_CONCAT(name SEPARATOR ',') FROM pictures WHERE user_id = ?) as otherPictures, ` +
-        `(SELECT GROUP_CONCAT(name SEPARATOR ',') FROM tags WHERE user_id = ?) as tags FROM users WHERE id = ?`;
-        return db.selectDB([id, id, id], sql)
-    },
-    // SELECT count(*) as totalUsers, (((SELECT count(*) as likes FROM liked_profiles WHERE liked_user_id = 2) +
-    //  (SELECT count(*) as visits FROM visited_profiles WHERE visited_user_id = 2)) 
-    //  - ((SELECT count(*) as blocks FROM blocked_users WHERE blocked_user_id = 2) + 
-    //  (SELECT count(*) as reports FROM reported_users WHERE reported_user_id = 2))) as sum FROM users
     calculateFame: async (id) => {
         const sql = `SELECT count(*) as totalUsers, (((SELECT count(*) as likes FROM liked_profiles WHERE liked_user_id = 2) +` +
         `(SELECT count(*) as visits FROM visited_profiles WHERE visited_user_id = 2)) - ` +

@@ -3,9 +3,10 @@ var router = express.Router();
 const axios = require('axios');
 const chalk = require('chalk');
 const headerAuth = require('../middleware/authHeader')
+const handle = require('../middleware/functions')
 
 /* GET home page. */
-router.get('/', (req, res) => {
+router.get('/', headerAuth.connectedHeader, (req, res) => {
   let err = req.flash('error');
   let error = {};
   if (JSON.stringify(err) === '[]') 
@@ -93,13 +94,13 @@ router.post('/login', headerAuth.nonConnected, async (req, res) => {
   axios.post(`${process.env.HostApi}/login`, loginform)
     .then((response) => {
         // Add JWT token in a cookie
-        console.log(chalk.grey(JSON.stringify(response.data)))
-        console.log(chalk.green(JSON.stringify(response.headers)))
+        // console.log(chalk.grey(JSON.stringify(response.data)))
+        // console.log(chalk.green(JSON.stringify(response.headers)))
         const cookieOptions = {
-          //expires: new Date(Date.now() + '15m'),
+          //expires: new Date(Date.now() + '12h'),
           secure: false, // set to true if your using https
           httpOnly: true,
-          //expires: 0 
+          //expires: "12h"
          }
         res.cookie('jwt', response.data.authToken, cookieOptions)
         // res.cookie('user', JSON.stringify(response.data.user), cookieOptions)
@@ -171,6 +172,20 @@ router.post('/reinitializePassword', headerAuth.nonConnected, (req, res) => {
     const error = {error: "Unvalid link, Please Try Again!"};
     return res.render('resetPassword', {error, token: ''});
   }
+});
+
+/* GET Logout page. */
+router.get('/logout', headerAuth.connectedHeader, (req, res) => {
+  axios.get(`${process.env.HostApi}/logout`)
+  .then((response) => {
+    console.log(chalk.green(response.data.successMessage))
+    res.clearCookie("jwt");
+    res.redirect("/login")
+  }
+  ).catch((e) => {
+    handle.errorHandle(e, req, res) 
+  }
+  );
 });
 
 module.exports = router;

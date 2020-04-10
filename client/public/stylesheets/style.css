@@ -7,6 +7,10 @@ a {
   color: #00B7FF;
 }
 
+.card {
+  margin: 10px;
+}
+
 #page-content {
   margin-top: 60px;
 }

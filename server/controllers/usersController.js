@@ -23,18 +23,22 @@ const User = {
                     selectedUser[0].age = null;
                 // calculate fame rating
                 let calculate = await userManager.calculateFame(userId)
-                console.log(chalk.blue('rating :'+ JSON.stringify(calculate)))
                 let result;
                 if (calculate) {
                     result = (Number(calculate[0].sum) / Number(calculate[0].totalUsers)) * 5
-                    if (result > 5)
+                    if (result > 5) 
                         result = 5;
                     else if (result < 0)
                         result = 0;
-                    console.log(chalk.blue('rating :'+ result))
                 }
                 selectedUser[0].fame = result.toFixed(2); 
-                //console.log(chalk.red(JSON.stringify(selectedUser[0])))
+                // format user last connection time
+                let lastLogin = null;
+                if(selectedUser[0].last_connection !== null) {
+                    lastLogin = util.calculateLastLogin(selectedUser[0].last_connection)
+                }
+                selectedUser[0].lastLogin = lastLogin
+                // console.log(chalk.red(JSON.stringify(selectedUser[0])))
                 responseData.user = selectedUser[0];
             } else {
                 responseData.isValid = false;

@@ -29,7 +29,14 @@ const Auth = {
         const sql = 'UPDATE users SET token = ? WHERE token = ?';
         return db.updateDB([newToken, token], sql)
     },
-
+    updateStatut: async (id) => {
+        const sql = 'UPDATE users SET is_online = 1 WHERE id = ?';
+        return db.updateDB([id], sql)
+    },
+    logout: async (id) => {
+        const sql = 'UPDATE users SET is_online = 0, last_connection = NOW() WHERE id = ?';
+        return db.updateDB([id], sql)
+    },
 }
 
 module.exports = Auth;

@@ -1,6 +1,7 @@
 let validation = require('../models/validation');
 let authManager = require('../models/authentificationModel');
 let verifManager = require('../models/verificationModel');
+let userManager = require('../models/userModel');
 let chalk = require('chalk');
 const bcrypt = require('bcrypt');
 const profileManager = require('../models/profileModel');
@@ -231,6 +232,18 @@ const Profile = {
                     currentUser[0].age = util.calculateAge(currentUser[0].born_date);
                 else
                     currentUser[0].age = null;
+                // calculate fame rating
+                let calculate = await userManager.calculateFame(userData['userId'])
+                let result;
+                if (calculate) {
+                    result = (Number(calculate[0].sum) / Number(calculate[0].totalUsers)) * 5
+                    if (result > 5)
+                        result = 5;
+                    else if (result < 0)
+                        result = 0;
+                    console.log(chalk.blue('rating :'+ result))
+                }
+                currentUser[0].fame = result.toFixed(2); 
                 responseData.user = currentUser[0];
             } else {
                 responseData.isValid = false;

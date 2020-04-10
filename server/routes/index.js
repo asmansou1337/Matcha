@@ -12,7 +12,7 @@ router.get('/activateAccount', authentification.activateAccount);
 router.post('/login', authentification.login);
 router.post('/sendResetEmail', authentification.sendResetEmail);
 router.post('/reinitializePassword', authentification.reinitializePassword);
-router.get('/welcome', checkAuth, authentification.welcome);
+router.get('/logout', checkAuth, authentification.logout);
 
 
 router.post('/profile/editBasic', checkAuth, profile.editBasic);

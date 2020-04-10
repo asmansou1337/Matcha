@@ -162,6 +162,8 @@ const Auth = {
                     if(user[0].is_active === 1)
                     {
                         console.log("login success");
+                        // update user statut to online
+                        await authManager.updateStatut(user[0].id);
                         // Create JWT token
                         responseData.successMessage = "login success";
                         responseData.authToken = tokenManager.createNewAuthToken(user[0].id, user[0].username , user[0].email);
@@ -280,8 +282,26 @@ const Auth = {
         else
             res.status(400).send(responseData);
     },
-    welcome: (req, res) => {
-        res.status(200).send({message: 'logged'});
+    logout: async (req, res) => {
+        let responseData = {
+            isValid : true,
+            successMessage: null,
+            errorMessage: {}
+        };
+        // get connected user data from token
+        let userData = req.userData;
+        // update user statut
+        let logout = await authManager.logout(userData['userId'])
+        if (logout) {
+            responseData.successMessage = "Logout successfuly.";
+        } else {
+            responseData.isValid = false;
+            responseData.errorMessage.error = 'Error Login out, Please try again!';
+        }
+        if (responseData.isValid === true)
+            res.status(200).send(responseData);
+        else
+            res.status(400).send(responseData);
     }
 }
 
