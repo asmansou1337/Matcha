@@ -112,6 +112,20 @@ const Valid = {
         if (/jpeg|jpg|png|gif/.test(ext.toLowerCase()))
           return true
         return false
+      },
+      isProfileCompleted: (user) => {
+        return !util.isEmpty(user.username) &&
+          !util.isEmpty(user.firstName) &&
+          !util.isEmpty(user.lastName) &&
+          !util.isEmpty(user.email) &&
+          !util.isEmpty(user.gender) &&
+          !util.isEmpty(user.preference) &&
+          !util.isEmpty(user.biography) &&
+          !util.isEmpty(user.latitude) &&
+          !util.isEmpty(user.longitude) &&
+          !util.isEmpty(user.profilePic) &&
+          !util.isEmpty(user.born_date) &&
+          !util.isEmpty(user.tags)
       }
 }
 

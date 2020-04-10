@@ -56,7 +56,7 @@ const User = {
             successMessage: null,
             errorMessage: {}
         };
-        const userID = req.query.id
+        const userID = req.query.id || req.userData['userId']
         // verify user exists
         let user = await verifManager.verifyUserExists(userID);
         if (user[0].count === 0) {
@@ -64,11 +64,16 @@ const User = {
             responseData.errorMessage.error= "This user does not exist!";
         } else {
             // verify the user profile is completed
-            let completeProfile = await verifManager.verifyProfileComplete(userID);
-            if (completeProfile[0].complete === 0) {
-                responseData.errorMessage.error= "This user didn't complete his profile yet!";
-            } else {
-                responseData.successMessage = 'profile completed';
+            const selectedUser = await profileManager.getUserProfile(userID);
+            if (selectedUser) {
+                //console.log(chalk.yellow(JSON.stringify(selectedUser[0])))
+                if (!validation.isProfileCompleted(selectedUser[0])) {
+                    responseData.isComplete = 0;
+                    responseData.errorMessage.error= "This user didn't complete his profile yet!";
+                } else {
+                    responseData.isComplete = 1;
+                    responseData.successMessage = 'profile completed';
+                }
             }
         }
         if (responseData.isValid === true)
@@ -89,7 +94,7 @@ const User = {
         const otherUserId = req.query.id
         const connectedUserDataID = req.userData['userId'];
         let checkLike = await userManager.checkLikeRelation(connectedUserDataID, otherUserId);
-        console.log(chalk.yellow(JSON.stringify(checkLike)))
+        // console.log(chalk.yellow(JSON.stringify(checkLike)))
         if (checkLike.length > 0) {
             checkLike.forEach(user => {
                 if (user.liker_user_id == connectedUserDataID && user.liked_user_id == otherUserId) {

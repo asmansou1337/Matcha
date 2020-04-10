@@ -3,6 +3,7 @@ var router = express.Router();
 const axios = require('axios');
 const chalk = require('chalk');
 const headerAuth = require('../middleware/authHeader')
+const isComplete = require('../middleware/isCompleted');
 const handle = require('../middleware/functions')
 const NodeGeocoder = require('node-geocoder');
 const options = {
@@ -27,7 +28,7 @@ var geocoder = NodeGeocoder(options);
 // })
 
 // personal profile of another user
-router.get('/user', headerAuth.connectedHeader, async (req,res) => {
+router.get('/user', headerAuth.connectedHeader, isComplete, async (req,res) => {
   const id = req.query.id;
   let error, blockMessage, reportMessage, likesMessage;
   let err = req.flash('error');
@@ -85,13 +86,14 @@ router.get('/user', headerAuth.connectedHeader, async (req,res) => {
 })
 
 // Like / Unlike 
-router.post('/user/like', headerAuth.connectedHeader, (req, res) => {
+router.post('/user/like', headerAuth.connectedHeader, isComplete, (req, res) => {
   const id = req.body.userId;
   // check if user exists & his profile is completed
   axios.get(`${process.env.HostApi}/user/getProfileStatut?id=${id}`)
   .then((resp) => {
+    console.log(chalk.yellow(JSON.stringify(resp.data)))
     // you can't like/unlike a profile if is not completed
-    if (resp.data.successMessage == null) 
+    if (resp.data.successMessage == null && resp.data.isComplete === 0) 
         res.redirect(`/user?id=${id}`);
     else {
          // console.log(chalk.red(id));
@@ -124,7 +126,7 @@ router.post('/user/like', headerAuth.connectedHeader, (req, res) => {
 })
 
 // Block / Unblock
-router.post('/user/block', headerAuth.connectedHeader, (req, res) => {
+router.post('/user/block', headerAuth.connectedHeader, isComplete, (req, res) => {
   const id = req.body.userId;
   // check if user exists & his profile is completed
   axios.get(`${process.env.HostApi}/user/getProfileStatut?id=${id}`)
@@ -153,7 +155,7 @@ router.post('/user/block', headerAuth.connectedHeader, (req, res) => {
 })
 
 // Report
-router.post('/user/report', headerAuth.connectedHeader, (req, res) => {
+router.post('/user/report', headerAuth.connectedHeader, isComplete, (req, res) => {
   const id = req.body.userId;
   // check if user exists & his profile is completed
   axios.get(`${process.env.HostApi}/user/getProfileStatut?id=${id}`)

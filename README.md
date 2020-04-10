@@ -77,7 +77,7 @@ Part 1:
   - [X] Project structure
   - [X] Authentification (signup & login)
   - [X] Access Management & Session (token Autorization)
-  - [ ] Force user to fill basic required info (Redirect to user profile)
+  - [X] Force user to fill basic required info (Redirect to user profile)
   - [X] User info and ability to edit them  
     - [X] Edit basic required info : username, email, first name, last name, gender, sexual preference, birthday, bio
     - [X] Edit password
@@ -238,7 +238,7 @@ ________________________________________________________________________
 
     - [X] A user must be able to consult the profile of other users. Profiles must contain all the information available about them, except for the email address and the password.
     - [X] When a user consults a profile, it must appear in his/her visit history.
-    - [ ] The user must also be able to:
+    - [X] The user must also be able to:
       - [X] Like or Unlike the another user profile if this one has at least one picture.
       - [X] See if the other user has already liked the user and like him back.
       - [X] Check the “fame rating”.

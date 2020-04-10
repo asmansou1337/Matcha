@@ -241,7 +241,7 @@ const Profile = {
                         result = 5;
                     else if (result < 0)
                         result = 0;
-                    console.log(chalk.blue('rating :'+ result))
+                    // console.log(chalk.blue('rating :'+ result))
                 }
                 currentUser[0].fame = result.toFixed(2); 
                 responseData.user = currentUser[0];
@@ -361,8 +361,6 @@ const Profile = {
         let userData = req.userData;
         let latitude = req.body.latitude;
         let longitude = req.body.longitude;
-        // console.log('lat :' + latitude);
-        // console.log('lgt :' + longitude);
         let id =  userData['userId'];
         // validate latitude & longitude
         if (!validation.isLatitude(Number(latitude)) || !validation.isLongitude(Number(longitude))) {

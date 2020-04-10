@@ -36,24 +36,24 @@ var geocoder = NodeGeocoder(options);
 // });
 
 // preview connected user profile
-router.get('/myProfile', headerAuth.connectedHeader, async (req,res) => {
-  // get user infos
-  axios.get(`${process.env.HostApi}/profile/getInfos`)
-    .then((response) => {
-        // console.log(chalk.greenBright(JSON.stringify(response.data.user)));
-        user = response.data.user;
-         geocoder.reverse({lat:user.latitude, lon:user.longitude}).then((result) => {
-          //  console.log(result[0].city);
-          user.city = result[0].city;
-          user.country = result[0].country;
-          // console.log(chalk.greenBright(JSON.stringify(user)));
-          return res.render('myProfile', {userInfos: user});
-        })
-    }
-    ).catch((e) => {
-      handle.errorHandle(e, req, res)     
-    });
-})
+// router.get('/myProfile', headerAuth.connectedHeader, async (req,res) => {
+//   // get user infos
+//   axios.get(`${process.env.HostApi}/profile/getInfos`)
+//     .then((response) => {
+//         // console.log(chalk.greenBright(JSON.stringify(response.data.user)));
+//         user = response.data.user;
+//          geocoder.reverse({lat:user.latitude, lon:user.longitude}).then((result) => {
+//           //  console.log(result[0].city);
+//           user.city = result[0].city;
+//           user.country = result[0].country;
+//           // console.log(chalk.greenBright(JSON.stringify(user)));
+//           return res.render('myProfile', {userInfos: user});
+//         })
+//     }
+//     ).catch((e) => {
+//       handle.errorHandle(e, req, res)     
+//     });
+// })
 
 // edit basic infos form POST
 router.post('/editProfile', headerAuth.connectedHeader, (req, res) => {
@@ -322,9 +322,14 @@ router.get('/editProfile', headerAuth.connectedHeader, (req, res) => {
   // get user infos
   axios.get(`${process.env.HostApi}/profile/getInfos`)
     .then((response) => {
-        user = response.data.user;
-        //  console.log(chalk.greenBright(JSON.stringify(user)));
+      user = response.data.user;
+      geocoder.reverse({lat:user.latitude, lon:user.longitude}).then((result) => {
+       //  console.log(result[0].city);
+       user.city = result[0].city;
+       user.country = result[0].country;
+       //  console.log(chalk.greenBright(JSON.stringify(user)));
         res.render('editProfile', { success, error, userInfos: user , nav: {path}, tagsList});
+      })
     }
     ).catch((e) => {
       handle.errorHandle(e, req, res)     
