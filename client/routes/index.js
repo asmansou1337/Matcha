@@ -7,6 +7,11 @@ const isComplete = require('../middleware/isCompleted');
 const handle = require('../middleware/functions');
 
 /* GET home page. */
+router.get('/test', headerAuth.connectedHeader, isComplete, (req, res) => {
+  res.render('test');
+});
+
+/* GET home page. */
 router.get('/', headerAuth.connectedHeader, isComplete, (req, res) => {
   let err = req.flash('error');
   let error = {};

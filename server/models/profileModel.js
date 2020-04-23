@@ -56,15 +56,6 @@ const Auth = {
         const sql = 'UPDATE users SET latitude = ?, longitude = ? WHERE id = ?';
         return db.updateDB([lat, long, id], sql)
     },
-    // addTags: async () => {
-    //     const sql = 'INSERT INTO tags (title, created_at) \
-    //     SELECT  @title,@SoftwareType \
-    //     WHERE NOT EXISTS \
-    //             (   SELECT  1 \
-    //                 FROM    tblSoftwareTitles \
-    //                 WHERE   title = @title \
-    //                 AND     created_at = @Softwaretype);'
-    // }
 
 }
 

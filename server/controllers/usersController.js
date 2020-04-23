@@ -22,6 +22,7 @@ const User = {
                 else
                     selectedUser[0].age = null;
                 // calculate fame rating
+                // rating = ((sum(likes) + sum(visits)) - ((sum(blocks) + sum(reports))) / total of users)
                 let calculate = await userManager.calculateFame(userId)
                 let result;
                 if (calculate) {

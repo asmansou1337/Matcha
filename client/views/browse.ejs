@@ -2,14 +2,157 @@
 <%- include('./navs/navAuth'); %>
 
 <section class="view">
+  <!--Accordion wrapper-->
+<div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
+
+  <!-- Accordion card -->
+  <div class="card">
+
+    <!-- Card header -->
+    <div class="card-header" role="tab" id="headingOne1">
+      <a data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne1" aria-expanded="true"
+        aria-controls="collapseOne1">
+        <h5 class="mb-0">
+          Filter <i class="fas fa-angle-down rotate-icon"></i>
+        </h5>
+      </a>
+    </div>
+
+    <!-- Card body -->
+    <div id="collapseOne1" class="collapse show" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordionEx">
+      <div class="card-body">
+        <div class="row" style="margin: 10;">
+          <div class="col-sm-4">
+              <!-- Ranger Slider with value -->
+              <!-- Slider -->
+              <div class="text-center"><span>Age (18 to 120)</span></div>
+              <div id="pmd-slider-age"  class="pmd-range-slider"></div>	
+              <!-- Values -->										
+              <div class="row">
+                  <div class="range-value col-sm-6">
+                      <span id="age-min"></span>
+                  </div>
+                  <div class="range-value col-sm-6 text-right">
+                      <span id="age-max"></span>
+                  </div>
+              </div>
+          </div>
+          <div class="col-sm-4">
+              <!-- Ranger Slider with value -->
+              <!-- Slider -->
+              <div class="text-center"><span>Rating (0 to 5)</span></div>
+              <div id="pmd-slider-rating"  class="pmd-range-slider"></div>	
+              <!-- Values -->										
+              <div class="row">
+                  <div class="range-value col-sm-6">
+                      <span id="rating-min"></span>
+                  </div>
+                  <div class="range-value col-sm-6 text-right">
+                      <span id="rating-max"></span>
+                  </div>
+              </div>
+          </div>
+          <div class="col-sm-4">
+              <!-- Ranger Slider with value -->
+              <!-- Slider -->
+              <div class="text-center"><span>Location (0 to 200km)</span></div>
+              <div id="pmd-slider-location"  class="pmd-range-slider"></div>	
+              <!-- Values -->										
+              <div class="row">
+                  <div class="range-value col-sm-6">
+                      <span id="location-min"></span>
+                  </div>
+                  <div class="range-value col-sm-6 text-right">
+                      <span id="location-max"></span>
+                  </div>
+              </div>
+          </div>    
+        </div>
+        <div>
+            <!-- tags selection -->
+            <div class="row justify-content-center">
+              <div class="col-sm-8">
+              <div class="text-center"><span>Tags</span></div>
+              <div class="container-fluid border rounded mb-0 tag-container autocomplete" style="padding: 10px;">
+                  <input placeholder ="Select tags..." id="myInput"/>
+              </div>
+            </div>
+          </div>
+            <!-- end tags selection -->
+            <div class="row justify-content-center">
+              <button type="button" class="btn btn-primary btn-lg btn-block" style="margin: 15;">Filter</button>
+            </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- Accordion card -->
+
+  <!-- Accordion card -->
+  <div class="card">
+    <!-- Card header -->
+    <div class="card-header" role="tab" id="headingTwo2">
+      <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseTwo2"
+        aria-expanded="false" aria-controls="collapseTwo2">
+        <h5 class="mb-0">
+          Sort <i class="fas fa-angle-down rotate-icon"></i>
+        </h5>
+      </a>
+    </div>
+    <!-- Card body -->
+    <div id="collapseTwo2" class="collapse" role="tabpanel" aria-labelledby="headingTwo2" data-parent="#accordionEx">
+      <div class="card-body">
+        <div class="form-row">
+          <!-- Default input -->
+          <div class="form-group col-md-6">
+              <label for="gender">Age</label>
+              <select class="browser-default custom-select" name="age-sort">
+                <option value="Asc">Ascending</option>
+                  <option value="Desc">Descending</option>
+                </select>
+          </div>
+          <!-- Default input -->
+          <div class="form-group col-md-6">
+            <label for="gender">Rating</label>
+            <select class="browser-default custom-select" name="rating-sort">
+              <option value="Asc">Ascending</option>
+                <option value="Desc">Descending</option>
+              </select>
+          </div>
+          <!-- Default input -->
+          <div class="form-group col-md-6">
+            <label for="gender">Location</label>
+            <select class="browser-default custom-select" name="location-sort">
+              <option value="Asc">Ascending</option>
+                <option value="Desc">Descending</option>
+              </select>
+          </div>
+          <!-- Default input -->
+          <div class="form-group col-md-6">
+            <label for="gender">Tags</label>
+            <select class="browser-default custom-select" name="tags-sort">
+              <option value="Asc">Ascending</option>
+                <option value="Desc">Descending</option>
+              </select>
+          </div>
+          <button type="button" class="btn btn-primary btn-lg btn-block" style="margin: 15;">Sort</button>
+
+          </div>
+      </div>
+      
+    </div>
+  </div>
+  <!-- Accordion card -->
+</div>
+<!-- Accordion wrapper -->
+
       <div class="col-md-12">
         <div class="d-flex flex-column justify-content-center">
-
           <div class="row row-cols-1 row-cols-md-3">
             <div class="col mb-4">
               <!-- Card -->
               <div class="card">
-          
                 <!--Card image-->
                 <div class="view overlay">
                   <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/16.jpg"
@@ -21,28 +164,26 @@
           
                  <!-- Card content -->
   <div class="card-body card-body-cascade text-center">
-
+    <h4><span class="badge  badge-pill success-color">Online</span></h4>
+    <!-- <div class="text-center">
+      <% if(typeof userInfos !== 'undefined') {
+          if(userInfos.online === 1) { %>
+      <h4><span class="badge  badge-pill success-color">Online</span></h4>
+      <% } else { %>
+      <h5><span class="badge  badge-pill grey">Offline</span></h5>
+          <span>Since:&nbsp;<%= (userInfos.lastLogin !== null) ? userInfos.lastLogin : '' %></span>
+      <% }} %>
+    </div> -->
     <!-- Title -->
     <h4 class="card-title"><strong>Billy Coleman</strong></h4>
     <!-- Subtitle -->
-    <h6 class="font-weight-bold indigo-text py-2">Web developer</h6>
+    <h6 class="font-weight-bold indigo-text py-2">@Username</h6>
+    <h3><span class="badge rgba-purple-strong"><i class="fab fa-gratipay"></i>&nbsp;4.8</span></h3>
+    <!-- Age -->
+    <p><strong>Age : </strong>18</p>
+                                
     <!-- Text -->
-    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus, ex, recusandae.
-      Facere modi sunt, quod quibusdam.
-    </p>
-
-    <!-- Facebook -->
-    <a type="button" class="btn-floating btn-small btn-fb"><i class="fab fa-facebook-f"></i></a>
-    <!-- Twitter -->
-    <a type="button" class="btn-floating btn-small btn-tw"><i class="fab fa-twitter"></i></a>
-    <!-- Google + -->
-    <a type="button" class="btn-floating btn-small btn-dribbble"><i class="fab fa-dribbble"></i></a>
-
-  </div>
-
-  <!-- Card footer -->
-  <div class="card-footer text-muted text-center">
-    2 days ago
+    <p class="card-text">Bio</p>
   </div>
           
               </div>
@@ -141,5 +282,10 @@
       </div>
 </section>
 
-
+<!-- Jquery js -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Slider js -->
+<script src="http://propeller.in/components/range-slider/js/wNumb.js"></script>
+<script src="http://propeller.in/components/range-slider/js/nouislider.js"></script>
+<script type="text/javascript" src="/javascripts/range.js"></script>
 <%- include('footer'); %>

@@ -97,6 +97,45 @@ const Valid = {
         }
         return "success"
       },
+      isFilterTags: (tags) => {
+        if(Array.isArray(tags) && tags.length > 0) {
+          const values = Object.values(tags)
+          for (const tag of values) {
+            if((tag.length < 1) || (tag.length > 20) || !util.isAlphaNum(tag))
+              return false
+          }
+        }
+        return true
+      },
+      isAgeFilterValid: (filter) => {
+        if (!util.isEmpty(filter['age-min']) &&  !util.isEmpty(filter['age-max'])) {
+          if (!util.isDigit(filter['age-min']) || !util.isDigit(filter['age-max']) || (Number(filter['age-max']) < Number(filter['age-min']))) 
+            return false
+        }
+        return true
+      },
+      isRatingFilterValid: (filter) => {
+        if (!util.isEmpty(filter['rating-min']) &&  !util.isEmpty(filter['rating-max'])) {
+          if (!util.isDigit(filter['rating-min']) || !util.isDigit(filter['rating-max']) || (Number(filter['rating-max']) < Number(filter['rating-min']))) 
+            return false
+        }
+        return true
+      },
+      isLocationFilterValid: (filter) => {
+        if (!util.isEmpty(filter['location-min']) &&  !util.isEmpty(filter['location-max'])) {
+          // console.log('location')
+          if (!util.isDigit(filter['location-min']) || !util.isDigit(filter['location-max']) || (Number(filter['location-max']) < Number(filter['location-min']))) 
+            return false
+        }
+        return true
+      },
+      isFilterValid: (filter, tags) => {
+        if (!Valid.isAgeFilterValid(filter) || !Valid.isRatingFilterValid(filter) || !Valid.isLocationFilterValid(filter))
+          return 'Error Filtering Results!!'
+        if (!Valid.isFilterTags(tags))
+          return errorTab['tags']
+        return 'success'
+      },
       isLatitude: (latitude) => {
         if(latitude >= -90 && latitude <= 90 && (util.isNumeric(latitude) || util.isFloat(latitude)))
             return true

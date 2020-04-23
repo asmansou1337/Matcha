@@ -1,0 +1,225 @@
+<%- include('header'); %>
+<%- include('./navs/navAuth'); %>
+
+<section class="view">
+  <!--Accordion wrapper-->
+<div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
+  <!-- Error & messages section -->
+  <div style="margin-top: 10px;">
+    <% if(typeof  error !== 'undefined'){ %>
+        <% if (typeof  error.error != 'undefined') { %>
+            <div class="alert alert-danger" role="alert">
+            <%=  error.error %>
+            </div>
+        <% } } %>
+  </div>
+  <!-- Accordion card -->
+  <div class="card">
+    <!-- Card header -->
+    <div class="card-header" role="tab" id="headingOne1">
+      <a data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne1" aria-expanded="false"
+        aria-controls="collapseOne1">
+        <h5 class="mb-0">
+          Filter <i class="fas fa-angle-down rotate-icon"></i>
+        </h5>
+      </a>
+    </div>
+
+    <!-- Card body -->
+    <div id="collapseOne1" class="collapse" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordionEx">
+      <div class="card-body">
+        <form action="/search" method="post">
+        <div class="row" style="margin: 10;">
+          <div class="col-sm-4">
+              <!-- Ranger Slider with value -->
+              <!-- Slider -->
+              <div class="text-center"><span>Age (18 to 120)</span></div>
+              <div id="pmd-slider-age"  class="pmd-range-slider"></div>	
+              <!-- Values -->										
+              <div class="row">
+                  <div class="range-value col-sm-6">
+                      <span id="age-min"><%= (typeof filter !== 'undefined') ? filter['age-min'] : '' %></span>
+                      <input type="hidden" name="age-min" id="age-min-value">
+                  </div>
+                  <div class="range-value col-sm-6 text-right">
+                      <span id="age-max"><%= (typeof filter !== 'undefined') ? filter['age-max'] : '' %></span>
+                      <input type="hidden" name="age-max" id="age-max-value">
+                  </div>
+              </div>
+          </div>
+          <div class="col-sm-4">
+              <!-- Ranger Slider with value -->
+              <!-- Slider -->
+              <div class="text-center"><span>Rating (0 to 5)</span></div>
+              <div id="pmd-slider-rating"  class="pmd-range-slider"></div>	
+              <!-- Values -->										
+              <div class="row">
+                  <div class="range-value col-sm-6">
+                      <span id="rating-min"><%= (typeof filter !== 'undefined') ? filter['rating-min'] : '' %></span>
+                      <input type="hidden" name="rating-min" id="rating-min-value">
+                  </div>
+                  <div class="range-value col-sm-6 text-right">
+                      <span id="rating-max"><%= (typeof filter !== 'undefined') ? filter['rating-max'] : '' %></span>
+                      <input type="hidden" name="rating-max" id="rating-max-value">
+                  </div>
+              </div>
+          </div>
+          <div class="col-sm-4">
+              <!-- Ranger Slider with value -->
+              <!-- Slider -->
+              <div class="text-center"><span>Location (by distance in km)</span></div>	
+              <!-- Values -->										
+              <div class="text-center" style="padding: 5px;">
+                <span>min :</span>
+                <input type="number" name="location-min" id="location-min-value" value="<%= (typeof filter !== 'undefined') ? filter['location-min'] : '' %>">
+            </div>
+            <div class="text-center">
+                <span>max :</span>
+                <input type="number" name="location-max" id="location-max-value" value="<%= (typeof filter !== 'undefined') ? filter['location-max'] : '' %>">
+            </div>
+          </div>    
+        </div>
+       
+            <!-- tags selection -->
+            <div class="row justify-content-center">
+                <div class="col-sm-8">
+                    <div class="text-center"><span>Tags</span></div>
+                    <div class="container-fluid border rounded mb-0 tag-container autocomplete" style="padding: 10px;">
+                      <!-- Filter existing tags -->
+                      <% if(typeof filter !== 'undefined' && filter.TagsTab.length > 0) {
+                        let tags = JSON.parse(filter.TagsTab)
+                        tags.forEach(tag => { %>
+                      <span class="badge grey lighten-1 tag">
+                          <h6><span><%= tag %></span>
+                          <i class="far fa-times-circle" aria-hidden="true" data-item="<%= tag %>"></i></h6>
+                          </span>
+                      <% }); 
+                      } %>
+                      <!-- All existing tags -->
+                        <input placeholder ="Select tags..." id="myInput"/>
+                        <% if(typeof filter !== 'undefined' && filter.TagsTab !== '[]') {
+                          %>
+                        <input type="hidden" name="TagsTab" id="tagsTab" value="<%= JSON.parse(filter['TagsTab']) %>">
+                        <% 
+                          } else { %>
+                            <input type="hidden" name="TagsTab" id="tagsTab" value="[]">
+                         <% } %>
+                    </div>
+                </div>
+            </div>
+            <!-- end tags selection -->
+            <hr>
+            <h5>Sort</h5>
+        <!-- Sort -->
+        <div class="form-row row">
+          <!-- Default input -->
+          <div class="form-group col-md-6">
+              <select class="browser-default custom-select" name="sortOption">
+                <option value="age"
+                    <%= (typeof filter !== 'undefined') ? ((filter.sortOption == 'age') ?  'selected'  : '') : '' %>>Age</option>
+                <option value="fame"
+                    <%= (typeof filter !== 'undefined') ? ((filter.sortOption == 'fame') ?  'selected'  : '') : '' %>>Rating</option>
+                <option value="distance"
+                    <%= (typeof filter !== 'undefined') ? ((filter.sortOption == 'distance') ?  'selected'  : '') : '' %>>Location</option>
+                <option value="commonTags"
+                    <%= (typeof filter !== 'undefined') ? ((filter.sortOption == 'commonTags') ?  'selected'  : '') : '' %>>Tags</option>
+                </select>
+          </div>
+          <!-- Default input -->
+          <div class="form-group col-md-6">
+            <select class="browser-default custom-select" name="sortType">
+              <option value="asc"
+                    <%= (typeof filter !== 'undefined') ? ((filter.sortType == 'asc') ?  'selected'  : '') : '' %>>Ascending</option>
+              <option value="desc"
+                    <%= (typeof filter !== 'undefined') ? ((filter.sortType == 'desc') ?  'selected'  : '') : '' %>>Descending</option>
+              </select>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <button type="submit" class="btn btn-primary btn-lg btn-block" style="margin: 15;">CHANGE</button>
+        </div>
+    </form>
+      </div>
+    </div>
+  </div>
+  <!-- Accordion card -->
+</div>
+<!-- Accordion wrapper -->
+
+      <div class="col-md-12">
+        <div class="d-flex flex-column justify-content-center">
+          <div class="row row-cols-1 row-cols-md-3">
+            <% if(typeof users !== 'undefined' && users.length > 0) { 
+                users.forEach(user => { %>
+            <div class="col mb-4">
+                <!-- Card -->
+                <div class="card">
+                    <!--Card image-->
+                    <div class="view overlay">
+                    <img class="avatar" src="<%= (user.profilePic != null) ? `/uploads/${user.profilePic}` : '/uploads/avatar.jpg' %>"
+                        alt="avatar">
+                    </div>
+                    <!-- Card content -->
+                    <div class="card-body card-body-cascade text-center">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="font-weight-bold indigo-text py-2">@<%= user.username %></h5>
+                            </div>
+                            <div class="col"><h5><span class="badge rgba-purple-strong"><i class="fab fa-gratipay"></i>&nbsp;<%=  user.fame %></span></h5></div>
+                        </div>
+                        <!-- User Name -->
+                        <h5 class="card-title"><strong><%= user.firstName+' '+user.lastName %></strong></h5>
+                        <!-- Age -->
+                        <p><strong><i class="fas fa-calendar-alt"></i> </strong><%= user.age %> &nbsp;-&nbsp;
+                            <strong><i class="fas fa-venus-mars"></i> </strong> <%= user.gender %> &nbsp;-&nbsp;
+                            <strong><i class="fas fa-user"></i> </strong> <%= user.preference %>
+                        </p>
+                        <p>
+                            <strong><i class="fas fa-map-marker-alt"></i></strong>&nbsp;<%= (user.distance < 1) ? 'near you': user.distance + ' km away' %>
+                          </p>
+                        <hr>
+                                                    
+                        <!-- Text -->
+                        <p class="card-text">
+                            <% if (user.biography.length > 85) { %>
+                                <%= user.biography.substring(1, 85) %>...
+                            <% } else { %>
+                                <%= user.biography %>
+                            <% } %>
+                        </p>
+                        <a href="/user?id=<%= user.id %>" class="stretched-link"></a>
+                    </div>
+                    <div class="card-footer text-muted text-center mt-4">
+                        <% if(user.online === 1) { %>
+                            <h4><span class="badge  badge-pill success-color">Online</span></h4>
+                            <% } else { %>
+                            <h5><span class="badge  badge-pill grey">Offline</span></h5>
+                                <span>Since:&nbsp;<%= (user.lastLogin !== null) ? user.lastLogin : '' %></span>
+                            <% } %>
+                    </div>
+                </div>
+                <!-- Card -->
+            </div>
+            <%  }); 
+                } else { %>
+                  <div class="col-md-12">
+                      <div class="card">
+                          <div class="card-body card-body-cascade text-center">
+                            <h5 class="card-title"><strong>No results are found</strong></h5>
+                          </div>
+                      </div>
+                  </div>
+                <% } %>
+          </div>
+        </div>
+      </div>
+</section>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+<script type="text/javascript" src="/javascripts/tag.js"></script>
+<!-- Jquery js -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Slider js -->
+<script src="http://propeller.in/components/range-slider/js/wNumb.js"></script>
+<script src="http://propeller.in/components/range-slider/js/nouislider.js"></script>
+<script type="text/javascript" src="/javascripts/range.js"></script>
+<%- include('footer'); %>

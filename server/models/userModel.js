@@ -61,11 +61,11 @@ const user = {
         return db.selectDB([likerID, likedID], sql)
     },
     calculateFame: async (id) => {
-        const sql = `SELECT count(*) as totalUsers, (((SELECT count(*) as likes FROM liked_profiles WHERE liked_user_id = 2) +` +
-        `(SELECT count(*) as visits FROM visited_profiles WHERE visited_user_id = 2)) - ` +
-        `((SELECT count(*) as blocks FROM blocked_users WHERE blocked_user_id = 2) + ` +
-        `(SELECT count(*) as reports FROM reported_users WHERE reported_user_id = 2))) as sum FROM users`
-        return db.selectDB([id, id], sql)
+        const sql = `SELECT count(*) as totalUsers, (((SELECT count(*) as likes FROM liked_profiles WHERE liked_user_id = ?) +` +
+        `(SELECT count(*) as visits FROM visited_profiles WHERE visited_user_id = ?)) - ` +
+        `((SELECT count(*) as blocks FROM blocked_users WHERE blocked_user_id = ?) + ` +
+        `(SELECT count(*) as reports FROM reported_users WHERE reported_user_id = ?))) as sum FROM users`
+        return db.selectDB([id, id, id, id], sql)
     },
 
 }

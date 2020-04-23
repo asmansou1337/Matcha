@@ -6,6 +6,7 @@ const checkAuth = require('../middleware/check-auth');
 const authentification = require('../controllers/authentificationController');
 const profile = require('../controllers/profileController');
 const user = require('../controllers/usersController');
+const browse = require('../controllers/browseController');
 
 router.post('/signup', authentification.signup);
 router.get('/activateAccount', authentification.activateAccount);
@@ -34,4 +35,7 @@ router.post('/user/report', checkAuth, user.reportUser);
 router.post('/user/visit', checkAuth, user.visitUser);
 router.get('/user/getRelation', checkAuth, user.getRelation);
 router.get('/user/getProfileStatut', checkAuth, user.userProfileStatut);
+
+router.get('/search', checkAuth, browse.getSearchList);
+router.post('/search', checkAuth, browse.getFilterSearchList);
 module.exports = router;

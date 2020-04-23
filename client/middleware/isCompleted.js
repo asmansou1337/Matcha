@@ -1,5 +1,6 @@
 const axios = require('axios');
 const chalk = require('chalk');
+const handle = require('./functions')
 
 module.exports  = (req, res, next) => {
     // check if user exists & his profile is completed
