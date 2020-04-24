@@ -67,6 +67,21 @@ const user = {
         `(SELECT count(*) as reports FROM reported_users WHERE reported_user_id = ?))) as sum FROM users`
         return db.selectDB([id, id, id, id], sql)
     },
+    likersUsers : async (likedID) => {
+        const sql = "SELECT liker_user_id, liked_user_id, u.firstName, u.lastName,u.username, u.profilePic FROM liked_profiles li " +
+        "INNER JOIN users u ON u.id = liker_user_id AND liked_user_id = ? ORDER BY li.created_at DESC"
+        return db.selectDB([likedID], sql)
+    },
+    visitorsUsers : async (visitadID) => {
+        const sql = "SELECT visitor_user_id, visited_user_id, nbr_visits, u.firstName, u.lastName,u.username, u.profilePic FROM visited_profiles vi " +
+        "INNER JOIN users u ON u.id = visitor_user_id AND visited_user_id = ? ORDER BY vi.created_at DESC"
+        return db.selectDB([visitadID], sql)
+    },
+    likedUsers : async (likedID) => {
+        const sql = "SELECT liker_user_id, liked_user_id, u.firstName, u.lastName,u.username, u.profilePic FROM liked_profiles li " +
+        "INNER JOIN users u ON u.id = liked_user_id AND liker_user_id = ? ORDER BY li.created_at DESC"
+        return db.selectDB([likedID], sql)
+    },
 
 }
 

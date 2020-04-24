@@ -19,8 +19,20 @@ router.get('/', headerAuth.connectedHeader, isComplete, (req, res) => {
     error = undefined;
   else
     error.error = err;
-  //res.render('test');
-  res.render('index', {error});
+  axios.get(`${process.env.HostApi}/history`)
+    .then((response) => {
+      console.log(chalk.green(JSON.stringify(response.data)))
+      return res.render('index', {likersUsers: response.data.likersUsers,likedUsers: response.data.likedUsers, 
+        visitorsUsers: response.data.visitorsUsers, mutualUsers: response.data.mutualUsers});     
+    })
+    .catch((e) => {
+      if(typeof e.response !== 'undefined') {
+        if(e.response.status === 400) {
+            const error = e.response.data.errorMessage;
+            return res.render('index', {error});
+        }
+      } 
+    });
 });
 
 /* GET SignUp page. */

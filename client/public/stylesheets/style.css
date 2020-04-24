@@ -138,6 +138,45 @@ a {
     height: 450;
   }
 
+  .small_avatar {
+    width: 50;
+    height: 50;
+  }
+
+  .example-1 {
+    position: relative;
+    overflow-y: scroll;
+    height: 500px; 
+    margin-bottom: 50px;
+  }
+
+  .scrollbar-deep-purple::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+    background-color: #F5F5F5;
+    border-radius: 10px; }
+      
+  .scrollbar-deep-purple::-webkit-scrollbar {
+    width: 12px;
+    background-color: #F5F5F5; }
+      
+  .scrollbar-deep-purple::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+    background-color: #512da8; }
+      
+  .scrollbar-deep-purple {
+    scrollbar-color: #512da8 #F5F5F5;
+    }
+
+    .square::-webkit-scrollbar-track {
+      border-radius: 0 !important; }
+      
+      .square::-webkit-scrollbar-thumb {
+      border-radius: 0 !important; }
+      
+      .thin::-webkit-scrollbar {
+      width: 6px; }
+
   .stateOnline {
       background: #2BBBAD;
       border-radius: 50%;

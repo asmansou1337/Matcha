@@ -37,49 +37,77 @@
             <div class="col-lg-8 col-md-8 col-sm-6 col-md-8">
               <div class="tab-content" id="v-pills-tabContent">
                 <div class="tab-pane fade show active" id="v-pills-likesyou" role="tabpanel" aria-labelledby="v-pills-likesyou-tab">
-                  <div class="card">
+                  <div class="card example-1 scrollbar-deep-purple thin">
                     <h5 class="card-header h5">Who Likes You</h5>
                     <div class="card-body">
-                      <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
+                      <ul class="list-group list-group-flush ">
+                        <% if(typeof likersUsers !== 'undefined' && likersUsers.length > 0) { 
+                          likersUsers.forEach(user => { %>
+                        <li class="list-group-item">
+                          <div class="media">
+                            <img class="d-flex mr-3 rounded-circle small_avatar" src="<%= (user.profilePic != null) ? `/uploads/${user.profilePic}` : '/uploads/avatar.jpg' %>"
+                        alt="avatar"><div class="media-body">
+                              <h5 class="mt-0 font-weight-bold"><%= user.firstName+' '+user.lastName %></h5>
+                              @<%= user.username %>
+                            </div>
+                          </div>
+                          <a href="/user?id=<%= user.liker_user_id %>" class="stretched-link"></a>
+                         </li>
+                        <% });}%>
                       </ul>
                     </div>
                   </div>
                 </div>
                 <div class="tab-pane fade" id="v-pills-visitors" role="tabpanel" aria-labelledby="v-pills-visitors-tab">
-                  <div class="card">
+                  <div class="card example-1 scrollbar-deep-purple thin">
                     <h5 class="card-header h5">Visitors</h5>
                     <div class="card-body">
                       <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
+                        <% if(typeof visitorsUsers !== 'undefined' && visitorsUsers.length > 0) { 
+                          visitorsUsers.forEach(user => { %>
+                        <li class="list-group-item">
+                          <div class="media">
+                            <img class="d-flex mr-3 rounded-circle small_avatar" src="<%= (user.profilePic != null) ? `/uploads/${user.profilePic}` : '/uploads/avatar.jpg' %>"
+                        alt="avatar"><div class="media-body">
+                              <h5 class="mt-0 font-weight-bold"><%= user.firstName+' '+user.lastName %></h5>
+                              @<%= user.username %> visited you <%= (user.nbr_visits === 1) ? user.nbr_visits+' time' : user.nbr_visits +' times' %>
+                            </div>
+                          </div>
+                          <a href="/user?id=<%= user.liker_user_id %>" class="stretched-link"></a>
+                         </li>
+                        <% });}%>
                       </ul>
                     </div>
                   </div>
                 </div>
                 <div class="tab-pane fade" id="v-pills-youlikes" role="tabpanel" aria-labelledby="v-pills-youlikes-tab">
-                  <div class="card">
+                  <div class="card example-1 scrollbar-deep-purple thin">
                     <h5 class="card-header h5">You Likes</h5>
                     <div class="card-body">
                       <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
+                        <% if(typeof likedUsers !== 'undefined' && likedUsers.length > 0) { 
+                          likedUsers.forEach(user => { %>
+                        <li class="list-group-item">
+                          <div class="media">
+                            <img class="d-flex mr-3 rounded-circle small_avatar" src="<%= (user.profilePic != null) ? `/uploads/${user.profilePic}` : '/uploads/avatar.jpg' %>"
+                        alt="avatar"><div class="media-body">
+                              <h5 class="mt-0 font-weight-bold"><%= user.firstName+' '+user.lastName %></h5>
+                              @<%= user.username %>
+                            </div>
+                          </div>
+                          <a href="/user?id=<%= user.liker_user_id %>" class="stretched-link"></a>
+                         </li>
+                        <% });}%>
                       </ul>
                     </div>
                   </div>
                 </div>
                 <div class="tab-pane fade" id="v-pills-mutual" role="tabpanel" aria-labelledby="v-pills-mutual-tab">
-                  <div class="card">
+                  <div class="card example-1 scrollbar-deep-purple thin">
                     <h5 class="card-header h5">Mutual likes</h5>
                     <div class="card-body">
                       <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
+                        
                       </ul>
                     </div>
                   </div>

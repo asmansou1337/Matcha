@@ -268,6 +268,47 @@ const User = {
             res.status(200).send(responseData);
         else
             res.status(400).send(responseData);
+    },
+    history: async (req, res) => {
+        let responseData = {
+            isValid : true,
+            successMessage: null,
+            errorMessage: {}
+        };
+        const connectedUserData = req.userData;
+        // get list of users who likes you
+        let likersUsers = await userManager.likersUsers(connectedUserData['userId']);
+        if (likersUsers.length > 0) {
+            // console.log(chalk.green(JSON.stringify(likersUsers)))
+            responseData.likersUsers = likersUsers
+        }
+        let likedUsers = await userManager.likedUsers(connectedUserData['userId']);
+        if (likedUsers.length > 0) {
+            // console.log(chalk.red(JSON.stringify(likedUsers)))
+            responseData.likedUsers = likedUsers
+        }
+        let visitorsUsers = await userManager.visitorsUsers(connectedUserData['userId']);
+        if (visitorsUsers.length > 0) {
+            responseData.visitorsUsers = visitorsUsers
+        }
+        // if (likersUsers.length > 0 && likedUsers.length > 0) {
+        //     likersUsers = [...new Set(likersUsers)];
+        //     likedUsers = [...new Set(likedUsers)];
+        //     let mutual = [];
+        //     likersUsers.forEach(liker => {
+        //         likedUsers.forEach(liked => {
+        //             if (liked.liker_user_id === liker.liked_user_id) {
+        //                  mutual.push(liked)
+        //             }
+        //         });
+        //     });
+        //    responseData.mutualUsers = mutual
+        //    console.log(chalk.red(JSON.stringify(mutual)))
+        // }
+        if (responseData.isValid === true)
+            res.status(200).send(responseData);
+        else
+            res.status(400).send(responseData);
     }
 }
 

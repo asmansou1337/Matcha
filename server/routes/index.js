@@ -35,6 +35,7 @@ router.post('/user/report', checkAuth, user.reportUser);
 router.post('/user/visit', checkAuth, user.visitUser);
 router.get('/user/getRelation', checkAuth, user.getRelation);
 router.get('/user/getProfileStatut', checkAuth, user.userProfileStatut);
+router.get('/history', checkAuth, user.history);
 
 router.get('/search', checkAuth, browse.getSearchList);
 router.post('/search', checkAuth, browse.getFilterSearchList);
