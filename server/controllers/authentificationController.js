@@ -167,11 +167,6 @@ const Auth = {
                         // Create JWT token
                         responseData.successMessage = "login success";
                         responseData.authToken = tokenManager.createNewAuthToken(user[0].id, user[0].username , user[0].email);
-                        // res.cookie('token', responseData.authToken, {
-                        //     //expires: new Date(Date.now() + '12h'),
-                        //     secure: false, // set to true if your using https
-                        //     httpOnly: true,
-                        //   });
                     }
                     else {
                         responseData.isValid = false;

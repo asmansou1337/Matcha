@@ -9,7 +9,7 @@ const authToken = {
                 email
             },
             process.env.JWT_KEY,
-            { expiresIn: "12h" }
+            { expiresIn: "4h" }
           )
         return token
     }

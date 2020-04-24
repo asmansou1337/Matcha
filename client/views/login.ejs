@@ -24,7 +24,7 @@
 
                     <!-- Username -->
                     <div class="form-row mb-4">
-                      <input type="text" name="username" class="form-control" placeholder="Username">
+                      <input type="text" name="username" class="form-control" placeholder="Username" required maxlength="20">
                       <% if(typeof  error !== 'undefined'){ %>
                           <div class="error-input">
                               <% if (typeof  error.username !== 'undefined') %>

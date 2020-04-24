@@ -93,12 +93,12 @@ Part 1:
   - [X] report user
   - [X] User statut (online or offline) - see last connected time if offline
   - [X] fame rating (calculated)
-  - [ ] Visits history
-  - [ ] Like history
+  - [X] Visits history
+  - [X] Like history
 
 Part 2: 
   - [ ] Chat: real time chat (10 secs max)
-  - [ ] Search profiles based on critera
+  - [X] Search profiles based on critera
   - [ ] Suggesting profiles based on critera
   - [ ] Notifications: 
     - [ ] New message
@@ -119,11 +119,11 @@ Part 2:
     - [X] Reset password (new password form)
     - [X] Profile
     - [X] Edit profile (edit infos + update password)
-    - [ ] Welcome page (Visits history +  Likes history)
-    - [ ] Visits history
-    - [ ] Likes history
+    - [X] Welcome page (Visits history +  Likes history)
+    - [X] Visits history
+    - [X] Likes history
     - [ ] Suggested profiles Discover people (like or not)
-    - [ ] Search
+    - [X] Search
     - [ ] Chat
     - [ ] Notifications
 
@@ -140,8 +140,8 @@ Part 2:
 
   - **Design** 
 
-    - [ ] Template (Layout & Theme) - Material Design Bootstrap
-    - [ ] Responsive
+    - [X] Template (Layout & Theme) - Material Design Bootstrap
+    - [X] Responsive
 
   - **Functions**
 
@@ -204,7 +204,7 @@ ________________________________________________________________________
       ◦ [X] Pictures, max 5, including 1 as profile picture.
     - [X] At any time, the user must be able to modify these information, as well as the last name, first name, email and password.
     - [X] The user should be able to change or reinitialize his password despite been connected or not.
-    - [ ] The user must be able to check who visited his/her profile as well as who “liked” him/her.
+    - [X] The user must be able to check who visited his/her profile as well as who “liked” him/her.
     - [X] The user must have a public “fame rating”:
       ◦ Up to you to define what “fame rating” means as long as your criteria are consistent
     - [X] The user must be located using GPS positioning, up to his/her neighborhood. If the user does not want to be positioned, you must find a way to locate him/her even without his/her consent.2 The user must be able to modify his/her position in his/her profile.
@@ -226,7 +226,7 @@ ________________________________________________________________________
 
   - **Search**
 
-    [ ] The user must be able to run an advanced research selecting one or a few criterias such as:
+    [X] The user must be able to run an advanced research selecting one or a few criterias such as:
       - A age gap.
       - A “fame rating” gap.
       - A location.

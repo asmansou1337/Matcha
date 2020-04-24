@@ -7,11 +7,6 @@ const isComplete = require('../middleware/isCompleted');
 const handle = require('../middleware/functions');
 
 /* GET home page. */
-router.get('/test', headerAuth.connectedHeader, isComplete, (req, res) => {
-  res.render('test');
-});
-
-/* GET home page. */
 router.get('/', headerAuth.connectedHeader, isComplete, (req, res) => {
   let err = req.flash('error');
   let error = {};
@@ -19,11 +14,12 @@ router.get('/', headerAuth.connectedHeader, isComplete, (req, res) => {
     error = undefined;
   else
     error.error = err;
+  // get history of likes and visits
   axios.get(`${process.env.HostApi}/history`)
     .then((response) => {
-      console.log(chalk.green(JSON.stringify(response.data)))
+      // console.log(chalk.green(JSON.stringify(response.data)))
       return res.render('index', {likersUsers: response.data.likersUsers,likedUsers: response.data.likedUsers, 
-        visitorsUsers: response.data.visitorsUsers, mutualUsers: response.data.mutualUsers});     
+        visitorsUsers: response.data.visitorsUsers});     
     })
     .catch((e) => {
       if(typeof e.response !== 'undefined') {
@@ -112,17 +108,13 @@ router.post('/login', headerAuth.nonConnected, async (req, res) => {
   axios.post(`${process.env.HostApi}/login`, loginform)
     .then((response) => {
         // Add JWT token in a cookie
-        // console.log(chalk.grey(JSON.stringify(response.data)))
-        // console.log(chalk.green(JSON.stringify(response.headers)))
+        // expires in 4 hours
         const cookieOptions = {
-          //expires: new Date(Date.now() + '12h'),
           secure: false, // set to true if your using https
           httpOnly: true,
-          //expires: "12h"
+          maxAge: 14400
          }
         res.cookie('jwt', response.data.authToken, cookieOptions)
-        // res.cookie('user', JSON.stringify(response.data.user), cookieOptions)
-        // res.cookie('currentUser', response.data.user.username) //// added march 12
         return res.redirect('/');     
     }
     ).catch((e) => {

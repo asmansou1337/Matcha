@@ -25,7 +25,7 @@
                     <p>Please enter your email, a link to reinitialize your password will be sent to you</p>
                     <!-- E-mail -->
                     <div class="form-row mb-4">
-                      <input type="email" name="email" class="form-control mb-4" placeholder="E-mail">
+                      <input type="email" name="email" class="form-control mb-4" placeholder="E-mail" required maxlength="60">
                       <% if(typeof  error !== 'undefined'){ %>
                         <div class="error-input">
                             <% if (typeof  error.email !== 'undefined') %>

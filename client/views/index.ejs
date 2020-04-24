@@ -28,9 +28,7 @@
                   aria-controls="v-pills-visitors" aria-selected="false"><i class="fas fa-eye"></i>&nbsp;Visitors</a>
                 <a class="nav-link list-group-item" id="v-pills-youlikes-tab" data-toggle="pill" href="#v-pills-youlikes" role="tab"
                   aria-controls="v-pills-youlikes" aria-selected="false"><i class="fas fa-heart"></i>&nbsp;You Likes</a>
-                <a class="nav-link list-group-item" id="v-pills-mutual-tab" data-toggle="pill" href="#v-pills-mutual" role="tab"
-                  aria-controls="v-pills-mutual" aria-selected="false"><i class="fas fa-user-friends"></i>&nbsp;Mutual likes</a>
-              </div>
+               </div>
               </div>
              
             </div>
@@ -53,7 +51,9 @@
                           </div>
                           <a href="/user?id=<%= user.liker_user_id %>" class="stretched-link"></a>
                          </li>
-                        <% });}%>
+                        <% });} else { %>
+                          <li class="list-group-item">No Result Yet !!</li>
+                          <% }%>
                       </ul>
                     </div>
                   </div>
@@ -75,7 +75,9 @@
                           </div>
                           <a href="/user?id=<%= user.liker_user_id %>" class="stretched-link"></a>
                          </li>
-                        <% });}%>
+                        <% });}else { %>
+                          <li class="list-group-item">No Result Yet !!</li>
+                          <% }%>
                       </ul>
                     </div>
                   </div>
@@ -97,17 +99,9 @@
                           </div>
                           <a href="/user?id=<%= user.liker_user_id %>" class="stretched-link"></a>
                          </li>
-                        <% });}%>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div class="tab-pane fade" id="v-pills-mutual" role="tabpanel" aria-labelledby="v-pills-mutual-tab">
-                  <div class="card example-1 scrollbar-deep-purple thin">
-                    <h5 class="card-header h5">Mutual likes</h5>
-                    <div class="card-body">
-                      <ul class="list-group list-group-flush">
-                        
+                        <% });}else { %>
+                          <li class="list-group-item">No Result Yet !!</li>
+                          <% }%>
                       </ul>
                     </div>
                   </div>

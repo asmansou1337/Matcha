@@ -25,7 +25,7 @@
                     <div class="form-row mb-4">
                         <div class="col">
                             <!-- First name -->
-                            <input type="text" name="firstName" class="form-control" placeholder="First name">
+                            <input type="text" name="firstName" class="form-control" placeholder="First name" required maxlength="30">
                             <% if(typeof  error !== 'undefined'){ %>
                                 <div class="error-input">
                                     <% if (typeof  error.firstName !== 'undefined') %>
@@ -35,7 +35,7 @@
                         </div>
                         <div class="col">
                             <!-- Last name -->
-                            <input type="text" name="lastName" class="form-control" placeholder="Last name">
+                            <input type="text" name="lastName" class="form-control" placeholder="Last name" required maxlength="30">
                             <% if(typeof  error !== 'undefined'){ %>
                                 <div class="error-input">
                                     <% if (typeof  error.lastName !== 'undefined') %>
@@ -47,7 +47,7 @@
 
                     <!-- Username -->
                     <div class="form-row mb-4">
-                        <input type="text" name="username" class="form-control" placeholder="Username">
+                        <input type="text" name="username" class="form-control" placeholder="Username" required maxlength="20">
                         <% if(typeof  error !== 'undefined'){ %>
                             <div class="error-input">
                                 <% if (typeof  error.username !== 'undefined') %>
@@ -58,7 +58,7 @@
 
                     <!-- E-mail -->
                     <div class="form-row mb-4">
-                        <input type="email" name="email" class="form-control" placeholder="E-mail">
+                        <input type="email" name="email" class="form-control" placeholder="E-mail" required maxlength="60">
                         <% if(typeof  error !== 'undefined'){ %>
                             <div class="error-input">
                                 <% if (typeof  error.email !== 'undefined') %>

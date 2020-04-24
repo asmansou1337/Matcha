@@ -2,9 +2,10 @@ const axios = require('axios');
 
 const auth = {
     connectedHeader: (req, res, next) => {
-         console.log("jwt ---> " +typeof req.cookies.jwt);
+        //   console.log("jwt ---> " +typeof req.cookies.jwt);
         if (typeof req.cookies.jwt === 'undefined' || req.cookies.jwt.length === 0) {
-            req.flash('error', 'Authentification Failed, Please Login!!');
+            if (req.originalUrl !== '/')
+                req.flash('error', 'Authentification Failed, Please Login!!');
             return res.redirect('/login');
         } else {
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + req.cookies.jwt;
