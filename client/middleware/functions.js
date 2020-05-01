@@ -21,7 +21,7 @@ const func = {
         if(!value || (typeof value === 'undefined') || (value.length === 0) || JSON.stringify(value) === '{}') 
             return true
         return false
-      },
+      }
 }
 
 module.exports = func

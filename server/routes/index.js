@@ -7,6 +7,7 @@ const authentification = require('../controllers/authentificationController');
 const profile = require('../controllers/profileController');
 const user = require('../controllers/usersController');
 const browse = require('../controllers/browseController');
+const chat = require('../controllers/chatController');
 
 router.post('/signup', authentification.signup);
 router.get('/activateAccount', authentification.activateAccount);
@@ -36,6 +37,10 @@ router.post('/user/visit', checkAuth, user.visitUser);
 router.get('/user/getRelation', checkAuth, user.getRelation);
 router.get('/user/getProfileStatut', checkAuth, user.userProfileStatut);
 router.get('/history', checkAuth, user.history);
+
+router.get('/chat', checkAuth, chat.getMatchingUsers);
+router.post('/sendMsg', checkAuth, chat.sendMessage);
+router.get('/getMessages', checkAuth, chat.getConvMessages);
 
 router.get('/search', checkAuth, browse.getSearchList);
 router.post('/search', checkAuth, browse.getFilterSearchList);

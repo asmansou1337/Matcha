@@ -28,6 +28,7 @@
     "offline-geo-from-ip": "^1.0.1",
     "propellerkit-range-slider": "^1.2.0",
     "public-ip": "^4.0.1",
+    "socket.io": "^2.3.0",
     "tags-input": "^1.1.1",
     "vanilla-tags-input": "^1.0.0"
   }

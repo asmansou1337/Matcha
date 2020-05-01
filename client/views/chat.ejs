@@ -3,7 +3,7 @@
 <section class="view">
     <div class="d-flex flex-column justify-content-center">
          <!-- Error & messages section -->
-         <div>
+         <div id="error">
             <% if(typeof  error !== 'undefined'){ %>
                 <% if (typeof  error.error != 'undefined') { %>
                     <div class="alert alert-danger" role="alert">
@@ -21,73 +21,88 @@
                 <div class="card">
                   <!-- List of matching users -->
                   <div class="list-group">
-                    <a href="#!" class="list-group-item d-flex justify-content-between align-items-center active">
-                      <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" alt="avatar" class="avatar rounded-circle d-flex align-self-center mr-2 z-depth-1">
-                      <div class="d-sm-none d-md-none d-lg-block">
-                        <span> John Doe (@john) </span>
+                    <% if(typeof mutualUsers !== 'undefined' && mutualUsers.length > 0) { 
+                      mutualUsers.forEach(user => { %>
+                        <a href="/chat?to=<%= user.matchedId%>&from=<%= user.userId%>&matchedUsername=<%= user.matchedUsername%>&username=<%= user.username%>&convId=<%= user.convId %>" 
+                          class="list-group-item d-flex justify-content-between align-items-center user">
+                          <img src="<%= (user.profilePic != null) ? `/uploads/${user.profilePic}` : '/uploads/avatar.jpg' %>" alt="avatar" class="small_avatar rounded-circle d-flex align-self-center mr-2 z-depth-1">
+                          <div class="d-sm-none d-md-none d-lg-block">
+                            <span><%= user.firstName+' '+user.lastName+'(@'+user.matchedUsername+')' %> </span>
+                          </div>
+                          <% if (user.is_online === 1) { %>
+                          <span class="stateOnline"></span>
+                          <% } else { %>
+                            <span class="stateOffline"></span>
+                          <% } %>
+                          <!-- <span class="badge badge-danger badge-pill">24</span> -->
+                        </a>
+
+                    <% });} else { %>
+                      <div class="card-body card-body-cascade text-center">
+                        <h4><strong>No Friends Yet !!</strong></h4>
                       </div>
-                      <span class="stateOnline"></span>
-                      <span class="badge badge-danger badge-pill">24</span>
-                    </a>
-                    <a href="#!" class="list-group-item d-flex justify-content-between align-items-center">
-                      <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" alt="avatar" class="avatar rounded-circle d-flex align-self-center mr-2 z-depth-1">
-                      <div class="d-sm-none d-md-none d-lg-block">
-                        <span> John Doe (@john) </span>
-                      </div>
-                      <span class="stateOffline"></span>
-                      <span class="badge badge-danger badge-pill">24</span>
-                    </a>
+                    <% }%>
+                   
                     </div>
                 </div>
               </div>
-              <div class="col-lg-8 col-md-7 col-sm-8">
+              <div class="col-lg-8 col-md-7 col-sm-8 defaultChatBox" >
                 <div class="card">
-                  <div class="chatMessages">
-                    <ul class="list-unstyled">
-                      <li class="d-flex justify-content-between mb-4">
-                        <div class="bg-light rounded w-75 p-3 ml-2 z-depth-1">
-                          <div class="header">
-                            <strong class="primary-font">Brad Pitt</strong>
-                            <small class="pull-right text-muted"><i class="far fa-clock"></i> 12 mins ago</small>
-                          </div>
-                          <hr class="w-100">
-                          <p class="mb-0">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua.
-                          </p>
-                        </div>
-                      </li>
-                      <li class="d-flex justify-content-end mb-4">
-                        <div class="light-green lighten-2 rounded w-75 p-3 ml-2 z-depth-1">
-                          <div class="header">
-                            <strong class="primary-font">You</strong>
-                            <small class="pull-right text-muted"><i class="far fa-clock"></i> 12 mins ago</small>
-                          </div>
-                          <hr class="w-100">
-                          <p class="mb-0">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua.
-                          </p>
-                        </div>
-                      </li>
-
-
-                    <li class="white">
-                      <div class="form-group basic-textarea">
-                        <textarea class="form-control pl-2 my-0" id="exampleFormControlTextarea2" rows="3" placeholder="Type your message here..."></textarea>
-                      </div>
-                    </li>
-                    <button type="button" class="btn btn-deep-purple btn-rounded btn-sm waves-effect waves-light float-right">Send</button>
-                  
+                  <!-- Card image -->
+                  <img class="card-img-top" src="/uploads/chatting.jpg" alt="Card image cap">
+                  <div class="card-body">
+                      <h6 class="card-text text-center">Chat With Your Friends</h6> <hr>
+                  </div>
+                </div>
+            </div>
+              <div class="col-lg-8 col-md-7 col-sm-8">
+                <div class="card chatBox" style="display: none;">
+                    <div class="card-body">
+                      <h6 class="card-title">Chat With Your Friends</h6> <hr>
+                    <ul class="list-unstyled chatMessages">
+                      <% if(typeof messages !== 'undefined' && messages.length > 0) { 
+                        messages.forEach(msg => { 
+                          let d = (msg.belong === 'mine') ? 'justify-content-end' : 'justify-content-between'
+                          let color = (msg.belong === 'mine') ? 'light-green lighten-2' : 'bg-light'
+                          %>
+                          <li class="d-flex <%= d %> mb-4">
+                            <div class="<%= color %> rounded w-75 p-3 ml-2 z-depth-1">
+                              <div class="header">
+                                <strong class="primary-font"><%= msg.username %></strong>
+                                <small class="pull-right text-muted"><i class="far fa-clock"></i> <%= msg.msgTime %></small>
+                              </div>
+                              <hr class="w-100">
+                              <p class="mb-0">
+                                <%= msg.message %>
+                              </p>
+                            </div>
+                          </li>
+                      <% });}  %>
                     </ul>
                   </div>
-                  
+              
+                  <div class="col msgForm">
+                    <form id="chatForm">
+                        <div class="form-group basic-textarea">
+                          <textarea class="form-control pl-2 my-0" id="msg" name="msg" rows="3" placeholder="Type your message here..."></textarea>
+                        </div>
+                      <button type="submit" class="btn btn-deep-purple btn-rounded btn-sm waves-effect waves-light float-right">Send</button>
+                    </form>
+                  </div>
                 </div>
             </div>
           </div>
     </div>
 </section>
 
-
+<!-- To get infos from url  -->
+<script
+      src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.2/qs.min.js"
+      integrity="sha256-TDxXjkAUay70ae/QJBEpGKkpVslXaHHayklIVglFRT4="
+      crossorigin="anonymous"
+></script>
+<!-- To use sockets  -->
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="/javascripts/chat.js"></script>
 
 <%- include('footer'); %>

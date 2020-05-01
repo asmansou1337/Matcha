@@ -1,8 +1,5 @@
 let validation = require('../models/validation');
-let verifManager = require('../models/verificationModel');
 let chalk = require('chalk');
-const bcrypt = require('bcrypt');
-let fame = require('../models/userModel');
 const userManager = require('../models/browseModel');
 const profileManager = require('../models/profileModel');
 const util = require('../models/functions');
@@ -32,10 +29,7 @@ getSearchList: async (req, res) => {
                 lastLogin = util.calculateLastLogin(user.last_connection)
             }
             user.lastLogin = lastLogin
-            // console.log(chalk.red(JSON.stringify(user.tags)))
-            // console.log(chalk.yellow('distance ' + distance))
         };
-        // console.log(chalk.red(JSON.stringify(users)))
         responseData.searchList = users
     }
     if (responseData.isValid === true)

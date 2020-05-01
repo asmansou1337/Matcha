@@ -192,6 +192,19 @@ a {
 }
 
 .chatMessages {
-  height: 75%;
+  /* height: 75%; */
   margin: 10px;
+}
+
+.chatBox {
+  height: 550px;
+  margin-bottom: 30px;
+  overflow-y: scroll;
+  position: relative
+}
+
+.msgForm {
+	position:absolute;
+  bottom:0;
+  left:0;
 }

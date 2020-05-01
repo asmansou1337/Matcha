@@ -28,7 +28,9 @@
                   aria-controls="v-pills-visitors" aria-selected="false"><i class="fas fa-eye"></i>&nbsp;Visitors</a>
                 <a class="nav-link list-group-item" id="v-pills-youlikes-tab" data-toggle="pill" href="#v-pills-youlikes" role="tab"
                   aria-controls="v-pills-youlikes" aria-selected="false"><i class="fas fa-heart"></i>&nbsp;You Likes</a>
-               </div>
+                <a class="nav-link list-group-item" id="v-pills-mutual-tab" data-toggle="pill" href="#v-pills-mutual" role="tab"
+                  aria-controls="v-pills-mutual" aria-selected="false"><i class="fas fa-user-friends"></i>&nbsp;Mutual likes</a>
+                </div>
               </div>
              
             </div>
@@ -89,6 +91,30 @@
                       <ul class="list-group list-group-flush">
                         <% if(typeof likedUsers !== 'undefined' && likedUsers.length > 0) { 
                           likedUsers.forEach(user => { %>
+                        <li class="list-group-item">
+                          <div class="media">
+                            <img class="d-flex mr-3 rounded-circle small_avatar" src="<%= (user.profilePic != null) ? `/uploads/${user.profilePic}` : '/uploads/avatar.jpg' %>"
+                        alt="avatar"><div class="media-body">
+                              <h5 class="mt-0 font-weight-bold"><%= user.firstName+' '+user.lastName %></h5>
+                              @<%= user.username %>
+                            </div>
+                          </div>
+                          <a href="/user?id=<%= user.liker_user_id %>" class="stretched-link"></a>
+                         </li>
+                        <% });}else { %>
+                          <li class="list-group-item">No Result Yet !!</li>
+                          <% }%>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="v-pills-mutual" role="tabpanel" aria-labelledby="v-pills-mutual-tab">
+                  <div class="card example-1 scrollbar-deep-purple thin">
+                    <h5 class="card-header h5">Mutual likes</h5>
+                    <div class="card-body">
+                      <ul class="list-group list-group-flush">
+                        <% if(typeof mutualUsers !== 'undefined' && mutualUsers.length > 0) { 
+                          mutualUsers.forEach(user => { %>
                         <li class="list-group-item">
                           <div class="media">
                             <img class="d-flex mr-3 rounded-circle small_avatar" src="<%= (user.profilePic != null) ? `/uploads/${user.profilePic}` : '/uploads/avatar.jpg' %>"

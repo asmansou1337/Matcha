@@ -33,7 +33,7 @@ let defaultUser = {}
     defaultUser['biography'] = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
     defaultUser['last_connection'] = '2020-04-11 16:53:36'
     defaultUser['tags'] = ['web', 'food', 'fashion', 'fitness']
-    defaultUser['otherPics'] = ['other1.jpg','other3.jpg','other5.jpg','other7.jpg']
+    defaultUser['otherPics'] = ['other1.jpg','other3.jpeg','other5.jpeg','other7.jpeg']
 result.push(defaultUser)
 
 let i = 1
@@ -86,7 +86,7 @@ tab.forEach(user => {
     result.push(newUser)
 });
 
-console.log(chalk.yellow(JSON.stringify(result)))
+// console.log(chalk.yellow(JSON.stringify(result)))
 
 cnx.connect(function(err) {
 	if (err) {
@@ -171,30 +171,39 @@ cnx.query(sql, function(err) {
 	}
 });
 
-let nub = Math.floor(Math.random() * (25 - 10 + 1)) + 10;
+  let nub = Math.floor(Math.random() * (25 - 10 + 1)) + 10;
+// let nub = Math.floor(Math.random() * (5 - 2 + 1)) + 2;
+ console.log(chalk.blue('number -- ' + nub))
+// let nub = 3;
 
 // add likes
 sql = 'INSERT INTO liked_profiles ' + 
     '(liker_user_id, liked_user_id) VALUES ';
 
 result.forEach((user,i) => {
+    // console.log(chalk.green('user id ' + user.id))
+    // console.log(chalk.grey('id ' + i))
+    let curr = ++i;
     // random profile to like
     // Shuffle array
     let shuffled = result.sort(() => 0.5 - Math.random());
     // Get sub-array of first n elements after shuffled
     let usersToLike = shuffled.slice(0, nub);
     usersToLike.forEach((likedUser, index) => {
-        sql += `('${user.id}', ${likedUser.id})`
-        if ((usersToLike.length - 1) !== index){
-            sql += ','
-        }
+        //  if (likedUser.id !== curr) {
+            sql += `(${curr}, ${likedUser.id})`
+            if ((usersToLike.length - 1) !== index){
+                sql += ','
+            }
+        //  }
     });
-    if ((result.length - 1) !== i){
+    if ((result.length) !==  curr){
         sql += ','
     }
 });
 sql += ';'
-// console.log(chalk.red(sql))
+
+//  console.log(chalk.red(sql))
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -203,23 +212,26 @@ cnx.query(sql, function(err) {
 });
 
 nub = Math.floor(Math.random() * (25 - 10 + 1)) + 10;
-// // add visits
+// add visits
 sql = 'INSERT INTO visited_profiles ' + 
     '(visitor_user_id, visited_user_id, nbr_visits) VALUES ';
 
 result.forEach((user,i) => {
+    let curr = ++i;
     // random profile to like
     // Shuffle array
     let shuffled = result.sort(() => 0.5 - Math.random());
     // Get sub-array of first n elements after shuffled
     let usersVisited = shuffled.slice(0, nub);
     usersVisited.forEach((visitedUser, index) => {
-        sql += `('${user.id}', ${visitedUser.id}, 1)`
-        if ((usersVisited.length - 1) !== index){
-            sql += ','
-        }
+        // if (visitedUser.id !== curr) {
+            sql += `(${curr}, ${visitedUser.id}, 1)`
+            if ((usersVisited.length - 1) !== index){
+                sql += ','
+            }
+        // }
     });
-    if ((result.length - 1) !== i){
+    if ((result.length) !==  curr){
         sql += ','
     }
 });
@@ -232,37 +244,38 @@ cnx.query(sql, function(err) {
 	}
 });
 
-nub = Math.floor(Math.random() * (25 - 10 + 1)) + 10;
-// add blocks
-sql = 'INSERT INTO blocked_users ' + 
-    '(blocker_user_id, blocked_user_id) VALUES ';
+// nub = Math.floor(Math.random() * (25 - 10 + 1)) + 10;
+// // add blocks
+// sql = 'INSERT INTO blocked_users ' + 
+//     '(blocker_user_id, blocked_user_id) VALUES ';
 
-result.forEach((user,i) => {
-    // random profile to like
-    // Shuffle array
-    let shuffled = result.sort(() => 0.5 - Math.random());
-    // Get sub-array of first n elements after shuffled
-    let usersBlocked = shuffled.slice(0, nub);
-    usersBlocked.forEach((blockedUser, index) => {
-        // if (user.id != 1 && blockedUser.id != 1) {
-            sql += `(${user.id}, ${blockedUser.id})`
-            if ((usersBlocked.length - 1) !== index){
-                sql += ','
-            }
-        // }
-    });
-    if ((result.length - 1) !== i){
-        sql += ','
-    }
-});
-sql += ';'
-// console.log(chalk.red(sql))
-cnx.query(sql, function(err) {
-	if (err) throw err;
-	else {
-		console.log(chalk.green('blocks added !'));
-	}
-});
+// result.forEach((user,i) => {
+//     let curr = ++i;
+//     // random profile to like
+//     // Shuffle array
+//     let shuffled = result.sort(() => 0.5 - Math.random());
+//     // Get sub-array of first n elements after shuffled
+//     let usersBlocked = shuffled.slice(0, nub);
+//     usersBlocked.forEach((blockedUser, index) => {
+//         // if (blockedUser.id !== curr) {
+//             sql += `(${curr}, ${blockedUser.id})`
+//             if ((usersBlocked.length - 1) !== index){
+//                 sql += ','
+//             }
+//         // }
+//     });
+//     if ((result.length) !==  curr){
+//         sql += ','
+//     }
+// });
+// sql += ';'
+// // console.log(chalk.red(sql))
+// cnx.query(sql, function(err) {
+// 	if (err) throw err;
+// 	else {
+// 		console.log(chalk.green('blocks added !'));
+// 	}
+// });
 
 //End of cnx
 cnx.end();

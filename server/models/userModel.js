@@ -82,7 +82,12 @@ const user = {
         "INNER JOIN users u ON u.id = liked_user_id AND liker_user_id = ? ORDER BY li.created_at DESC"
         return db.selectDB([likedID], sql)
     },
-
+    mutualUsers : async (id) => {
+        const sql = "SELECT liker_user_id as matchedId, liked_user_id as userId, (SELECT username FROM users WHERE id = liked_user_id) as username, u.firstName, u.lastName,u.username as matchedUsername, u.profilePic, u.is_online FROM liked_profiles li " +
+        "INNER JOIN users u ON u.id = liker_user_id AND liked_user_id = ? AND liker_user_id IN ( "+
+        "SELECT liked_user_id FROM liked_profiles WHERE liker_user_id = ?) ORDER BY li.created_at DESC"
+        return db.selectDB([id, id], sql)
+    },
 }
 
 module.exports = user;

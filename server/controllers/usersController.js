@@ -291,20 +291,12 @@ const User = {
         if (visitorsUsers.length > 0) {
             responseData.visitorsUsers = visitorsUsers
         }
-        // if (likersUsers.length > 0 && likedUsers.length > 0) {
-        //     likersUsers = [...new Set(likersUsers)];
-        //     likedUsers = [...new Set(likedUsers)];
-        //     let mutual = [];
-        //     likersUsers.forEach(liker => {
-        //         likedUsers.forEach(liked => {
-        //             if (liked.liker_user_id === liker.liked_user_id) {
-        //                  mutual.push(liked)
-        //             }
-        //         });
-        //     });
-        //    responseData.mutualUsers = mutual
-        //    console.log(chalk.red(JSON.stringify(mutual)))
-        // }
+        // get list of users who matches you
+        let mutualUsers = await userManager.mutualUsers(connectedUserData['userId']);
+        if (mutualUsers.length > 0) {
+            // console.log(chalk.green(JSON.stringify(likersUsers)))
+            responseData.mutualUsers = mutualUsers
+        }
         if (responseData.isValid === true)
             res.status(200).send(responseData);
         else

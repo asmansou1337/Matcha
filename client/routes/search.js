@@ -14,18 +14,8 @@ const options = {
 var geocoder = NodeGeocoder(options);
 /* GET home page. */
 router.get('/search',  headerAuth.connectedHeader, isComplete, (req, res) => {
-    // let err = req.flash('error');
-    // let error = {};
-    // if (JSON.stringify(err) === '[]') 
-    //   error = undefined;
-    // else
-    //   error.error = err;
-    // //res.render('test');
-    // res.render('search', {error});
     axios.get(`${process.env.HostApi}/search`)
     .then((respo) => {
-        // console.log(chalk.green(JSON.stringify(respo.data.searchList)));
-        // console.log(chalk.blue(JSON.stringify(error)));
         // get user infos
         res.render('search', {users: respo.data.searchList});
     })

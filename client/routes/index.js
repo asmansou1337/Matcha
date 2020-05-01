@@ -19,7 +19,7 @@ router.get('/', headerAuth.connectedHeader, isComplete, (req, res) => {
     .then((response) => {
       // console.log(chalk.green(JSON.stringify(response.data)))
       return res.render('index', {likersUsers: response.data.likersUsers,likedUsers: response.data.likedUsers, 
-        visitorsUsers: response.data.visitorsUsers});     
+        visitorsUsers: response.data.visitorsUsers, mutualUsers: response.data.mutualUsers});     
     })
     .catch((e) => {
       if(typeof e.response !== 'undefined') {
@@ -112,7 +112,7 @@ router.post('/login', headerAuth.nonConnected, async (req, res) => {
         const cookieOptions = {
           secure: false, // set to true if your using https
           httpOnly: true,
-          maxAge: 14400
+          // maxAge: 14400
          }
         res.cookie('jwt', response.data.authToken, cookieOptions)
         return res.redirect('/');     

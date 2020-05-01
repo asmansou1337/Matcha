@@ -12,7 +12,8 @@ const errorTab = {
   "gender": "Your Gender is Invalid",
   "orientation": "Your Orientation is Invalid",
   "bio": "Your biography should be less than 200 caracters",
-  "tags": "Your tags should be alphanumerique caracteres only!"
+  "tags": "Your tags should be alphanumerique caracteres only!",
+  "chat message": "Your message should be less than 200 caracters"
 }
 
 const Valid = {
@@ -165,7 +166,12 @@ const Valid = {
           !util.isEmpty(user.profilePic) &&
           !util.isEmpty(user.born_date) &&
           !util.isEmpty(user.tags)
-      }
+      },
+      isMsg: (msg) => {
+        if((msg.length > 200) || msg.length < 2)
+            return false
+        return true
+      },
 }
 
 module.exports = Valid;
