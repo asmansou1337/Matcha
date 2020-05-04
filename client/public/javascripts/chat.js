@@ -1,4 +1,4 @@
-const user = document.querySelector('.user');
+
 const chatForm = document.getElementById('chatForm');
 const chatMessages = document.querySelector('.chatMessages');
 const cardTitle = document.querySelector('.card-title')
@@ -11,7 +11,7 @@ const chatBox = document.querySelector('.chatBox')
     ignoreQueryPrefix: true
   });
 
-    console.log(to, from, matchedUsername, username, convId)
+    // console.log(to, from, matchedUsername, username, convId)
     if (typeof to !== 'undefined' && typeof from !== 'undefined' && typeof matchedUsername !== 'undefined' && typeof username !== 'undefined' &&
     typeof convId !== 'undefined') {
         // Join Conversation

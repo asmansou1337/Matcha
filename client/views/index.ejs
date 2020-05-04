@@ -120,10 +120,10 @@
                             <img class="d-flex mr-3 rounded-circle small_avatar" src="<%= (user.profilePic != null) ? `/uploads/${user.profilePic}` : '/uploads/avatar.jpg' %>"
                         alt="avatar"><div class="media-body">
                               <h5 class="mt-0 font-weight-bold"><%= user.firstName+' '+user.lastName %></h5>
-                              @<%= user.username %>
+                              @<%= user.matchedUsername %>
                             </div>
                           </div>
-                          <a href="/user?id=<%= user.liker_user_id %>" class="stretched-link"></a>
+                          <a href="/user?id=<%= user.matchedId %>" class="stretched-link"></a>
                          </li>
                         <% });}else { %>
                           <li class="list-group-item">No Result Yet !!</li>

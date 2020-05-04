@@ -41,7 +41,9 @@ router.get('/history', checkAuth, user.history);
 router.get('/chat', checkAuth, chat.getMatchingUsers);
 router.post('/sendMsg', checkAuth, chat.sendMessage);
 router.get('/getMessages', checkAuth, chat.getConvMessages);
+router.get('/getUnreadMessages', checkAuth, chat.getUnreadMessages);
 
 router.get('/search', checkAuth, browse.getSearchList);
 router.post('/search', checkAuth, browse.getFilterSearchList);
+router.get('/browse', checkAuth, browse.getBrowseList);
 module.exports = router;

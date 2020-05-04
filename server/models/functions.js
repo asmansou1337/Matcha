@@ -132,7 +132,14 @@ const util = {
             (order === 'desc') ? (comparison * -1) : comparison
           );
         };
-    }
+    },
+    // items.sort((a, b) => {
+    //   const compare_name = a.name.localeCompare(b.name);
+    //   const compare_title = a.title.localeCompare(b.title);
+    //   const compare_city = a.city.localeCompare(b.city);
+    
+    //   return compare_name || compare_title || compare_city;
+    // });
 }
 
 module.exports = util;

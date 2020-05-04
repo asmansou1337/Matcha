@@ -15,13 +15,17 @@ const chat = {
         `(starter_user_id = ? AND receiver_user_id = ?)) AND id = ?`
         return db.selectDB([sender, receiver, receiver, sender, convId], sql)
     },
-    addNewMsg: async (convId, userId, msg) => {
-        const sql = `INSERT INTO messages (conversation_id, user_id, message) VALUES (?,?,?)`
-        return db.selectDB([convId, userId, msg], sql)
+    addNewMsg: async (convId, userId, msg, isRead) => {
+        const sql = `INSERT INTO messages (conversation_id, user_id, message, is_read) VALUES (?,?,?,?)`
+        return db.selectDB([convId, userId, msg, isRead], sql)
     },
     getMessages: async (id) => {
         const sql = `SELECT user_id,(SELECT username FROM users WHERE user_id = id) as username, message, created_at FROM messages WHERE conversation_id = ? ` +
         `ORDER BY created_at ASC`
+        return db.selectDB([id], sql)
+    },
+    getUnreadMessages: async (id) => {
+        const sql = `SELECT count(*) as unreadMsgs FROM messages WHERE user_id = ? AND is_read = 0`
         return db.selectDB([id], sql)
     },
 }

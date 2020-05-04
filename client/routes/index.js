@@ -17,7 +17,7 @@ router.get('/', headerAuth.connectedHeader, isComplete, (req, res) => {
   // get history of likes and visits
   axios.get(`${process.env.HostApi}/history`)
     .then((response) => {
-      // console.log(chalk.green(JSON.stringify(response.data)))
+      //  console.log(chalk.green(JSON.stringify(response.data)))
       return res.render('index', {likersUsers: response.data.likersUsers,likedUsers: response.data.likedUsers, 
         visitorsUsers: response.data.visitorsUsers, mutualUsers: response.data.mutualUsers});     
     })

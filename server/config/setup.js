@@ -67,32 +67,7 @@ cnx.query(sql, function(err) {
 	}
 });
 
-
-// // Table genders
-// var sql = 'CREATE TABLE IF NOT EXISTS genders (';
-// sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
-// sql += '`title` varchar(300) NOT NULL,';
-// sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-// sql += ') CHARACTER SET utf8 COLLATE utf8_general_ci';
-// cnx.query(sql, function(err) {
-// 	if (err) throw err;
-// 	else {
-// 		console.log(chalk.green('Table genders created !'));
-// 	}
-// });
-
-// // Table preferences
-// var sql = 'CREATE TABLE IF NOT EXISTS preferences (';
-// sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
-// sql += '`title` varchar(300) NOT NULL,';
-// sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-// sql += ') CHARACTER SET utf8 COLLATE utf8_general_ci';
-// cnx.query(sql, function(err) {
-// 	if (err) throw err;
-// 	else {
-// 		console.log(chalk.green('Table preferences created !'));
-// 	}
-// });
+//  ALTER TABLE messages CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin
 
 // Table tags
 var sql = 'CREATE TABLE IF NOT EXISTS tags (';
@@ -199,6 +174,7 @@ sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
 sql += '`conversation_id` int(11) NOT NULL,';
 sql += '`user_id` int(11) NOT NULL,';
 sql += '`message` TEXT NOT NULL,';
+sql += '`is_read` int(11) NOT NULL DEFAULT 0,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
 sql += ') CHARACTER SET utf8 COLLATE utf8_general_ci';
 cnx.query(sql, function(err) {

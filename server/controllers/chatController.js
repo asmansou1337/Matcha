@@ -43,18 +43,19 @@ const chat = {
             errorMessage: {}
         };
         const connectedUserData = req.userData;
+        // console.log(chalk.blue('connected -- ' + JSON.stringify(connectedUserData)))
         // Verify the conversation is valid && the user sending the message is the connected user
-        let { userTo, userFrom, convId, msg } = req.body;
+        let { userTo, userFrom, convId, msg, isRead } = req.body;
         let checkConv = await chatManager.checkConversation(userTo, userFrom, convId)
-        console.log(JSON.stringify(req.body))
-        if (checkConv.length === 1) {
+         console.log(JSON.stringify(req.body))
+        if (checkConv.length === 1  && Number(userFrom) === connectedUserData['userId']) {
             // verify the users are matched
             let checklike1 = await userManager.checkLiked(userTo, userFrom)
             let checklike2 = await userManager.checkLiked(userFrom, userTo)
             if (checklike1.length === 1 && checklike2.length === 1) {
                 // check if any of the users blocks the other
                 let checkBlock = await userManager.checkBlock(userTo, userFrom);
-                console.log(chalk.green(JSON.stringify(checkBlock)))
+                // console.log(chalk.green(JSON.stringify(checkBlock)))
                 if (checkBlock.length > 0) {
                     if (checkBlock[0].blocked_user_id === Number(userFrom)) {
                         responseData.isValid = false;
@@ -73,7 +74,7 @@ const chat = {
                         msg = util.escapeHtml(msg.trim());
                     // add msg to database if it's valide
                     if (responseData.isValid === true) {
-                        let addMsg = await chatManager.addNewMsg(convId, userFrom, msg);
+                        let addMsg = await chatManager.addNewMsg(convId, userFrom, msg, Number(isRead));
                         if (addMsg) {
                             responseData.successMessage = 'Msg added successfully';
                         } else {
@@ -90,7 +91,7 @@ const chat = {
             responseData.isValid = false;
             responseData.errorMessage.error = 'Error, Please try again!';
         }
-        console.log(chalk.green(JSON.stringify(responseData)))
+        // console.log(chalk.green(JSON.stringify(responseData)))
         if (responseData.isValid === true)
             res.status(200).send(responseData);
         else
@@ -106,8 +107,8 @@ const chat = {
         // Verify the conversation is valid
         let { to, from, convId } = req.query;
         let checkConv = await chatManager.checkConversation(to, from, convId)
-        console.log(JSON.stringify(req.query))
-        if (checkConv.length === 1) {
+        // console.log(JSON.stringify(req.query))
+        if (checkConv.length === 1 && Number(from) === connectedUserData['userId']) {
             // get the conversation messages
             let convs = await chatManager.getMessages(convId)
             if (convs) {
@@ -133,7 +134,29 @@ const chat = {
             responseData.isValid = false;
             responseData.errorMessage.error = 'Error, Please try again!';
         }
-        console.log(chalk.green(JSON.stringify(responseData)))
+        // console.log(chalk.green(JSON.stringify(responseData)))
+        if (responseData.isValid === true)
+            res.status(200).send(responseData);
+        else
+            res.status(400).send(responseData);
+    },
+    getUnreadMessages: async (req, res) => {
+        let responseData = {
+            isValid : true,
+            successMessage: null,
+            errorMessage: {}
+        };
+        // const connectedUserData = req.userData;
+        // Verify the conversation is valid
+        let { userId } = req.query;
+        let getUnreadMsgs = await chatManager.getUnreadMessages(userId)
+        if (getUnreadMsgs) {
+            console.log(chalk.green(JSON.stringify(getUnreadMsgs)))
+        } else {
+            responseData.isValid = false;
+            responseData.errorMessage.error = 'Error, Please try again!';
+        }
+        // console.log(chalk.green(JSON.stringify(responseData)))
         if (responseData.isValid === true)
             res.status(200).send(responseData);
         else

@@ -27,6 +27,16 @@ function getCurrentUser(id) {
   return users.find(user => user.id === id);
 }
 
+// Get current user
+function checkConnectedUser(id, id2, convId) {
+  for (const user of users) {
+    if (user.from === id && user.to === id2 && user.convId === convId) {
+      return true
+    }
+  }
+  return false
+}
+
 // User leaves chat
 function userLeave(id) {
   const index = users.findIndex(user => user.id === id);
@@ -57,9 +67,9 @@ app.set('port', port);
 
 var server = http.createServer(app);
 const io = socketio(server);
-const sendMsgRouter = require('../routes/sendMsg')(io);
+// const sendMsgRouter = require('../routes/sendMsg')(io);
 
-app.use('/sendMsg', sendMsgRouter);
+// app.use('/sendMsg', sendMsgRouter);
 
 
 io.on('connection', socket => {
@@ -88,9 +98,15 @@ io.on('connection', socket => {
   // Listen for chatMessage
   socket.on('chatMessage', msg => {
     const user = getCurrentUser(socket.id);
+    console.log('current user ' + JSON.stringify(user))
+    let isRead = 0;
+    if (checkConnectedUser(user.to, user.from, user.convId))
+      isRead = 1;
+
     // to, from, matchedUsername, username, convId
-    let sendMsg = {userTo: user.to, userFrom: user.from, convId: user.convId, msg}
+    let sendMsg = {userTo: user.to, userFrom: user.from, convId: user.convId, msg, isRead}
     // console.log(chalk.blue(JSON.stringify(sendMsg)))
+    
     axios.post(`${process.env.HostApi}/sendMsg`, sendMsg)
     .then((respo) => {
         io.to(user.convId).emit('message', formatMessage(user.username, msg));
@@ -99,6 +115,11 @@ io.on('connection', socket => {
       console.log(chalk.red( e.response.data.errorMessage.error))
       socket.error(e.response.data.errorMessage.error)
     })
+
+    // io.to(user.to).emit('unreadMsgs', () => {
+              
+    //         })
+
     // socket.emit('error', error);
     // .catch((e) => {
     //   //handle.authError(e, req, res);

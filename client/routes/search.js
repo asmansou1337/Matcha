@@ -5,13 +5,8 @@ const chalk = require('chalk');
 const headerAuth = require('../middleware/authHeader')
 const isComplete = require('../middleware/isCompleted');
 const handle = require('../middleware/functions')
-const NodeGeocoder = require('node-geocoder');
-const options = {
-  provider: 'google',
-  apiKey: 'AIzaSyBg-g_Rb35tPbOZf4MVrXSpNP08hrVmhO0',
-  formatter: 'json'
-};
-var geocoder = NodeGeocoder(options);
+
+
 /* GET home page. */
 router.get('/search',  headerAuth.connectedHeader, isComplete, (req, res) => {
     axios.get(`${process.env.HostApi}/search`)
@@ -23,8 +18,7 @@ router.get('/search',  headerAuth.connectedHeader, isComplete, (req, res) => {
       handle.authError(e, req, res);
       if(typeof e.response !== 'undefined') {
         if(e.response.status === 400) {
-          req.flash('error', e.response.data.errorMessage.error);
-          res.redirect('/');
+          res.render('search', {error: {error: e.response.data.errorMessage.error}});
         }
       }    
     })
@@ -44,8 +38,7 @@ router.post('/search',  headerAuth.connectedHeader, isComplete, (req, res) => {
       handle.authError(e, req, res);
       if(typeof e.response !== 'undefined') {
         if(e.response.status === 400) {
-          req.flash('error', e.response.data.errorMessage.error);
-          res.redirect('/');
+          res.render('search', {error: {error: e.response.data.errorMessage.error}});
         }
       }    
     })
