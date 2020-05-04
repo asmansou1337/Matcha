@@ -28,7 +28,7 @@
     <!-- Card body -->
     <div id="collapseOne1" class="collapse" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordionEx">
       <div class="card-body">
-        <form action="/search" method="post">
+        <form action="/browse" method="post">
         <div class="row" style="margin: 10;">
           <div class="col-sm-4">
               <!-- Ranger Slider with value -->
@@ -77,33 +77,35 @@
                 <span>max :</span>
                 <input type="number" name="location-max" id="location-max-value" value="<%= (typeof filter !== 'undefined') ? filter['location-max'] : '' %>">
             </div>
-          </div>    
+          </div>  
         </div>
        
             <!-- tags selection -->
-            <div class="row justify-content-center">
-                <div class="col-sm-8">
+            <div class="row">
+                <div class="col-sm-12">
                     <div class="text-center"><span>Tags</span></div>
-                    <div class="container-fluid border rounded mb-0 tag-container autocomplete" style="padding: 10px;">
+                    <div class="tagsDiv text-center">
                       <!-- Filter existing tags -->
-                      <% if(typeof filter !== 'undefined' && filter.TagsTab.length > 0) {
-                        let tags = JSON.parse(filter.TagsTab)
-                        tags.forEach(tag => { %>
-                      <span class="badge grey lighten-1 tag">
-                          <h6><span><%= tag %></span>
-                          <i class="far fa-times-circle" aria-hidden="true" data-item="<%= tag %>"></i></h6>
-                          </span>
+                      <% if(typeof tags !== 'undefined' && tags.length > 0) {
+                        tags.forEach((tag, index) => { 
+                          let check = '';
+                          if (typeof filter !== 'undefined')
+                          if (filter.TagsTab.includes(tag)) {
+                            check = 'checked'
+                          }  %>
+                          <div class="custom-control custom-checkbox custom-control-inline">
+                            <input type="checkbox" class="custom-control-input" id="defaultInline<%= index %>" <%= check %> name="tag<%= index %>" value="<%= tag %>">
+                            <label class="custom-control-label" for="defaultInline<%= index %>"><%= tag %></label>
+                          </div>
                       <% }); 
                       } %>
-                      <!-- All existing tags -->
-                        <input placeholder ="Select tags..." id="myInput"/>
-                        <% if(typeof filter !== 'undefined' && filter.TagsTab !== '[]') {
-                          %>
-                        <input type="hidden" name="TagsTab" id="tagsTab" value="<%= JSON.parse(filter['TagsTab']) %>">
-                        <% 
-                          } else { %>
-                            <input type="hidden" name="TagsTab" id="tagsTab" value="[]">
-                         <% } %>
+                      <% if(typeof filter !== 'undefined' && filter.TagsTab !== '[]') {
+                        %>
+                      <input type="hidden" name="TagsTab" id="tagsTab" value="<%= filter['TagsTab'] %>">
+                      <% 
+                        } else { %>
+                          <input type="hidden" name="TagsTab" id="tagsTab" value="[]">
+                       <% } %>
                     </div>
                 </div>
             </div>
@@ -115,6 +117,8 @@
           <!-- Default input -->
           <div class="form-group col-md-6">
               <select class="browser-default custom-select" name="sortOption">
+                <option value="default"
+                    <%= (typeof filter !== 'undefined') ? ((filter.sortOption == 'default') ?  'selected'  : '') : '' %>>Sort By</option>
                 <option value="age"
                     <%= (typeof filter !== 'undefined') ? ((filter.sortOption == 'age') ?  'selected'  : '') : '' %>>Age</option>
                 <option value="fame"
@@ -214,10 +218,9 @@
         </div>
       </div>
 </section>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
-<script type="text/javascript" src="/javascripts/tag.js"></script>
 <!-- Jquery js -->
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/javascripts/listtag.js"></script>
 <!-- Slider js -->
 <script src="http://propeller.in/components/range-slider/js/wNumb.js"></script>
 <script src="http://propeller.in/components/range-slider/js/nouislider.js"></script>

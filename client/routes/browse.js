@@ -12,7 +12,8 @@ router.get('/browse',  headerAuth.connectedHeader, isComplete, (req, res) => {
     axios.get(`${process.env.HostApi}/browse`)
     .then((respo) => {
         // get user infos
-        res.render('browse', {users: respo.data.browseList});
+        console.log(chalk.red(JSON.stringify(respo.data.userTags)))
+        res.render('browse', {users: respo.data.browseList, tags: respo.data.userTags});
     })
     .catch((e) => {
       handle.authError(e, req, res);
@@ -26,13 +27,14 @@ router.get('/browse',  headerAuth.connectedHeader, isComplete, (req, res) => {
 
 /* GET home page. */
 router.post('/browse',  headerAuth.connectedHeader, isComplete, (req, res) => {
-    // console.log(chalk.yellow(JSON.stringify(req.body)))
+     console.log(chalk.yellow(JSON.stringify(req.body)))
     axios.post(`${process.env.HostApi}/browse`, req.body)
     .then((respo) => {
         // console.log(chalk.green(JSON.stringify(respo.data)));
         // console.log(chalk.blue(JSON.stringify(error)));
         // get user infos
-        res.render('browse', {users: respo.data.browseList, filter: respo.data.filter ,error: respo.data.errorMessage});
+        console.log(chalk.blue(JSON.stringify(respo.data.filter)))
+        res.render('browse', {users: respo.data.browseList, filter: respo.data.filter ,error: respo.data.errorMessage, tags: respo.data.userTags});
     })
     .catch((e) => {
       handle.authError(e, req, res);

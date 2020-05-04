@@ -111,6 +111,17 @@ const util = {
       });
       return commonTags
     },
+    selectedTags: (userTags, listTags) => {
+      if(Array.isArray(listTags) && listTags.length > 0) {
+      listTags.forEach(t => {
+        if (!userTags.includes(t)) {
+            return userTags
+        }  
+      });
+      return listTags
+    } else
+    return userTags
+    },
     compareValues: (key, order = 'asc') => {
         return function innerSort(a, b) {
           if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {

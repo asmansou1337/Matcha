@@ -51,9 +51,9 @@ router.get('/user', headerAuth.connectedHeader, isComplete, async (req,res) => {
           });
           user = response.data.user;
           // get the city & country by reverse geocoding
-          geocoder.reverse({lat:user.latitude, lon:user.longitude}).then((result) => {
-          user.city = result[0].city;
-          user.country = result[0].country;
+          // geocoder.reverse({lat:user.latitude, lon:user.longitude}).then((result) => {
+          // user.city = result[0].city;
+          // user.country = result[0].country;
           // get the relationship with the user
           axios.get(`${process.env.HostApi}/user/getRelation?id=${id}`)
           .then((resp) => {
@@ -68,7 +68,7 @@ router.get('/user', headerAuth.connectedHeader, isComplete, async (req,res) => {
           }).catch((e) => {
             handle.errorHandle(e, req, res)     
           });
-          })
+          // })
       }
       ).catch((e) => {
         handle.errorHandle(e, req, res)     

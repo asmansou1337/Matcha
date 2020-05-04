@@ -46,4 +46,5 @@ router.get('/getUnreadMessages', checkAuth, chat.getUnreadMessages);
 router.get('/search', checkAuth, browse.getSearchList);
 router.post('/search', checkAuth, browse.getFilterSearchList);
 router.get('/browse', checkAuth, browse.getBrowseList);
+router.post('/browse', checkAuth, browse.getFilterBrowseList);
 module.exports = router;
