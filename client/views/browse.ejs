@@ -172,11 +172,11 @@
                             <div class="col"><h5><span class="badge rgba-purple-strong"><i class="fab fa-gratipay"></i>&nbsp;<%=  user.fame %></span></h5></div>
                         </div>
                         <!-- User Name -->
-                        <h5 class="card-title"><strong><%= user.firstName+' '+user.lastName+' '+user.commonTags %></strong></h5>
+                        <h5 class="card-title"><strong><%= user.firstName+' '+user.lastName %></strong></h5>
                         <!-- Age -->
-                        <p><strong><i class="fas fa-calendar-alt"></i> </strong><%= user.age %> &nbsp;-&nbsp;
-                            <strong><i class="fas fa-venus-mars"></i> </strong> <%= user.gender %> &nbsp;-&nbsp;
-                            <strong><i class="fas fa-user"></i> </strong> <%= user.preference %>
+                        <p><strong><i class="fas fa-calendar-alt"></i> </strong><%= (user.age !== null) ? user.age : ' ' %> &nbsp;-&nbsp;
+                            <strong><i class="fas fa-venus-mars"></i> </strong> <%= (user.gender !== null) ? user.gender : ' ' %> &nbsp;-&nbsp;
+                            <strong><i class="fas fa-user"></i> </strong> <%= (user.preference !== null) ? user.preference : ' ' %>
                         </p>
                         <p>
                             <strong><i class="fas fa-map-marker-alt"></i></strong>&nbsp;<%= (user.distance < 1) ? 'near you': user.distance + ' km away' %>
@@ -185,7 +185,7 @@
                                                     
                         <!-- Text -->
                         <p class="card-text">
-                            <% if (user.biography.length > 85) { %>
+                            <% if(user.biography !== null) if (user.biography.length > 85) { %>
                                 <%= user.biography.substring(1, 85) %>...
                             <% } else { %>
                                 <%= user.biography %>

@@ -13,6 +13,7 @@ router.get('/browse',  headerAuth.connectedHeader, isComplete, (req, res) => {
     .then((respo) => {
         // get user infos
         console.log(chalk.red(JSON.stringify(respo.data.userTags)))
+        // console.log(chalk.blue(JSON.stringify(respo.data.browseList)))
         res.render('browse', {users: respo.data.browseList, tags: respo.data.userTags});
     })
     .catch((e) => {

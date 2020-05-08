@@ -29,7 +29,7 @@ router.post('/search',  headerAuth.connectedHeader, isComplete, (req, res) => {
     // console.log(chalk.yellow(JSON.stringify(req.body)))
     axios.post(`${process.env.HostApi}/search`, req.body)
     .then((respo) => {
-        // console.log(chalk.green(JSON.stringify(respo.data)));
+         console.log(chalk.green(JSON.stringify(respo.data.filter)));
         // console.log(chalk.blue(JSON.stringify(error)));
         // get user infos
         res.render('search', {users: respo.data.searchList, filter: respo.data.filter ,error: respo.data.errorMessage});

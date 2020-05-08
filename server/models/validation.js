@@ -108,6 +108,14 @@ const Valid = {
         }
         return true
       },
+      isKeywordFilterValid: (filter) => {
+        console.log(chalk.yellow(typeof filter['keyword']))
+        if (!util.isEmpty(filter['keyword'])) {
+          if(!util.isAlphaNum(filter['keyword']))
+            return false
+        }
+        return true
+      },
       isAgeFilterValid: (filter) => {
         if (!util.isEmpty(filter['age-min']) &&  !util.isEmpty(filter['age-max'])) {
           if (!util.isDigit(filter['age-min']) || !util.isDigit(filter['age-max']) || (Number(filter['age-max']) < Number(filter['age-min']))) 
@@ -131,7 +139,8 @@ const Valid = {
         return true
       },
       isFilterValid: (filter, tags) => {
-        if (!Valid.isAgeFilterValid(filter) || !Valid.isRatingFilterValid(filter) || !Valid.isLocationFilterValid(filter))
+        if (!Valid.isAgeFilterValid(filter) || !Valid.isRatingFilterValid(filter) || 
+        !Valid.isLocationFilterValid(filter) || !Valid.isKeywordFilterValid(filter))
           return 'Error Filtering Results!!'
         if (!Valid.isFilterTags(tags))
           return errorTab['tags']

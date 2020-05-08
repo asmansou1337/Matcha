@@ -51,6 +51,7 @@ getFilterSearchList: async (req, res) => {
     const ratingMax = filter['rating-max'] || 5;
     const locationMin = filter['location-min'];
     const locationMax = filter['location-max'];
+    const keyword = filter['keyword'].toString().toLowerCase();
     //   console.log(chalk.yellow(JSON.stringify(filter)))
     // console.log(chalk.red(validation.isFilterValid(filter)))
     let listTags = JSON.parse(filter['TagsTab']);
@@ -123,6 +124,14 @@ getFilterSearchList: async (req, res) => {
                                 continue;
                             }
                         }
+                        // filter by keyword
+                        if(!users[i].username.toLowerCase().includes(keyword) && !users[i].firstName.toLowerCase().includes(keyword)
+                        && !users[i].lastName.toLowerCase().includes(keyword))
+                        {
+                            users.splice(i, 1);
+                            i--;
+                            continue;   
+                        }
                     } else {
                         responseData.errorMessage.error = err;
                     }
@@ -135,7 +144,6 @@ getFilterSearchList: async (req, res) => {
             responseData.searchList = users
             }
     }
-    
     if (responseData.isValid === true)
         res.status(200).send(responseData);
     else
@@ -249,7 +257,7 @@ getFilterBrowseList: async (req, res) => {
         // check if the filter values are valid
         let userTags = connectedUser[0].tags.split(',')
         let filterTags = util.selectedTags(userTags, listTags)
-        console.log(chalk.green(JSON.stringify(filterTags)))
+        // console.log(chalk.green(JSON.stringify(filterTags)))
         err = validation.isFilterValid(filter, listTags)
         for (let i = 0; i < users.length; i++) {
             // calculate age

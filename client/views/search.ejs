@@ -20,7 +20,7 @@
       <a data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne1" aria-expanded="false"
         aria-controls="collapseOne1">
         <h5 class="mb-0">
-          Filter <i class="fas fa-angle-down rotate-icon"></i>
+          Search <i class="fas fa-angle-down rotate-icon"></i>
         </h5>
       </a>
     </div>
@@ -29,6 +29,12 @@
     <div id="collapseOne1" class="collapse" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordionEx">
       <div class="card-body">
         <form action="/search" method="post">
+          <div class="row justify-content-center">
+            <div class="col-sm-8">
+              <input placeholder ="Search..." id="keyword" class="form-control" name="keyword"
+              value="<%= (typeof filter !== 'undefined') ? filter['keyword'] : '' %>"/>
+            </div>
+          </div>
         <div class="row" style="margin: 10;">
           <div class="col-sm-4">
               <!-- Ranger Slider with value -->
@@ -86,9 +92,9 @@
                     <div class="text-center"><span>Tags</span></div>
                     <div class="container-fluid border rounded mb-0 tag-container autocomplete" style="padding: 10px;">
                       <!-- Filter existing tags -->
-                      <% if(typeof filter !== 'undefined' && filter.TagsTab.length > 0) {
-                        let tags = JSON.parse(filter.TagsTab)
-                        tags.forEach(tag => { %>
+                      <% if(typeof filter !== 'undefined' && filter.tags.length > 0) {
+                        <!-- let tags = JSON.parse(filter.tags) -->
+                        filter.tags.forEach(tag => { %>
                       <span class="badge grey lighten-1 tag">
                           <h6><span><%= tag %></span>
                           <i class="far fa-times-circle" aria-hidden="true" data-item="<%= tag %>"></i></h6>
@@ -97,9 +103,9 @@
                       } %>
                       <!-- All existing tags -->
                         <input placeholder ="Select tags..." id="myInput"/>
-                        <% if(typeof filter !== 'undefined' && filter.TagsTab !== '[]') {
+                        <% if(typeof filter !== 'undefined' && filter.tags.length > 0) {
                           %>
-                        <input type="hidden" name="TagsTab" id="tagsTab" value="<%= JSON.parse(filter['TagsTab']) %>">
+                        <input type="hidden" name="TagsTab" id="tagsTab" value="<%= filter['tags'] %>">
                         <% 
                           } else { %>
                             <input type="hidden" name="TagsTab" id="tagsTab" value="[]">
@@ -170,9 +176,9 @@
                         <!-- User Name -->
                         <h5 class="card-title"><strong><%= user.firstName+' '+user.lastName %></strong></h5>
                         <!-- Age -->
-                        <p><strong><i class="fas fa-calendar-alt"></i> </strong><%= user.age %> &nbsp;-&nbsp;
-                            <strong><i class="fas fa-venus-mars"></i> </strong> <%= user.gender %> &nbsp;-&nbsp;
-                            <strong><i class="fas fa-user"></i> </strong> <%= user.preference %>
+                        <p><strong><i class="fas fa-calendar-alt"></i> </strong><%= (user.age !== null) ? user.age : ' ' %> &nbsp;-&nbsp;
+                            <strong><i class="fas fa-venus-mars"></i> </strong> <%= (user.gender !== null) ? user.gender : ' ' %> &nbsp;-&nbsp;
+                            <strong><i class="fas fa-user"></i> </strong> <%= (user.preference !== null) ? user.preference : ' ' %>
                         </p>
                         <p>
                             <strong><i class="fas fa-map-marker-alt"></i></strong>&nbsp;<%= (user.distance < 1) ? 'near you': user.distance + ' km away' %>
@@ -181,7 +187,7 @@
                                                     
                         <!-- Text -->
                         <p class="card-text">
-                            <% if (user.biography.length > 85) { %>
+                            <% if(user.biography !== null) if (user.biography.length > 85) { %>
                                 <%= user.biography.substring(1, 85) %>...
                             <% } else { %>
                                 <%= user.biography %>
