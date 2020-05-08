@@ -88,6 +88,11 @@ const user = {
         "SELECT liked_user_id FROM liked_profiles WHERE liker_user_id = ?) ORDER BY li.created_at DESC"
         return db.selectDB([id, id], sql)
     },
+    blockedUsers : async (blockerId) => {
+        const sql = "SELECT blocker_user_id , blocked_user_id, u.firstName, u.lastName,u.username, u.profilePic FROM blocked_users  bl " +
+        "INNER JOIN users u ON u.id = blocked_user_id AND blocker_user_id  = ? ORDER BY bl.created_at DESC"
+        return db.selectDB([blockerId], sql)
+    },
 }
 
 module.exports = user;

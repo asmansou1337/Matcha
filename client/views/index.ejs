@@ -11,12 +11,7 @@
                     <div class="alert alert-danger" role="alert">
                     <%= error.error %>
                     </div>
-                <% } }
-                if (typeof  success !== 'undefined') { %>
-                    <div class="alert alert-success" role="alert">
-                        <%= success.successMessage %>
-                      </div>
-               <% } %>
+                <% } } %>
           </div>
           <div class="row">
             <div class="col-lg-4 col-sm-6 col-md-4">
@@ -30,6 +25,8 @@
                   aria-controls="v-pills-youlikes" aria-selected="false"><i class="fas fa-heart"></i>&nbsp;You Likes</a>
                 <a class="nav-link list-group-item" id="v-pills-mutual-tab" data-toggle="pill" href="#v-pills-mutual" role="tab"
                   aria-controls="v-pills-mutual" aria-selected="false"><i class="fas fa-user-friends"></i>&nbsp;Mutual likes</a>
+                  <a class="nav-link list-group-item" id="v-pills-youblocked-tab" data-toggle="pill" href="#v-pills-youblocked" role="tab"
+                  aria-controls="v-pills-youblocked" aria-selected="false"><i class="fas fa-user-lock"></i>&nbsp;You Blocked</a>
                 </div>
               </div>
              
@@ -75,7 +72,7 @@
                               @<%= user.username %> visited you <%= (user.nbr_visits === 1) ? user.nbr_visits+' time' : user.nbr_visits +' times' %>
                             </div>
                           </div>
-                          <a href="/user?id=<%= user.liker_user_id %>" class="stretched-link"></a>
+                          <a href="/user?id=<%= user.visitor_user_id %>" class="stretched-link"></a>
                          </li>
                         <% });}else { %>
                           <li class="list-group-item">No Result Yet !!</li>
@@ -99,7 +96,7 @@
                               @<%= user.username %>
                             </div>
                           </div>
-                          <a href="/user?id=<%= user.liker_user_id %>" class="stretched-link"></a>
+                          <a href="/user?id=<%= user.liked_user_id %>" class="stretched-link"></a>
                          </li>
                         <% });}else { %>
                           <li class="list-group-item">No Result Yet !!</li>
@@ -124,6 +121,30 @@
                             </div>
                           </div>
                           <a href="/user?id=<%= user.matchedId %>" class="stretched-link"></a>
+                         </li>
+                        <% });}else { %>
+                          <li class="list-group-item">No Result Yet !!</li>
+                          <% }%>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="v-pills-youblocked" role="tabpanel" aria-labelledby="v-pills-youblocked-tab">
+                  <div class="card example-1 scrollbar-deep-purple thin">
+                    <h5 class="card-header h5">You Blocked</h5>
+                    <div class="card-body">
+                      <ul class="list-group list-group-flush">
+                        <% if(typeof blockedUsers !== 'undefined' && blockedUsers.length > 0) { 
+                          blockedUsers.forEach(user => { %>
+                        <li class="list-group-item">
+                          <div class="media">
+                            <img class="d-flex mr-3 rounded-circle small_avatar" src="<%= (user.profilePic != null) ? `/uploads/${user.profilePic}` : '/uploads/avatar.jpg' %>"
+                        alt="avatar"><div class="media-body">
+                              <h5 class="mt-0 font-weight-bold"><%= user.firstName+' '+user.lastName %></h5>
+                              @<%= user.username %>
+                            </div>
+                          </div>
+                          <a href="/user?id=<%= user.blocked_user_id %>" class="stretched-link"></a>
                          </li>
                         <% });}else { %>
                           <li class="list-group-item">No Result Yet !!</li>

@@ -19,7 +19,8 @@ router.get('/', headerAuth.connectedHeader, isComplete, (req, res) => {
     .then((response) => {
       //  console.log(chalk.green(JSON.stringify(response.data)))
       return res.render('index', {likersUsers: response.data.likersUsers,likedUsers: response.data.likedUsers, 
-        visitorsUsers: response.data.visitorsUsers, mutualUsers: response.data.mutualUsers});     
+        visitorsUsers: response.data.visitorsUsers, mutualUsers: response.data.mutualUsers,
+        blockedUsers: response.data.blockedUsers, error});     
     })
     .catch((e) => {
       if(typeof e.response !== 'undefined') {

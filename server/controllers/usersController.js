@@ -16,23 +16,11 @@ const User = {
         const userId = req.query.id
         const connectedUserData = req.userData;
         const selectedUser = await profileManager.getUserProfile(userId);
-            if (selectedUser) {
-                if (selectedUser[0].born_date !== null)
-                    selectedUser[0].age = util.calculateAge(selectedUser[0].born_date);
-                else
-                    selectedUser[0].age = null;
+            if (selectedUser[0]) {
+                selectedUser[0].age = util.calculateAge(selectedUser[0].born_date);
                 // calculate fame rating
                 // rating = ((sum(likes) + sum(visits)) - ((sum(blocks) + sum(reports))) / total of users)
-                let calculate = await userManager.calculateFame(userId)
-                let result;
-                if (calculate) {
-                    result = (Number(calculate[0].sum) / Number(calculate[0].totalUsers)) * 5
-                    if (result > 5) 
-                        result = 5;
-                    else if (result < 0)
-                        result = 0;
-                }
-                selectedUser[0].fame = result.toFixed(2); 
+                selectedUser[0].fame = await util.calculateFameRating(userId);
                 // format user last connection time
                 let lastLogin = null;
                 if(selectedUser[0].last_connection !== null) {
@@ -296,6 +284,11 @@ const User = {
         if (mutualUsers.length > 0) {
             // console.log(chalk.green(JSON.stringify(likersUsers)))
             responseData.mutualUsers = mutualUsers
+        }
+        let blockedUsers = await userManager.blockedUsers(connectedUserData['userId']);
+        if (blockedUsers.length > 0) {
+            // console.log(chalk.red(JSON.stringify(likedUsers)))
+            responseData.blockedUsers = blockedUsers
         }
         if (responseData.isValid === true)
             res.status(200).send(responseData);

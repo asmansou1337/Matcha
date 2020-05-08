@@ -71,7 +71,12 @@ router.get('/user', headerAuth.connectedHeader, isComplete, async (req,res) => {
           // })
       }
       ).catch((e) => {
-        handle.errorHandle(e, req, res)     
+        if(typeof e.response !== 'undefined') {
+          if(e.response.status === 400) {
+            req.flash('error', e.response.data.errorMessage.error);
+            res.redirect('/');
+          }
+        }        
       });
   })
   .catch((e) => {
