@@ -222,28 +222,14 @@ const Profile = {
     getCurrentUserAllInfos: async (req, res) => {
         let responseData = {
             isValid : true,
-            successMessage: null,
             errorMessage: {}
         };
         let userData = req.userData;
         const currentUser = await profileManager.getUserProfile(userData['userId']);
             if (currentUser) {
-                if (currentUser[0].born_date !== null)
-                    currentUser[0].age = util.calculateAge(currentUser[0].born_date);
-                else
-                    currentUser[0].age = null;
+                currentUser[0].age = util.calculateAge(currentUser[0].born_date);
                 // calculate fame rating
-                let calculate = await userManager.calculateFame(userData['userId'])
-                let result;
-                if (calculate) {
-                    result = (Number(calculate[0].sum) / Number(calculate[0].totalUsers)) * 5
-                    if (result > 5)
-                        result = 5;
-                    else if (result < 0)
-                        result = 0;
-                    // console.log(chalk.blue('rating :'+ result))
-                }
-                currentUser[0].fame = result.toFixed(2); 
+                currentUser[0].fame = await util.calculateFameRating(currentUser[0].id);
                 responseData.user = currentUser[0];
             } else {
                 responseData.isValid = false;
@@ -296,7 +282,7 @@ const Profile = {
             successMessage: null,
             errorMessage: {}
         };
-        let userData = req.userData;
+        let user_id =  req.userData['userId'];
         // console.log(chalk.yellow(JSON.stringify(req.body)));
         let userTags = req.body;
         // remove duplicate from userTags array
@@ -307,7 +293,6 @@ const Profile = {
             responseData.errorMessage.error = err;
         }
         if (responseData.isValid === true) {
-            let user_id =  userData['userId'];
             let insertedTags = [];
             userTags.forEach(tag => {
                 insertedTags.push([tag, user_id]);
@@ -328,6 +313,15 @@ const Profile = {
                     responseData.isValid = false;
                     responseData.errorMessage.error= 'Error updating your tags, Please try again!';
                 }
+        } else {
+            if (Object.values(userTags).length === 0) {
+                // Delete older tags if user submitted empty tags
+                const deleteTags = await profileManager.deleteTags(user_id);
+                if (!deleteTags) {
+                    responseData.isValid = false;
+                    responseData.errorMessage.error= 'Error updating your tags, Please try again!';
+                }
+            }
         }
         if (responseData.isValid === true)
             res.status(200).send(responseData);

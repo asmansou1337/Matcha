@@ -1,22 +1,21 @@
 
 const tagContainer = document.querySelector('.tag-container');
 const input = document.querySelector('.tag-container input');
-let tagsTab = document.getElementById('tagsTab').value;
-let tags = [];
-let tagsLists = [];
+var tagsTab = document.getElementById('tagsTab').value;
+var tags = [];
+var tagsLists = [];
         
-axios.get(`http://localhost:3000/tagsList`)
+axios.get(`/profile/getTags`)
   .then((response) => {
     response.data.tags.forEach(element => {
       tagsLists.push(element.name);
     });
     // console.log(JSON.stringify(tagsLists));   
   })
-
 const oldTags = document.getElementById('tagsTab').value.split(',');
       oldTags.forEach(tag => {
         if (tag !== '[]')
-            tags.push(tag);  
+            tags.push(tag.toString());  
       })
       document.getElementById('tagsTab').value = JSON.stringify(tags);
 
@@ -45,7 +44,7 @@ function clearTags() {
 function addTags() {
   clearTags();
   tags.slice().reverse().forEach(tag => {
-    tagContainer.prepend(createTag(tag));
+    tagContainer.insertBefore(createTag(tag), tagContainer.firstChild);
   });
 }
 

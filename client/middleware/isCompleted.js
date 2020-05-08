@@ -16,7 +16,7 @@ module.exports  = (req, res, next) => {
   .catch((e) => {
     handle.authError(e, req, res);
     if(typeof e.response !== 'undefined') {
-    console.log(chalk.green(JSON.stringify(e.response.data)))
+    // console.log(chalk.green(JSON.stringify(e.response.data)))
       if(e.response.status === 400) {
         req.flash('error', e.response.data.errorMessage.error);
         res.redirect('/');

@@ -1,6 +1,7 @@
-let latitude = document.getElementById('lat').value;
-let longitude = document.getElementById('long').value;
-let myMap = document.getElementById('map');
+
+var latitude = document.getElementById('lat').value;
+var longitude = document.getElementById('long').value;
+var myMap = document.getElementById('map');
 var marker;
 var map;
 
@@ -23,9 +24,6 @@ function initMap(){
       addMarker({coords:pos});
       document.getElementById('lat').value = pos.lat();
       document.getElementById('long').value = pos.lng();
-      // console.log(latitude);
-      // console.log(longitude);
-      // console.log(JSON.stringify({coords:event.latLng}));
    });
  }
 
@@ -53,6 +51,6 @@ function initMap(){
       addMarker({coords:{lat: parseFloat(latitude), lng: parseFloat(longitude)}});
       document.getElementById('lat').value = latitude;
       document.getElementById('long').value = longitude;
-      });
+      })
    }
 }

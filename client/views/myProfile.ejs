@@ -16,7 +16,7 @@
                                     <h6 class="font-weight-bold indigo-text py-2">@<%= (typeof userInfos !== 'undefined') ? userInfos.username : '' %></h6>
                                     <h3><span class="badge rgba-purple-strong"><i class="fab fa-gratipay"></i>&nbsp;<%= (typeof userInfos !== 'undefined') ? userInfos.fame : '' %></span></h3>
                                     <!-- Location -->
-                                    <p><strong>Located At : </strong><%= (typeof userInfos !== 'undefined') ? userInfos.city+', '+userInfos.country : '' %></p>
+                                    <p><strong>Located At : </strong><%= (typeof userInfos !== 'undefined') ? ((typeof userInfos.city !== 'undefined')?userInfos.city:' - ') +', '+((typeof userInfos.country !== 'undefined')?userInfos.country:' - ') : '' %></p>
                                     <!-- Age -->
                                     <p><strong>Age : </strong> <%= (typeof userInfos !== 'undefined') ? userInfos.age : '' %></p>
                                     <!-- Gender -->
@@ -38,7 +38,11 @@
                                           <h6><span><%= tag %></span></h6>
                                           </span>
                                       <% }); 
-                                      } %>
+                                      } else { %>
+                                        <div class="col">
+                                            <p>No Interests here yet</p>
+                                        </div>
+                                        <% } %>
                             </div>
                         </div>
                     </div>

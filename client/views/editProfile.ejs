@@ -53,7 +53,7 @@
                         <!-- Default input -->
                         <div class="form-group col-md-6">
                             <label for="firstName">First Name</label>
-                            <input type="text" class="form-control" name="firstName" placeholder="First Name" value="<%= (typeof userInfos !== 'undefined') ? userInfos.firstName : '' %>" required maxlength="30">
+                            <input type="text" class="form-control" name="firstName" placeholder="First Name" value="<%= (typeof userInfos !== 'undefined') ? userInfos.firstName : '' %>" >
                             <% if(typeof  error !== 'undefined'){ %>
                               <div class="error-input">
                                   <% if (typeof  error.firstName !== 'undefined') %>
@@ -64,7 +64,7 @@
                         <!-- Default input -->
                         <div class="form-group col-md-6">
                             <label for="lastName">Last Name</label>
-                            <input type="text" class="form-control" name="lastName" placeholder="Last Name" value="<%= (typeof userInfos !== 'undefined') ? userInfos.lastName : '' %>" required maxlength="30">
+                            <input type="text" class="form-control" name="lastName" placeholder="Last Name" value="<%= (typeof userInfos !== 'undefined') ? userInfos.lastName : '' %>" >
                             <% if(typeof  error !== 'undefined'){ %>
                               <div class="error-input">
                                   <% if (typeof  error.lastName !== 'undefined') %>
@@ -79,7 +79,7 @@
                     <!-- Default input -->
                     <div class="form-group col-md-6">
                         <label for="username">Username</label>
-                        <input type="text" class="form-control" name="username" placeholder="Username" value="<%= (typeof userInfos !== 'undefined') ? userInfos.username : '' %>" required maxlength="20" minlength="2">
+                        <input type="text" class="form-control" name="username" placeholder="Username" value="<%= (typeof userInfos !== 'undefined') ? userInfos.username : '' %>" >
                         <% if(typeof  error !== 'undefined'){ %>
                           <div class="error-input">
                               <% if (typeof  error.username !== 'undefined') %>
@@ -90,7 +90,7 @@
                     <!-- Default input -->
                     <div class="form-group col-md-6">
                         <label for="birthday">Birth Day</label>
-                        <input type="date" class="form-control" name="birthDay" placeholder="Birth Day" value="<%= (typeof userInfos !== 'undefined') ? userInfos.born_date : '' %>" required>
+                        <input type="date" class="form-control" name="birthDay" placeholder="Birth Day: yyyy-mm-jj" value="<%= (typeof userInfos !== 'undefined') ? userInfos.born_date : '' %>">
                         <% if(typeof  error !== 'undefined'){ %>
                           <div class="error-input">
                               <% if (typeof  error.birthDay !== 'undefined') %>
@@ -146,7 +146,7 @@
                     <!-- Default input -->
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" name="email" placeholder="E-mail" value="<%= (typeof userInfos !== 'undefined') ? userInfos.email : '' %>" required>
+                        <input type="email" class="form-control" name="email" placeholder="E-mail" value="<%= (typeof userInfos !== 'undefined') ? userInfos.email : '' %>">
                         <% if(typeof  error !== 'undefined'){ %>
                           <div class="error-input">
                               <% if (typeof  error.email !== 'undefined') %>
@@ -157,7 +157,7 @@
                     <!-- Default input -->
                     <div class="form-group">
                         <label for="bio">Bio</label>
-                        <textarea class="form-control" name="bio" rows="7" required maxlength="200" minlength="2"><%- (typeof userInfos !== 'undefined') ? userInfos.biography : '' %></textarea>
+                        <textarea class="form-control" name="bio" rows="7" ><%- (typeof userInfos !== 'undefined') ? userInfos.biography : '' %></textarea>
                         <% if(typeof  error !== 'undefined'){ %>
                           <div class="error-input">
                               <% if (typeof  error.bio !== 'undefined') %>
@@ -176,7 +176,7 @@
                 <!-- Password input -->
                 <div class="form-group">
                     <label for="oldPassword">Old Password</label>
-                    <input type="password" class="form-control" name="oldPassword" placeholder="Old Password" required>
+                    <input type="password" class="form-control" name="oldPassword" placeholder="Old Password" >
                     <% if(typeof  error !== 'undefined'){ %>
                       <div class="error-input">
                           <% if (typeof  error.oldPassword !== 'undefined') %>
@@ -187,7 +187,7 @@
                 <!-- Password input -->
                 <div class="form-group">
                   <label for="newPassword">New Password</label>
-                  <input type="password" class="form-control" name="newPassword" placeholder="New Password" required>
+                  <input type="password" class="form-control" name="newPassword" placeholder="New Password" >
                   <% if(typeof  error !== 'undefined'){ %>
                     <div class="error-input">
                         <% if (typeof  error.newPassword !== 'undefined') %>
@@ -198,7 +198,7 @@
                 <!-- Confirm Password input -->
                 <div class="form-group">
                   <label for="confirmPassword">Confirm New Password</label>
-                  <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm New Password" required>
+                  <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm New Password" >
                   <% if(typeof  error !== 'undefined'){ %>
                     <div class="error-input">
                         <% if (typeof  error.confirmPassword !== 'undefined') %>
@@ -228,8 +228,6 @@
                     <form action="/profile/uploadProfile" method="post" enctype="multipart/form-data">
                       <div class="btn btn-rounded btn-green upload-btn-wrapper">
                         <span><i class="fas fa-edit pr-2" aria-hidden="true"></i>Change</span>
-                        <!-- <input type="file" id="profilePic" name="myImage" accept="image/*"> -->
-                        <!-- <input type="submit" class="btn btn-rounded btn-green" name="profilePic" value="Change"> -->
                         <input name="userImg" type="file" accept="image/*" id="profilePic" onchange='this.form.submit();'>
                       </div>
                     </form>
@@ -297,8 +295,9 @@
               </div>
               <form action="/profile/addTags" method="post" id="tagsform">
                 <% if(typeof userInfos !== 'undefined' && userInfos.tags !== null) {
+                  let tags = userInfos.tags.split(',')
                   %>
-                <input type="hidden" name="TagsTab" id="tagsTab" value="<%= userInfos.tags %>">
+                <input type="hidden" name="TagsTab" id="tagsTab" value="<%= String.raw`${userInfos.tags}` %>">
                 <% 
                   } else { %>
                     <input type="hidden" name="TagsTab" id="tagsTab" value="[]">

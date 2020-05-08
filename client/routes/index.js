@@ -112,7 +112,6 @@ router.post('/login', headerAuth.nonConnected, async (req, res) => {
         const cookieOptions = {
           secure: false, // set to true if your using https
           httpOnly: true,
-          // maxAge: 14400
          }
         res.cookie('jwt', response.data.authToken, cookieOptions)
         return res.redirect('/');     
@@ -163,9 +162,7 @@ router.post('/reinitializePassword', headerAuth.nonConnected, (req, res) => {
     password: req.body.password,
     confirmPassword: req.body.confirmPassword
   }
- // console.log(chalk.yellow(token));
   if(typeof resetPass.token !== 'undefined' && resetPass.token.match(/^[0-9a-zA-Z]+$/)){ 
-     console.log(chalk.yellow(resetPass.token));
     axios.post(`${process.env.HostApi}/reinitializePassword?token=${resetPass.token}`, resetPass)
     .then((response) => {
         return res.render('resetPassword', {success: response.data, token: resetPass.token});     

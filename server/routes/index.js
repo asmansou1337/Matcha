@@ -27,7 +27,7 @@ router.post('/profile/deletePic', checkAuth, profile.deletePic);
 router.get('/profile/picturesCount', checkAuth, profile.getCurrentUserPicturesCount);
 router.post('/profile/updateTags', checkAuth, profile.updateTags);
 router.post('/profile/updateLocation', checkAuth, profile.updateLocation);
-router.get('/tagsList', profile.getTagsList);
+router.get('/tagsList',  checkAuth, profile.getTagsList);
 
 router.get('/user', checkAuth, user.getUserAllInfos);
 router.post('/user/like', checkAuth, user.likeUser);

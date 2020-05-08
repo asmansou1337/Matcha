@@ -6,6 +6,7 @@ const func = {
                 return;
             } else if(e.response.status === 401) {
               req.flash('error', 'Authentification Failed, Please Login!!');
+              res.clearCookie("jwt");
               return res.redirect('/login');
           }
           }    
@@ -14,6 +15,7 @@ const func = {
         if(typeof e.response !== 'undefined') {
         if(e.response.status === 401) {
             req.flash('error', 'Authentification Failed, Please Login!!');
+            res.clearCookie("jwt");
             return res.redirect('/login');
         }}
     },
