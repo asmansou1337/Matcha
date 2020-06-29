@@ -5,6 +5,7 @@ let chalk = require('chalk');
 const bcrypt = require('bcrypt');
 const profileManager = require('../models/profileModel');
 const util = require('../models/functions');
+const notifController = require('./notifController');
 
 const User = {
     getUserAllInfos: async (req, res) => {
@@ -74,6 +75,8 @@ const User = {
         let responseData = {
             isValid : true,
             likesMessage: null,
+            reportMessage: null,
+            blockMessage: null,
             isLiked: 0,
             isBlocked: 0,
             isReported: 0,
@@ -115,7 +118,7 @@ const User = {
                 responseData.reportMessage = 'You reported this user';
                 responseData.isReported = 1
         } 
-        //console.log(chalk.blue(JSON.stringify(checkLike)))
+        console.log(chalk.blue(JSON.stringify(responseData)))
         res.status(200).send(responseData);
     },
     likeUser: async (req, res) => {
@@ -126,6 +129,7 @@ const User = {
         };
         const likedUserId = req.query.id
         const likerUserData = req.userData;
+        let message;
         // check block
         let checkBlock = await userManager.checkBlock(likerUserData['userId'], likedUserId);
         if (checkBlock.length > 0) {
@@ -145,6 +149,12 @@ const User = {
                     responseData.isValid = false;
                     responseData.errorMessage.error= 'Error, Please try again!';
                 }
+                // Add notification
+                if (responseData.isValid === true) {
+                    message = `${req.userData['username']} unlikes you.`
+                    await notifController.addNotification(liked_user_id, liker_user_id, message, `/user?id=${liker_user_id}`)
+                }
+                    
             } else {
                 // like the user
                 let addLike = await userManager.addLike({liker_user_id, liked_user_id});
@@ -153,6 +163,15 @@ const User = {
                 } else {
                     responseData.isValid = false;
                     responseData.errorMessage.error= 'Error, Please try again!';
+                }
+                // Add notification
+                if (responseData.isValid === true) {
+                    let checkLiked = await userManager.checkLiked(liked_user_id, liker_user_id);
+                    if (checkLiked.length > 0) 
+                        message = `${req.userData['username']} likes you back.`
+                    else
+                        message = `${req.userData['username']} likes you.`
+                    await notifController.addNotification(liked_user_id, liker_user_id, message, `/user?id=${liker_user_id}`)
                 }
             }
         }
@@ -228,15 +247,18 @@ const User = {
             successMessage: null,
             errorMessage: {}
         };
+        let message;
         const visitor_user_id = req.userData['userId'];
         const visited_user_id = req.query.id;
         // check if it's the first time this user visit this profile
         let checkVisited = await userManager.checkVisited(visitor_user_id, visited_user_id);
+        console.log(chalk.green(JSON.stringify(checkVisited)))
         if (checkVisited.length > 0) {
             // IN case is not the first visit
             let updateVisit = await userManager.updateVisit(visitor_user_id, visited_user_id);
             if (updateVisit) {
                 responseData.successMessage = 'visit updated successfully';
+                message = `${req.userData['username']} visited you profile ${checkVisited[0]['nbr_visits']} times.`
             } else {
                 responseData.isValid = false;
                 responseData.errorMessage.error= 'Error, Please try again!';
@@ -247,11 +269,18 @@ const User = {
             let firstVisit = await userManager.addVisit({visitor_user_id, visited_user_id, nbr_visits});
             if (firstVisit) {
                 responseData.successMessage = 'visit added successfully';
+                message = `${req.userData['username']} visited you profile 1 time.`
             } else {
                 responseData.isValid = false;
                 responseData.errorMessage.error= 'Error, Please try again!';
             }
         }
+
+        // Add notification
+        if (responseData.isValid === true) {
+            await notifController.addNotification(visited_user_id, visitor_user_id, message, `/user?id=${visitor_user_id}`)
+        }
+        
         if (responseData.isValid === true)
             res.status(200).send(responseData);
         else

@@ -58,8 +58,8 @@ ________________________________________________________________________
 
 - [X] Define tasks: Read the subject and identify the required tasks
 - [X] Database: Create database and database tables
-- [ ] Frontend: Pages and Design ..
-- [ ] Backend: functions, modules and classes ..
+- [X] Frontend: Pages and Design ..
+- [X] Backend: functions, modules and classes ..
 - [ ] Testing
 
 ### Things to respect:
@@ -68,8 +68,8 @@ ________________________________________________________________________
   - [X] Relational Database or graph oriented Database (I used Mysql in this project)
   - [X] “micro-framework” has a router, and eventually templating, but no ORM, validators or User Accounts Manager.(Using express)
   - [X] Your website must have a decent layout: at least a header, a main section and a footer.
-  - [ ] Your website must be usable on a mobile phone and keep an acceptable layout on small resolutions (Responsive).
-  - [ ] Security: storing hashed passwords, protection against injection and bad files uploaded and unprotected js vars
+  - [X] Your website must be usable on a mobile phone and keep an acceptable layout on small resolutions (Responsive).
+  - [X] Security: storing hashed passwords, protection against injection and bad files uploaded and unprotected js vars
 
 ### Major project sections and features:
 
@@ -122,7 +122,7 @@ Part 2:
     - [X] Welcome page (Visits history +  Likes history)
     - [X] Visits history
     - [X] Likes history
-    - [ ] Suggested profiles Discover people (like or not)
+    - [X] Suggested profiles Discover people (like or not)
     - [X] Search
     - [ ] Chat
     - [ ] Notifications
@@ -145,17 +145,17 @@ Part 2:
 
   - **Functions**
 
-    - [ ] Routing
-    - [ ] Rendering
-    - [ ] Middlewares
+    - [X] Routing
+    - [X] Rendering
+    - [X] Middlewares
 
 ### Backend:
 
   - **Functions**
 
-    - [ ] Validation
-    - [ ] Controllers
-    - [ ] Models
+    - [X] Validation
+    - [X] Controllers
+    - [X] Models
 
   - **Modules**
 
@@ -212,8 +212,8 @@ ________________________________________________________________________
 
   - **Matching**
 
-    - [ ] The user must be able to easily get a list of suggestions that match his/her profile
-    - [ ] The user can see this page only if he/she fill his profile
+    - [X] The user must be able to easily get a list of suggestions that match his/her profile
+    - [X] The user can see this page only if he/she fill his profile
     - You will only propose “interesting” profiles for example, only men for a heterosexual girls.
       - You must manage bisexuality. If the orientation isn’t specified, the user will be considered bi-sexual by default.
       - You must match profiles based on (in priority):
@@ -259,13 +259,13 @@ ________________________________________________________________________
 
     - [ ] A user must be notified in real time(We’ll also tolerate a 10 secondes delay.) of the following events:
 
-      - [ ] The user received a “like”.
-      - [ ] The user’s profile has been visited.
+      - [X] The user received a “like”.
+      - [X] The user’s profile has been visited.
       - [ ] The user received a message.
-      - [ ] A “liked” user “liked” back.
-      - [ ] A connected user “unliked” you.
+      - [X] A “liked” user “liked” back.
+      - [X] A connected user “unliked” you.
 
-    - [ ] A user must be able to see, from any page that a notification hasn’t been read.
+    - [X] A user must be able to see, from any page that a notification hasn’t been read.
 
     - **Links**
     For sorting array of objects with mutiple option

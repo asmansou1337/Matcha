@@ -8,6 +8,7 @@ const profile = require('../controllers/profileController');
 const user = require('../controllers/usersController');
 const browse = require('../controllers/browseController');
 const chat = require('../controllers/chatController');
+const notif = require('../controllers/notifController');
 
 router.post('/signup', authentification.signup);
 router.get('/activateAccount', authentification.activateAccount);
@@ -47,4 +48,7 @@ router.get('/search', checkAuth, browse.getSearchList);
 router.post('/search', checkAuth, browse.getFilterSearchList);
 router.get('/browse', checkAuth, browse.getBrowseList);
 router.post('/browse', checkAuth, browse.getFilterBrowseList);
+
+router.get('/notifications', checkAuth, notif.getUserAllNotification);
+router.get('/unreadnotif', checkAuth, notif.getUnreadNotifCount);
 module.exports = router;

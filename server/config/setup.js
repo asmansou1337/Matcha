@@ -187,11 +187,11 @@ cnx.query(sql, function(err) {
 // Table notifications
 var sql = 'CREATE TABLE IF NOT EXISTS notifications (';
 sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
-sql += '`title` varchar(300) NOT NULL,';
-sql += '`description` TEXT NOT NULL,';
-sql += '`user_id` int(11) NOT NULL,';
+sql += '`receiver_id` int(11) NOT NULL,';
+sql += '`sender_id` int(11) NOT NULL,';
+sql += '`message` varchar(300) NOT NULL,';
 sql += '`is_read` int(11) NOT NULL DEFAULT 0,';
-sql += '`link` varchar(300) NOT NULL DEFAULT \'home\',';
+sql += '`link` varchar(300) NOT NULL';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
 sql += ') CHARACTER SET utf8 COLLATE utf8_general_ci';
 cnx.query(sql, function(err) {

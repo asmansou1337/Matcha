@@ -5,10 +5,12 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var cors = require('cors');
 var logger = require('morgan');
+const chalk = require('chalk');
 
 var indexRouter = require('./routes/index');
 
 var app = express();
+const server = require('http').createServer(app);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -50,4 +52,11 @@ app.use((err, req, res, next) => {
 
 });
 
-module.exports = app;
+const port =  process.env.PORT || 3000;
+const host = 'localhost';
+
+server.listen(port, host, () => {
+    console.log(chalk.yellow('API Listening on http://' + host + ':' + port ));
+});
+
+// module.exports = app;

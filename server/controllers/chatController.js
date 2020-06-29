@@ -105,10 +105,11 @@ const chat = {
         };
         const connectedUserData = req.userData;
         // Verify the conversation is valid
-        let { to, from, convId } = req.query;
+        let { to, convId } = req.query;
+        let from = connectedUserData['userId']
         let checkConv = await chatManager.checkConversation(to, from, convId)
         // console.log(JSON.stringify(req.query))
-        if (checkConv.length === 1 && Number(from) === connectedUserData['userId']) {
+        if (checkConv.length === 1) {
             // get the conversation messages
             let convs = await chatManager.getMessages(convId)
             if (convs) {
@@ -148,10 +149,12 @@ const chat = {
         };
         // const connectedUserData = req.userData;
         // Verify the conversation is valid
-        let { userId } = req.query;
+        //let { userId } = req.query;
+        let userId = req.userData['userId']
         let getUnreadMsgs = await chatManager.getUnreadMessages(userId)
-        if (getUnreadMsgs) {
+        if (getUnreadMsgs[0]) {
             console.log(chalk.green(JSON.stringify(getUnreadMsgs)))
+            responseData.unreadMsgs = getUnreadMsgs[0].unreadMsgs
         } else {
             responseData.isValid = false;
             responseData.errorMessage.error = 'Error, Please try again!';
