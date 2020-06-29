@@ -1,3 +1,4 @@
+<div id="token" data-token="<%= (typeof token !== 'undefined') ? token : {} %>"></div>
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark indigo lighten-1 scrolling-navbar" id="thenav">
     <img src="/images/matchaLogo.png" class="navbar-brand" width="120">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -25,13 +26,13 @@
     <ul class="navbar-nav ml-auto nav-flex-icons">
         <li class="nav-item">
             <a class="nav-link waves-effect waves-light" href="/chat">
-              <span class="badge badge-danger ml-2">4</span>
+              <span class="badge badge-danger ml-2 chatNotif"></span>
               <i class="fas fa-comments"></i>
             </a>
         </li>
         <li class="nav-item">
           <a class="nav-link waves-effect waves-light" href="/notification">
-            <span class="badge badge-danger ml-2">4</span>
+            <span class="badge badge-danger ml-2 notifCount"></span>
             <i class="fas fa-bell"></i>
           </a>
         </li>

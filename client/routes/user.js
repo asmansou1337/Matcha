@@ -13,6 +13,9 @@ const options = {
 };
 var geocoder = NodeGeocoder(options);
 
+// var io = require('socket.io')(8080);
+
+
 // axios.get(`${process.env.HostApi}/user/getProfileStatut?id=${id}`)
 // .then((resp) => {
   
@@ -27,57 +30,77 @@ var geocoder = NodeGeocoder(options);
 //   }    
 // })
 
+async function getUserInfos(id) {
+  try {
+    const result = await axios.get(`${process.env.HostApi}/user?id=${id}`)
+    return result.data.user
+  } catch (e) {
+    console.log(chalk.red(JSON.stringify(e.response.data.errorMessage.error)))
+      throw new Error(e.response.data.errorMessage.error)
+  }
+}
+
+async function addVisit(id) {
+  // add the user to visitors 
+  try {
+    const result = await axios.post(`${process.env.HostApi}/user/visit?id=${id}`)
+    console.log(chalk.green(JSON.stringify(result.data.successMessage)))
+    // io.sockets.connected[user.socket].emit('visit');
+    return result
+  } catch(e) {
+    console.log(chalk.red(JSON.stringify(e.response.data.errorMessage.error)))
+    throw new Error(e.response.data.errorMessage.error)
+  }
+}
+
+async function getRelation(id) {
+  try {
+    const result = await axios.get(`${process.env.HostApi}/user/getRelation?id=${id}`);
+    // console.log(chalk.magenta(JSON.stringify(result.data)))
+    let user = {
+      isLiked: result.data.isLiked,
+      isBlocked: result.data.isBlocked,
+      isReported: result.data.isReported,
+      likesMessage: result.data.likesMessage,
+      blockMessage: result.data.blockMessage,
+      reportMessage: result.data.reportMessage
+    }
+    // console.log(chalk.magenta(JSON.stringify(user)))
+    return user
+  } catch (e) {
+    console.log(chalk.red(JSON.stringify(e.response.data.errorMessage.error)))
+    throw new Error(e.response.data.errorMessage.error)
+  }
+}
+
+
 // personal profile of another user
 router.get('/user', headerAuth.connectedHeader, isComplete, async (req,res) => {
   const id = req.query.id;
-  let error, blockMessage, reportMessage, likesMessage;
+  let error;
   let err = req.flash('error');
   // check if user exists and if his profile is completed
   axios.get(`${process.env.HostApi}/user/getProfileStatut?id=${id}`)
-  .then((respo) => {
+  .then(async (respo) => {
+    try {
       if (respo.data.errorMessage.error !== undefined)
         error = {error: respo.data.errorMessage.error};
-      console.log(chalk.green(JSON.stringify(respo.data.successMessage)));
-      // console.log(chalk.blue(JSON.stringify(error)));
-      // get user infos
-      axios.get(`${process.env.HostApi}/user?id=${id}`)
-      .then((response) => {
-          // add the user to visitors list
-          axios.post(`${process.env.HostApi}/user/visit?id=${id}`)
-          .then((re) => {
-            console.log(chalk.green(JSON.stringify(re.data.successMessage)))
-          }).catch((e) => {
-            handle.errorHandle(e, req, res)     
-          });
-          user = response.data.user;
-          // get the city & country by reverse geocoding
-          // geocoder.reverse({lat:user.latitude, lon:user.longitude}).then((result) => {
-          // user.city = result[0].city;
-          // user.country = result[0].country;
+        console.log(chalk.green(JSON.stringify(respo.data.successMessage)));
+        // add the user to visitors list
+        addVisit(id)
+        // get user infos
+        const user = await getUserInfos(id)
+        // console.log(chalk.yellow(JSON.stringify(user)))
+          // io.sockets.emit('visit');
           // get the relationship with the user
-          axios.get(`${process.env.HostApi}/user/getRelation?id=${id}`)
-          .then((resp) => {
-            user.isLiked = resp.data.isLiked;
-            user.isBlocked = resp.data.isBlocked;
-            user.isReported = resp.data.isReported;
-            if (user.isLiked === 1) likesMessage = resp.data.likesMessage;
-            if (user.isBlocked === 1) blockMessage = resp.data.blockMessage;
-            if (user.isReported === 1) reportMessage = resp.data.reportMessage;
-            // console.log(chalk.blue(JSON.stringify(resp.data)))
-            return res.render('profile', {userInfos: user, error, message: {blockMessage, reportMessage, likesMessage, err}});
-          }).catch((e) => {
-            handle.errorHandle(e, req, res)     
-          });
-          // })
-      }
-      ).catch((e) => {
-        if(typeof e.response !== 'undefined') {
-          if(e.response.status === 400) {
-            req.flash('error', e.response.data.errorMessage.error);
-            res.redirect('/');
-          }
-        }        
-      });
+          const relation = await getRelation(id)
+          // console.log(chalk.blue(JSON.stringify(relation)))
+          return res.render('profile', {userInfos: user, error, relation, message: {err}, token: req.cookies.jwt});
+    } catch (e) {
+      console.log(chalk.red(JSON.stringify(e.message)))
+      req.flash('error', e.message);
+      res.redirect('/');
+    }
   })
   .catch((e) => {
     handle.authError(e, req, res);

@@ -12,13 +12,13 @@ router.get('/search',  headerAuth.connectedHeader, isComplete, (req, res) => {
     axios.get(`${process.env.HostApi}/search`)
     .then((respo) => {
         // get user infos
-        res.render('search', {users: respo.data.searchList});
+        res.render('search', {users: respo.data.searchList, token: req.cookies.jwt});
     })
     .catch((e) => {
       handle.authError(e, req, res);
       if(typeof e.response !== 'undefined') {
         if(e.response.status === 400) {
-          res.render('search', {error: {error: e.response.data.errorMessage.error}});
+          res.render('search', {error: {error: e.response.data.errorMessage.error, token: req.cookies.jwt}});
         }
       }    
     })
@@ -32,13 +32,13 @@ router.post('/search',  headerAuth.connectedHeader, isComplete, (req, res) => {
          console.log(chalk.green(JSON.stringify(respo.data.filter)));
         // console.log(chalk.blue(JSON.stringify(error)));
         // get user infos
-        res.render('search', {users: respo.data.searchList, filter: respo.data.filter ,error: respo.data.errorMessage});
+        res.render('search', {users: respo.data.searchList, filter: respo.data.filter ,error: respo.data.errorMessage, token: req.cookies.jwt});
     })
     .catch((e) => {
       handle.authError(e, req, res);
       if(typeof e.response !== 'undefined') {
         if(e.response.status === 400) {
-          res.render('search', {error: {error: e.response.data.errorMessage.error}});
+          res.render('search', {error: {error: e.response.data.errorMessage.error, token: req.cookies.jwt}});
         }
       }    
     })

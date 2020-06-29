@@ -27,7 +27,7 @@
                         if (typeof activeConv !== 'undefined')
                           active = (user.convId == activeConv.active) ? 'active' : ''
                         %>
-                        <a href="/chat?to=<%= user.matchedId%>&from=<%= user.userId%>&matchedUsername=<%= user.matchedUsername%>&username=<%= user.username%>&convId=<%= user.convId %>" 
+                        <a href="/chat?to=<%= user.matchedId%>&matchedUsername=<%= user.matchedUsername%>&convId=<%= user.convId %>" 
                           class="list-group-item d-flex justify-content-between align-items-center <%= active %>">
                           <img src="<%= (user.profilePic != null) ? `/uploads/${user.profilePic}` : '/uploads/avatar.jpg' %>" alt="avatar" class="small_avatar rounded-circle d-flex align-self-center mr-2 z-depth-1">
                           <div class="d-sm-none d-md-none d-lg-block">
@@ -62,7 +62,7 @@
               <div class="col-lg-8 col-md-7 col-sm-8">
                 <div class="card chatBox" style="display: none;">
                     <div class="card-body">
-                      <h6 class="card-title">Chat With Your Friends</h6> <hr>
+                      <h6 class="card-title chatTitle">Chat With Your Friends</h6> <hr>
                     <ul class="list-unstyled chatMessages">
                       <% if(typeof messages !== 'undefined' && messages.length > 0) { 
                         messages.forEach(msg => { 
@@ -99,14 +99,7 @@
     </div>
 </section>
 
-<!-- To get infos from url  -->
-<script
-      src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.2/qs.min.js"
-      integrity="sha256-TDxXjkAUay70ae/QJBEpGKkpVslXaHHayklIVglFRT4="
-      crossorigin="anonymous"
-></script>
-<!-- To use sockets  -->
-<script src="/socket.io/socket.io.js"></script>
-<script type="text/javascript" src="/javascripts/chat.js"></script>
-
 <%- include('footer'); %>
+<script type="text/javascript" src="/javascripts/socket.js"></script>
+<script type="text/javascript" src="/javascripts/chat.js"></script>
+<script type="text/javascript" src="/javascripts/notif.js"></script>

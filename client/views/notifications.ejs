@@ -1,0 +1,44 @@
+<%- include('header'); %>
+<%- include('./navs/navAuth'); %>
+<section class="view">
+    <div class="col-md-12">
+        <div class="d-flex flex-column justify-content-center">
+            <!-- Error & messages section -->
+            <div>
+            <% if(typeof  error !== 'undefined'){ %>
+                <% if (typeof  error.error != 'undefined') { %>
+                    <div class="alert alert-danger" role="alert">
+                    <%= error.error %>
+                    </div>
+                <% } } %>
+            </div>
+        </div>
+        <!-- Notifications list -->
+        <div class="card example-1 scrollbar-deep-purple thin">
+            <h5 class="card-header h5">Notifications</h5>
+            <div class="card-body">
+              <ul class="list-group list-group-flush ">
+                <% if(typeof notifications !== 'undefined' && notifications.length > 0) { 
+                  notifications.forEach(notif => { %>
+                <li class="list-group-item">
+                  <div class="media">
+                    <img class="d-flex mr-3 rounded-circle small_avatar" src="<%= (notif.profilePic != null) ? `/uploads/${notif.profilePic}` : '/uploads/avatar.jpg' %>"
+                alt="avatar"><div class="media-body">
+                      <h5 class="mt-0">@<%= notif.message %></h5>
+                    </div>
+                  </div>
+                  <a href="<%= notif.link %>" class="stretched-link"></a>
+                 </li>
+                <% });} else { %>
+                  <li class="list-group-item">No Notifications Yet !!</li>
+                  <% }%>
+              </ul>
+            </div>
+          </div>
+        <!-- Notifications list -->
+    </div>
+</section>
+
+<%- include('footer'); %>
+<script type="text/javascript" src="/javascripts/socket.js"></script>
+<script type="text/javascript" src="/javascripts/notif.js"></script>

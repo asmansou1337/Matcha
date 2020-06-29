@@ -1,19 +1,24 @@
 
+
 const chatForm = document.getElementById('chatForm');
 const chatMessages = document.querySelector('.chatMessages');
-const cardTitle = document.querySelector('.card-title')
+const cardTitle = document.querySelector('.chatTitle')
 const chatBox = document.querySelector('.chatBox')
 
-  const socket = io();
+  // const socket = io();
+  console.log(JSON.stringify(user))
 
    // Get user id, username and conversation id from URL
-    const { to, from, matchedUsername, username, convId } = Qs.parse(location.search, {
+    const { to, matchedUsername, convId } = Qs.parse(location.search, {
     ignoreQueryPrefix: true
   });
 
+  var from = user.userId;
+  var username = user.username;
+
     // console.log(to, from, matchedUsername, username, convId)
-    if (typeof to !== 'undefined' && typeof from !== 'undefined' && typeof matchedUsername !== 'undefined' && typeof username !== 'undefined' &&
-    typeof convId !== 'undefined') {
+    if (typeof to !== 'undefined' && typeof from !== 'undefined' && typeof matchedUsername !== 'undefined' && 
+    typeof username !== 'undefined' && typeof convId !== 'undefined') {
         // Join Conversation
         socket.emit('joinConv', { to, from, matchedUsername, username, convId });
         cardTitle.innerHTML = `Chatting with ${matchedUsername}`
@@ -59,7 +64,7 @@ const chatBox = document.querySelector('.chatBox')
 
   // Output message to DOM
 function outputMessage(message) {
-    let cl;
+    var cl;
     const div = document.createElement('li');
     div.classList.add('d-flex');
     div.classList.add('mb-4');

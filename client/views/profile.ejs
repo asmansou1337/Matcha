@@ -1,6 +1,5 @@
 <%- include('header'); %>
 <%- include('./navs/navAuth'); %>
-
     <div class="container-fluid">
         <div class="d-flex flex-column justify-content-center">
             <div class="row">
@@ -23,8 +22,8 @@
                                     <!-- Like / Unlike -->
                                     <form action="/user/like" method="post">
                                         <input type="hidden" name="userId" value="<%= (typeof userInfos !== 'undefined') ? userInfos.id : '' %>">
-                                        <% if(typeof userInfos !== 'undefined') {
-                                            if(userInfos.isLiked === 1) { %>
+                                        <% if(typeof relation !== 'undefined') {
+                                            if(relation.isLiked === 1) { %>
                                                 <button class="btn btn-primary btn-block" type="submit"><i class="fas fa-thumbs-down"></i> Unlike</button>
                                         <% } else { %>
                                         <button class="btn btn-primary btn-block" type="submit"><i class="fas fa-thumbs-up"></i> Like</button>
@@ -42,8 +41,8 @@
                                      <!-- Block / Unblock -->
                                     <form action="/user/block" method="post">
                                         <input type="hidden" name="userId" value="<%= (typeof userInfos !== 'undefined') ? userInfos.id : '' %>">
-                                        <% if(typeof userInfos !== 'undefined') {
-                                            if(userInfos.isBlocked === 1) { %>
+                                        <% if(typeof relation !== 'undefined') {
+                                            if(relation.isBlocked === 1) { %>
                                                 <button class="btn btn-default btn-block" type="submit"><i class="fas fa-ban"></i> Unblock</button>
                                         <% } else { %>
                                             <button class="btn red darken-1 btn-block" type="submit"><i class="fas fa-ban"></i> Block</button>
@@ -62,14 +61,14 @@
                                 <% if(typeof message.err !== 'undefined') { %>
                                     <h5><span class="badge danger-color"><%= message.err %></span></h5>
                                     <%  } %>
-                                <% if(typeof message.blockMessage !== 'undefined') { %>
-                                <span class="badge red darken-1"><%= message.blockMessage %></span>
+                                <% if(typeof relation !== 'undefined' && typeof relation.blockMessage !== null) { %>
+                                <span class="badge red darken-1"><%= relation.blockMessage %></span>
                                 <% } %>
-                                <% if(typeof message.reportMessage !== 'undefined') { %>
-                                <span class="badge yellow darken-2"><%= message.reportMessage %></span>
+                                <% if(typeof relation !== 'undefined' && typeof relation.reportMessage !== null) { %>
+                                <span class="badge yellow darken-2"><%= relation.reportMessage %></span>
                                 <% } %>
-                                <% if(typeof message.likesMessage !== 'undefined') { %>
-                                <span class="badge default-color"><%= userInfos.likesMessage %></span>
+                                <% if(typeof relation !== 'undefined' && typeof relation.likesMessage !== null) { %>
+                                <span class="badge default-color"><%= relation.likesMessage %></span>
                                 <% } %>
                                 <hr>
                                 <!-- Frist Name & Last Name  -->
@@ -78,16 +77,16 @@
                                 <h6 class="font-weight-bold indigo-text py-2">@<%= (typeof userInfos !== 'undefined') ? userInfos.username : '' %></h6>
                                 <h3><span class="badge rgba-purple-strong"><i class="fab fa-gratipay"></i>&nbsp;<%= (typeof userInfos !== 'undefined') ? userInfos.fame : '' %></span></h3>
                                 <!-- Location -->
-                                <p><strong>Located At : </strong><%= (typeof userInfos !== 'undefined') ? ((typeof userInfos.city !== 'undefined') ? userInfos.city +', ' : '') +userInfos.country : '' %></p>
+                                <p><strong>Located At : </strong><%= (typeof userInfos !== 'undefined') ? ((typeof userInfos.city !== 'undefined') ? userInfos.city +', ' : '') +((typeof userInfos.country !== 'undefined')? userInfos.country:'') : '' %></p>
                                 <!-- Age -->
-                                <p><strong>Age : </strong> <%= (typeof userInfos !== 'undefined') ? userInfos.age : '' %></p>
+                                <p><strong>Age : </strong> <%= (typeof userInfos !== 'undefined') ? ((userInfos.age !== null) ? userInfos.age : ' ') : '' %></p>
                                 <!-- Gender -->
-                                <p><strong>Gender : </strong> <%= (typeof userInfos !== 'undefined') ? userInfos.gender : '' %></p>
+                                <p><strong>Gender : </strong> <%= (typeof userInfos !== 'undefined') ? ((userInfos.gender !== null) ? userInfos.gender : ' ') : '' %></p>
                                 <!-- Orientation -->
-                                <p><strong>Orientation : </strong> <%= (typeof userInfos !== 'undefined') ? userInfos.preference : '' %></p>
+                                <p><strong>Orientation : </strong> <%= (typeof userInfos !== 'undefined') ? ((userInfos.preference !== null) ? userInfos.preference : '') : '' %></p>
                                 <!-- Bio -->
                                 <strong>Biography : </strong>
-                                <p class="card-text"><%= (typeof userInfos !== 'undefined') ? userInfos.biography : '' %></p>
+                                <p class="card-text"><%= (typeof userInfos !== 'undefined') ? ((userInfos.biography !== null) ? userInfos.biography : '') : '' %></p>
                                 <hr>
                                  <!-- Tags -->
                                  <h4 class="card-title"><strong>Interests</strong></h4>
@@ -103,6 +102,11 @@
                                         <p>No Interests here yet</p>
                                     </div>
                                     <% } %>
+                                    <br><br>
+                                    <!-- Map -->
+                                    <input type="hidden" name="latitude" id="lat" value="<%= (typeof userInfos !== 'undefined') ? userInfos.latitude : '' %>">
+                                    <input type="hidden" name="longitude" id="long" value="<%= (typeof userInfos !== 'undefined') ? userInfos.longitude : '' %>">
+                                    <div id="map"></div>
                         </div>
                         </div>
                     </div>
@@ -131,5 +135,34 @@
         </div>
     </div>
 
-
+    <!-- <script type="text/javascript" src="/javascripts/showMap.js"></script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD21--MXSlrUq9EHOI4PbxcWuTfsV7RpAs&callback=initMap">
+    </script> -->
+    <!-- <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.2/qs.min.js"
+      integrity="sha256-TDxXjkAUay70ae/QJBEpGKkpVslXaHHayklIVglFRT4="
+      crossorigin="anonymous"
+    ></script> -->
+    <!-- To use sockets  -->
+    <!-- <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const { id } = Qs.parse(location.search, {
+            ignoreQueryPrefix: true
+        });
+        socket.emit('addNotif', {msg:'working', id});
+    </script> -->
 <%- include('footer'); %>
+<script type="text/javascript" src="/javascripts/socket.js"></script>
+<script>
+     // Get user id, username and conversation id from URL
+     const { id } = Qs.parse(location.search, {
+    ignoreQueryPrefix: true
+    });
+    socket.emit('visitProfile', {
+            visited: id,
+            msg: 1
+        });
+</script>
+<script type="text/javascript" src="/javascripts/notif.js"></script>

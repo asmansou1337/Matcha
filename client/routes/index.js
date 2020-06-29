@@ -20,7 +20,7 @@ router.get('/', headerAuth.connectedHeader, isComplete, (req, res) => {
       //  console.log(chalk.green(JSON.stringify(response.data)))
       return res.render('index', {likersUsers: response.data.likersUsers,likedUsers: response.data.likedUsers, 
         visitorsUsers: response.data.visitorsUsers, mutualUsers: response.data.mutualUsers,
-        blockedUsers: response.data.blockedUsers, error});     
+        blockedUsers: response.data.blockedUsers, error, token: req.cookies.jwt});     
     })
     .catch((e) => {
       if(typeof e.response !== 'undefined') {
@@ -109,7 +109,7 @@ router.post('/login', headerAuth.nonConnected, async (req, res) => {
   axios.post(`${process.env.HostApi}/login`, loginform)
     .then((response) => {
         // Add JWT token in a cookie
-        // expires in 4 hours
+        // expires in 12 hours
         const cookieOptions = {
           secure: false, // set to true if your using https
           httpOnly: true,
@@ -191,7 +191,13 @@ router.get('/logout', headerAuth.connectedHeader, (req, res) => {
     res.redirect("/login")
   }
   ).catch((e) => {
-    handle.errorHandle(e, req, res) 
+    if(typeof e.response !== 'undefined') {
+      if(e.response.status === 400) {
+        console.log(e.response.data.errorMessage);
+        req.flash("error", e.response.data.errorMessage.error);
+        res.redirect("/");
+      }
+    }
   }
   );
 });

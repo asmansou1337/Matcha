@@ -21,8 +21,8 @@ router.post("/editProfile", headerAuth.connectedHeader, async (req, res) => {
   let user = undefined;
   let success = undefined;
   let error = undefined;
-  await axios
-    .post(`${process.env.HostApi}/profile/editBasic`, userInfos)
+  // Edit infos
+  await axios.post(`${process.env.HostApi}/profile/editBasic`, userInfos)
     .then((response) => {
       success = response.data;
     })
@@ -34,8 +34,8 @@ router.post("/editProfile", headerAuth.connectedHeader, async (req, res) => {
         }
       }
     });
-  await axios
-    .get(`${process.env.HostApi}/profile/getInfos`)
+  // get user infos
+  await axios.get(`${process.env.HostApi}/profile/getInfos`)
     .then((resp) => {
       user = resp.data.user;
     })
@@ -47,19 +47,12 @@ router.post("/editProfile", headerAuth.connectedHeader, async (req, res) => {
         }
       }
     });
-  res.render("editProfile", {
-    success,
-    error,
-    userInfos: user,
-    nav: { path: "basic" },
-  });
+  res.render("editProfile", {success, error, userInfos: user, nav: { path: "basic" }, token: req.cookies.jwt});
 });
 
 // Update password
 router.post("/updatePassword", headerAuth.connectedHeader, (req, res) => {
-  // console.log(JSON.stringify(req.body));
-  axios
-    .post(`${process.env.HostApi}/profile/updatePassword`, req.body)
+  axios.post(`${process.env.HostApi}/profile/updatePassword`, req.body)
     .then((response) => {
       req.flash("path", "password");
       console.log(chalk.blue(response.data.successMessage));
@@ -84,8 +77,7 @@ router.post("/uploadProfile", headerAuth.connectedHeader, (req, res) => {
   req.flash("path", "picture");
   let oldProfilePic = "";
   // Get The old profile picture name if exists
-  axios
-    .get(`${process.env.HostApi}/profile/getProfilePic`)
+  axios.get(`${process.env.HostApi}/profile/getProfilePic`)
     .then((resp) => {
       console.log(chalk.magenta(JSON.stringify(resp.data.user.profilePic)));
       oldProfilePic = resp.data.user.profilePic;
@@ -117,8 +109,7 @@ router.post("/uploadProfile", headerAuth.connectedHeader, (req, res) => {
           name: req.file.filename,
         };
         //console.log(chalk.green(JSON.stringify(req.file)));
-        axios
-          .post(`${process.env.HostApi}/profile/updateProfilePic`, pic)
+        axios.post(`${process.env.HostApi}/profile/updateProfilePic`, pic)
           .then((response) => {
             // delete old picture first before redirecting
             if (oldProfilePic != "" && oldProfilePic != null)
@@ -183,10 +174,8 @@ router.post("/deleteProfile", headerAuth.connectedHeader, (req, res) => {
 // Upload other picture form (max 4)
 router.post("/uploadPicture", headerAuth.connectedHeader, (req, res) => {
   req.flash("path", "picture");
-  axios
-    .get(`${process.env.HostApi}/profile/picturesCount`)
+  axios.get(`${process.env.HostApi}/profile/picturesCount`)
     .then((resp) => {
-      // console.log(chalk.yellow(JSON.stringify(resp.data)));
       // upload new picture
       upload(req, res, (err) => {
         if (err instanceof multer.MulterError) {
@@ -274,12 +263,11 @@ router.post("/deletePicture", headerAuth.connectedHeader, (req, res) => {
 // edit tags infos form POST
 router.post("/addTags", headerAuth.connectedHeader, (req, res) => {
   req.flash("path", "tag");
-  console.log(chalk.yellow(req.body.TagsTab));
+  // console.log(chalk.yellow(req.body.TagsTab));
   // verify if tags tab is an array
   try {
     let userTags = JSON.parse(req.body.TagsTab);
-    axios
-    .post(`${process.env.HostApi}/profile/updateTags`, userTags)
+    axios.post(`${process.env.HostApi}/profile/updateTags`, userTags)
     .then((response) => {
       req.flash("successMessage", response.data.successMessage);
       res.redirect("/profile/editProfile");
@@ -297,7 +285,6 @@ router.post("/addTags", headerAuth.connectedHeader, (req, res) => {
     req.flash("error", 'Invalid Tags');
     res.redirect("/profile/editProfile");
   }
-
 });
 
 router.get("/getTags", headerAuth.connectedHeader, (req, res) => {
@@ -326,8 +313,7 @@ router.get("/editProfile", headerAuth.connectedHeader, (req, res) => {
   if (JSON.stringify(path) === "[]") path = "basic";
 
   // get user infos
-  axios
-    .get(`${process.env.HostApi}/profile/getInfos`)
+  axios.get(`${process.env.HostApi}/profile/getInfos`)
     .then((response) => {
       user = response.data.user;
       geocoder
@@ -337,21 +323,9 @@ router.get("/editProfile", headerAuth.connectedHeader, (req, res) => {
           user.city = result[0].city;
           user.country = result[0].country;
           //  console.log(chalk.greenBright(JSON.stringify(user)));
-          res.render("editProfile", {
-            success,
-            error,
-            userInfos: user,
-            nav: { path },
-            tagsList,
-          });
+          res.render("editProfile", {success, error, userInfos: user, nav: { path }, tagsList, token: req.cookies.jwt});
         }).catch((e) => {
-          res.render("editProfile", {
-            success,
-            error,
-            userInfos: user,
-            nav: { path },
-            tagsList,
-          });
+          res.render("editProfile", {success, error, userInfos: user, nav: { path }, tagsList, token: req.cookies.jwt});
           console.log(chalk.green(JSON.stringify(e)))
         })
     })
@@ -361,13 +335,7 @@ router.get("/editProfile", headerAuth.connectedHeader, (req, res) => {
         if(e.response.status === 400) {
             console.log(e.response.data);
             let error = {error: e.response.data.errorMessage.error}
-            res.render("editProfile", {
-              success,
-              error,
-              userInfos: user,
-              nav: { path },
-              tagsList,
-            });
+            res.render("editProfile", {success, error, userInfos: user, nav: { path }, tagsList, token: req.cookies.jwt});
         }
       }    
     });
@@ -385,10 +353,8 @@ router.post("/updateLocation", headerAuth.connectedHeader, async (req, res) => {
       userCoor.latitude = response.data.lat;
     });
   }
-  //console.log(chalk.magenta(JSON.stringify(userCoor)));
   // update user location on the backend
-  axios
-    .post(`${process.env.HostApi}/profile/updateLocation`, userCoor)
+  axios.post(`${process.env.HostApi}/profile/updateLocation`, userCoor)
     .then((response) => {
       req.flash("successMessage", response.data.successMessage);
       res.redirect("/profile/editProfile");

@@ -18,16 +18,16 @@
                                     <!-- Location -->
                                     <p><strong>Located At : </strong><%= (typeof userInfos !== 'undefined') ? ((typeof userInfos.city !== 'undefined')?userInfos.city:' - ') +', '+((typeof userInfos.country !== 'undefined')?userInfos.country:' - ') : '' %></p>
                                     <!-- Age -->
-                                    <p><strong>Age : </strong> <%= (typeof userInfos !== 'undefined') ? userInfos.age : '' %></p>
+                                    <p><strong>Age : </strong> <%= (typeof userInfos !== 'undefined') ? ((userInfos.age !== null) ? userInfos.age : ' ') : '' %></p>
                                     <!-- Gender -->
-                                    <p><strong>Gender : </strong> <%= (typeof userInfos !== 'undefined') ? userInfos.gender : '' %></p>
+                                    <p><strong>Gender : </strong> <%= (typeof userInfos !== 'undefined') ? ((userInfos.gender !== null) ? userInfos.gender : ' ') : '' %></p>
                                     <!-- Orientation -->
-                                    <p><strong>Orientation : </strong> <%= (typeof userInfos !== 'undefined') ? userInfos.preference : '' %></p>
+                                    <p><strong>Orientation : </strong> <%= (typeof userInfos !== 'undefined') ? ((userInfos.preference !== null) ? userInfos.preference : '') : '' %></p>
                                     <!-- Email -->
                                     <p><strong>Email: </strong> <%= (typeof userInfos !== 'undefined') ? userInfos.email : '' %></p>
                                     <!-- Bio -->
                                     <strong>Biography </strong>
-                                    <p class="card-text"><%= (typeof userInfos !== 'undefined') ? userInfos.biography : '' %></p>
+                                    <p class="card-text"><%= (typeof userInfos !== 'undefined') ? ((userInfos.biography !== null) ? userInfos.biography : '') : '' %></p>
                                     <hr>
                                      <!-- Tags -->
                                      <h4 class="card-title"><strong>Interests</strong></h4>
