@@ -90,7 +90,7 @@
                     <!-- Default input -->
                     <div class="form-group col-md-6">
                         <label for="birthday">Birth Day</label>
-                        <input type="date" class="form-control" name="birthDay" placeholder="Birth Day: yyyy-mm-jj" value="<%= (typeof userInfos !== 'undefined') ? userInfos.born_date : '' %>">
+                        <input type="date" class="form-control" id="birthDay" name="birthDay" placeholder="Birth Day: yyyy-mm-jj" value="<%= (typeof userInfos !== 'undefined') ? userInfos.born_date : '' %>">
                         <% if(typeof  error !== 'undefined'){ %>
                           <div class="error-input">
                               <% if (typeof  error.birthDay !== 'undefined') %>
@@ -316,8 +316,8 @@
                   <button class="btn btn-primary btn-md" name="locateme" onclick='locate();'>Locate Me</button>
                   <div id="map"></div>
                   <form action="/profile/updateLocation" method="post">
-                    <input type="hidden" name="latitude" id="lat" value="<%= (typeof userInfos !== 'undefined') ? userInfos.latitude : '31.794525' %>">
-                    <input type="hidden" name="longitude" id="long" value="<%= (typeof userInfos !== 'undefined') ? userInfos.longitude : '-7.0849336' %>">
+                    <input type="hidden" name="latitude" id="latitude" value="<%= (typeof userInfos !== 'undefined') ? userInfos.latitude : '31.794525' %>">
+                    <input type="hidden" name="longitude" id="longitude" value="<%= (typeof userInfos !== 'undefined') ? userInfos.longitude : '-7.0849336' %>">
                     <input type="submit" class="btn btn-primary btn-md" name="locationBtn" value="Change Location">
                   </form>
                 </div>
@@ -332,11 +332,13 @@
   
 </div>
 <%- include('footer'); %>
-<script type="text/javascript" src="/javascripts/socket.js"></script>
-<script type="text/javascript" src="/javascripts/notif.js"></script>
+<!-- <script type="text/javascript" src="/javascripts/socket.js"></script>
+<script type="text/javascript" src="/javascripts/notif.js"></script> -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
   <script type="text/javascript" src="/javascripts/tag.js"></script>
+  <script type="text/javascript" src="/javascripts/showMap.js"></script>
   <script type="text/javascript" src="/javascripts/locate.js"></script>
   <script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD21--MXSlrUq9EHOI4PbxcWuTfsV7RpAs&callback=initMap">
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD21--MXSlrUq9EHOI4PbxcWuTfsV7RpAs&callback=initialize">
   </script>
+  

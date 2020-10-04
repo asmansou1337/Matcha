@@ -24,6 +24,8 @@ const chatBox = document.querySelector('.chatBox')
         cardTitle.innerHTML = `Chatting with ${matchedUsername}`
         chatBox.style.display ='block'
         document.querySelector('.defaultChatBox').style.display = 'none'
+        if (document.querySelector('.unread'+convId) !== null)
+          document.querySelector('.unread'+convId).innerHTML = ''
     }
    
 

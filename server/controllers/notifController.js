@@ -34,7 +34,7 @@ const Notif = {
         const userId = req.query.id;
         const notif = await notifManager.getUnreadNotif(userId);
         if (notif[0]) {
-            console.log(chalk.green(JSON.stringify(notif)))
+            // console.log(chalk.green(JSON.stringify(notif)))
             responseData.unread = notif[0].unread
         } else {
             responseData.isValid = false;

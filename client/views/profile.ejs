@@ -76,17 +76,15 @@
                                 <!-- Username  -->
                                 <h6 class="font-weight-bold indigo-text py-2">@<%= (typeof userInfos !== 'undefined') ? userInfos.username : '' %></h6>
                                 <h3><span class="badge rgba-purple-strong"><i class="fab fa-gratipay"></i>&nbsp;<%= (typeof userInfos !== 'undefined') ? userInfos.fame : '' %></span></h3>
-                                <!-- Location -->
-                                <p><strong>Located At : </strong><%= (typeof userInfos !== 'undefined') ? ((typeof userInfos.city !== 'undefined') ? userInfos.city +', ' : '') +((typeof userInfos.country !== 'undefined')? userInfos.country:'') : '' %></p>
                                 <!-- Age -->
-                                <p><strong>Age : </strong> <%= (typeof userInfos !== 'undefined') ? ((userInfos.age !== null) ? userInfos.age : ' ') : '' %></p>
+                                <p><strong>Age : </strong> <%= (typeof userInfos !== 'undefined') ? ((userInfos.age !== null) ? userInfos.age : ' - ') : '' %></p>
                                 <!-- Gender -->
-                                <p><strong>Gender : </strong> <%= (typeof userInfos !== 'undefined') ? ((userInfos.gender !== null) ? userInfos.gender : ' ') : '' %></p>
+                                <p><strong>Gender : </strong> <%= (typeof userInfos !== 'undefined') ? ((userInfos.gender !== null) ? userInfos.gender : ' - ') : '' %></p>
                                 <!-- Orientation -->
-                                <p><strong>Orientation : </strong> <%= (typeof userInfos !== 'undefined') ? ((userInfos.preference !== null) ? userInfos.preference : '') : '' %></p>
+                                <p><strong>Orientation : </strong> <%= (typeof userInfos !== 'undefined') ? ((userInfos.preference !== null) ? userInfos.preference : ' - ') : '' %></p>
                                 <!-- Bio -->
                                 <strong>Biography : </strong>
-                                <p class="card-text"><%= (typeof userInfos !== 'undefined') ? ((userInfos.biography !== null) ? userInfos.biography : '') : '' %></p>
+                                <p class="card-text"><%= (typeof userInfos !== 'undefined') ? ((userInfos.biography !== null) ? userInfos.biography : ' - ') : '' %></p>
                                 <hr>
                                  <!-- Tags -->
                                  <h4 class="card-title"><strong>Interests</strong></h4>
@@ -106,7 +104,7 @@
                                     <!-- Map -->
                                     <input type="hidden" name="latitude" id="lat" value="<%= (typeof userInfos !== 'undefined') ? userInfos.latitude : '' %>">
                                     <input type="hidden" name="longitude" id="long" value="<%= (typeof userInfos !== 'undefined') ? userInfos.longitude : '' %>">
-                                    <div id="map"></div>
+                                    <div id="previewMap"></div>
                         </div>
                         </div>
                     </div>
@@ -135,10 +133,11 @@
         </div>
     </div>
 
-    <!-- <script type="text/javascript" src="/javascripts/showMap.js"></script>
+    <script type="text/javascript" src="/javascripts/showMap.js"></script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD21--MXSlrUq9EHOI4PbxcWuTfsV7RpAs&callback=initMap">
-    </script> -->
+    </script>
+    
     <!-- <script
       src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.2/qs.min.js"
       integrity="sha256-TDxXjkAUay70ae/QJBEpGKkpVslXaHHayklIVglFRT4="
@@ -156,9 +155,9 @@
 <%- include('footer'); %>
 <script type="text/javascript" src="/javascripts/socket.js"></script>
 <script>
-     // Get user id, username and conversation id from URL
-     const { id } = Qs.parse(location.search, {
-    ignoreQueryPrefix: true
+    // Get user id from URL
+    const { id } = Qs.parse(location.search, {
+        ignoreQueryPrefix: true
     });
     socket.emit('visitProfile', {
             visited: id,

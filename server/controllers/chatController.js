@@ -22,6 +22,10 @@ const chat = {
                 // console.log(chalk.red(JSON.stringify(checkConv)))
                 if (checkConv.length > 0) {
                     mutualUsers[i].convId = checkConv[0].id;
+                    // Get Conversation unread msgs
+                    let unreadConv = await chatManager.getConvUnreadMessages(mutualUsers[i].userId, checkConv[0].id);
+                    // console.log(chalk.yellow(JSON.stringify(await chatManager.getConvUnreadMessages(mutualUsers[i].userId, checkConv[0].id))))
+                    mutualUsers[i].unreadMsgs = unreadConv[0].unreadMsgs
                 } else {
                     let addConv = await chatManager.addConversation(connectedUserData['userId'], mutualUsers[i].matchedId)
                     // console.log(chalk.white(JSON.stringify(addConv)))
@@ -113,6 +117,8 @@ const chat = {
             // get the conversation messages
             let convs = await chatManager.getMessages(convId)
             if (convs) {
+                // Update Msgs to read = 1
+                await chatManager.updateMsgStatut(from, convId);
                 for (const msg of convs) {
                     // Format time 
                     let msgTime = null;

@@ -51,25 +51,37 @@ router.post("/editProfile", headerAuth.connectedHeader, async (req, res) => {
 });
 
 // Update password
-router.post("/updatePassword", headerAuth.connectedHeader, (req, res) => {
-  axios.post(`${process.env.HostApi}/profile/updatePassword`, req.body)
+router.post("/updatePassword", headerAuth.connectedHeader, async (req, res) => {
+  let user = undefined;
+  let error = undefined;
+  let success = undefined;
+  await axios.post(`${process.env.HostApi}/profile/updatePassword`, req.body)
     .then((response) => {
-      req.flash("path", "password");
-      console.log(chalk.blue(response.data.successMessage));
-      req.flash("successMessage", response.data.successMessage);
-      res.redirect("/profile/editProfile");
+      // console.log(chalk.blue(response.data.successMessage));
+      success = response.data;
     })
     .catch((e) => {
       if (typeof e.response !== "undefined") {
         handle.authError(e);
         if (e.response.status === 400) {
-          res.render("editProfile", {
-            error: e.response.data.errorMessage,
-            nav: { path: "password" },
-          });
+          error = e.response.data.errorMessage;
         }
       }
     });
+    // get user infos
+    await axios.get(`${process.env.HostApi}/profile/getInfos`)
+    .then((resp) => {
+      user = resp.data.user;
+    })
+    .catch((e) => {
+      handle.authError(e, req, res);
+      if (typeof e.response !== "undefined") {
+        if (e.response.status === 400) {
+          error = e.response.data.errorMessage;
+        }
+      }
+    });
+  res.render("editProfile", {success, error, userInfos: user, nav: { path: "password" }, token: req.cookies.jwt});
 });
 
 // Upload profile picture form
@@ -79,7 +91,7 @@ router.post("/uploadProfile", headerAuth.connectedHeader, (req, res) => {
   // Get The old profile picture name if exists
   axios.get(`${process.env.HostApi}/profile/getProfilePic`)
     .then((resp) => {
-      console.log(chalk.magenta(JSON.stringify(resp.data.user.profilePic)));
+      // console.log(chalk.magenta(JSON.stringify(resp.data.user.profilePic)));
       oldProfilePic = resp.data.user.profilePic;
     })
     .catch((e) => {
@@ -90,13 +102,10 @@ router.post("/uploadProfile", headerAuth.connectedHeader, (req, res) => {
   upload(req, res, (err) => {
     if (err instanceof multer.MulterError) {
       console.log(chalk.red(err));
-      req.flash(
-        "error",
-        "Images Allowed (jpg, jpeg, png, gif), size: less than 10MB"
-      );
+      req.flash("error", "Images Allowed (jpg, jpeg, png, gif), size: less than 10MB");
       res.redirect("/profile/editProfile");
     } else if (err) {
-      console.log(chalk.red(err));
+      // console.log(chalk.red(err));
       req.flash("error", err);
       res.redirect("/profile/editProfile");
     } else {
@@ -134,8 +143,7 @@ router.post("/uploadProfile", headerAuth.connectedHeader, (req, res) => {
 // Delete profile picture form
 router.post("/deleteProfile", headerAuth.connectedHeader, (req, res) => {
   req.flash("path", "picture");
-  axios
-    .get(`${process.env.HostApi}/profile/getProfilePic`)
+  axios.get(`${process.env.HostApi}/profile/getProfilePic`)
     .then((resp) => {
       if (resp.data.user.profilePic != "" && resp.data.user.profilePic != null)
         fs.unlinkSync(process.cwd() + "/public/uploads/" + resp.data.user.profilePic);
@@ -143,8 +151,7 @@ router.post("/deleteProfile", headerAuth.connectedHeader, (req, res) => {
       let pic = {
         name: null,
       };
-      axios
-        .post(`${process.env.HostApi}/profile/updateProfilePic`, pic)
+      axios.post(`${process.env.HostApi}/profile/updateProfilePic`, pic)
         .then((response) => {
           console.log(chalk.blue(response.data.successMessage));
         })
@@ -196,8 +203,7 @@ router.post("/uploadPicture", headerAuth.connectedHeader, (req, res) => {
               name: req.file.filename,
             };
             console.log(chalk.green(JSON.stringify(req.file)));
-            axios
-              .post(`${process.env.HostApi}/profile/addNewPic`, pic)
+            axios.post(`${process.env.HostApi}/profile/addNewPic`, pic)
               .then((response) => {
                 req.flash("successMessage", response.data.successMessage);
                 res.redirect("/profile/editProfile");
@@ -238,8 +244,7 @@ router.post("/deletePicture", headerAuth.connectedHeader, (req, res) => {
       name: img,
     };
     //console.log(chalk.green(JSON.stringify(req.file)));
-    axios
-      .post(`${process.env.HostApi}/profile/deletePic`, pic)
+    axios.post(`${process.env.HostApi}/profile/deletePic`, pic)
       .then((response) => {
         console.log(chalk.blue(response.data.successMessage));
         req.flash("successMessage", response.data.successMessage);
@@ -311,23 +316,11 @@ router.get("/editProfile", headerAuth.connectedHeader, (req, res) => {
   if (JSON.stringify(successMessage) === "[]") success = undefined;
   else success.successMessage = successMessage;
   if (JSON.stringify(path) === "[]") path = "basic";
-
   // get user infos
   axios.get(`${process.env.HostApi}/profile/getInfos`)
     .then((response) => {
       user = response.data.user;
-      geocoder
-        .reverse({ lat: user.latitude, lon: user.longitude })
-        .then((result) => {
-          //  console.log(result[0].city);
-          user.city = result[0].city;
-          user.country = result[0].country;
-          //  console.log(chalk.greenBright(JSON.stringify(user)));
-          res.render("editProfile", {success, error, userInfos: user, nav: { path }, tagsList, token: req.cookies.jwt});
-        }).catch((e) => {
-          res.render("editProfile", {success, error, userInfos: user, nav: { path }, tagsList, token: req.cookies.jwt});
-          console.log(chalk.green(JSON.stringify(e)))
-        })
+      res.render("editProfile", {success, error, userInfos: user, nav: { path }, tagsList, token: req.cookies.jwt});
     })
     .catch((e) => {
       handle.authError(e, req, res);
@@ -348,7 +341,6 @@ router.post("/updateLocation", headerAuth.connectedHeader, async (req, res) => {
   if (handle.isEmpty(userCoor.latitude) || handle.isEmpty(userCoor.longitude)) {
     // locate the user automatically
     await axios.get(`http://ip-api.com/json`).then((response) => {
-      //console.log(chalk.cyan(JSON.stringify(response.data)));
       userCoor.longitude = response.data.lon;
       userCoor.latitude = response.data.lat;
     });

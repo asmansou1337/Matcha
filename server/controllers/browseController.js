@@ -234,7 +234,7 @@ getFilterBrowseList: async (req, res) => {
     const ratingMax = filter['rating-max'] || 5;
     const locationMin = filter['location-min'];
     const locationMax = filter['location-max'];
-       console.log(chalk.yellow(JSON.stringify(filter)))
+    //    console.log(chalk.yellow(JSON.stringify(filter)))
     // console.log(chalk.red(validation.isFilterValid(filter)))
     let listTags = JSON.parse(filter['TagsTab']);
     // delete duplicate if exists

@@ -11,6 +11,9 @@ var token = document.getElementById('token').dataset.token;
         // console.log(JSON.stringify(user))
 
         const socket = io();
+        $(window).on('beforeunload', function(){
+            socket.close();
+        });
         socket.emit('identify', {
             playload: user
         });
@@ -32,6 +35,8 @@ var token = document.getElementById('token').dataset.token;
                 // console.log(JSON.stringify(data));
             }
         });
+
+        
 
         // socket.on('connect', () => {
         //   socket.emit('identify', {

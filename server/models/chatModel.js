@@ -28,6 +28,14 @@ const chat = {
         const sql = `SELECT count(*) as unreadMsgs FROM messages WHERE user_id = ? AND is_read = 0`
         return db.selectDB([id], sql)
     },
+    getConvUnreadMessages: async (id, convId) => {
+        const sql = `SELECT count(*) as unreadMsgs FROM messages WHERE user_id = ? AND conversation_id = ? AND is_read = 0`
+        return db.selectDB([id, convId], sql)
+    },
+    updateMsgStatut: async (id, convId) => {
+        const sql = 'UPDATE messages SET is_read = 1 WHERE user_id = ? AND conversation_id = ? AND is_read = 0';
+        return db.updateDB([id, convId], sql)
+    },
 }
 
 module.exports = chat

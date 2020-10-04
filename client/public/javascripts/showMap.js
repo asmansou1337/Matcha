@@ -1,9 +1,9 @@
 
 var latitude = document.getElementById('lat').value;
 var longitude = document.getElementById('long').value;
-var myMap = document.getElementById('map');
+var myMap = document.getElementById('previewMap');
 var marker;
-var map;
+var previewMap;
 
 function initMap(){
    // Map options
@@ -13,15 +13,15 @@ function initMap(){
    }
 
    // New map
-   map = new google.maps.Map(myMap, options);
-   addMarker({coords:{lat: parseFloat(latitude), lng: parseFloat(longitude)}});
+   previewMap = new google.maps.Map(myMap, options);
+   addMarkerPreview({coords:{lat: parseFloat(latitude), lng: parseFloat(longitude)}});
 
  }
 
  // Add Marker Function
- function addMarker(props){
+ function addMarkerPreview(props){
    marker = new google.maps.Marker({
      position:props.coords,
-     map:map,
+     map:previewMap,
    });
  }

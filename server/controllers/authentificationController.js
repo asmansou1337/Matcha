@@ -80,13 +80,15 @@ const Auth = {
                 const subject = 'Matcha: Account Activation';
                 const content = `Hi ${username}, <br>Folow the link below to activate your account: 
                 <a href='http://${process.env.HOST}:${process.env.PORT_FRONT}/activateAccount?token=${token}'>Link</a><br>`;
-                const m = await mail.sendMail(email, subject, content);
+                
+                const m = await mail.sendMail(email, subject, content).catch(e => console.log(chalk.yellow(e)));
                 if (m) {
                     responseData.successMessage = "Your Account has been created successfully, Please check your Email for the activation link";
                 } else {
                     responseData.isValid = false;
                     responseData.errorMessage.error= 'Error Creating your account, Please try again!';
                 }
+
             } else {
                 responseData.isValid = false;
                 responseData.errorMessage.error= 'Error Creating your account, Please try again!';

@@ -35,6 +35,12 @@ var chatRouter = require('./routes/chat');
 var searchRouter = require('./routes/search');
 var notificationsRouter = require('./routes/notification');
 
+function ignoreFavicon(req, res, next) {
+  if (req.originalUrl.includes('favicon.ico')) {
+    res.status(204).end()
+  }
+  next();
+}
 
 /**
  * Create HTTP server.
@@ -55,6 +61,7 @@ server.listen(port, host, () => {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(ignoreFavicon);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -103,7 +110,7 @@ app.use(function(err, req, res) {
   if(typeof err.response !== 'undefined') {
     if(err.response.status === 400) {
         const error = err.response.data.errorMessage;
-        return res.render('signup', {error});
+        return res.render('error', {error});
     }
   }  
   // set locals, only providing error in development
@@ -114,29 +121,6 @@ app.use(function(err, req, res) {
   // res.render('error');
 });
 
-
-/**
- * Get port from environment and store in Express.
- */
-
-// var port = normalizePort(process.env.PORT || '8080');
-// app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-
-
-// var server = http.createServer(app);
-// const io = socketio(server);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-// server.listen(port);
-// server.on('error', onError);
-// server.on('listening', onListening);
 
 // io.sockets.on('connection', (socket) => {
 //   let currentUser = null;
@@ -195,6 +179,7 @@ function getCurrentUser(id) {
 
 // Get current user
 function checkConnectedUser(id, id2, convId) {
+  // return chatUsers.find(user => (user.from === id && user.to === id2 && user.convId === convId));
   for (const user of chatUsers) {
     if (user.from === id && user.to === id2 && user.convId === convId) {
       return true
@@ -263,6 +248,7 @@ io.on('connection', socket => {
   socket.on('chatMessage', msg => {
     const user = getCurrentUser(socket.id);
     console.log(chalk.yellow('current user ' + JSON.stringify(user)))
+    console.log(chalk.yellow(JSON.stringify(chatUsers)))
     let isRead = 0;
     console.log(chalk.magentaBright(checkConnectedUser(user.to, user.from, user.convId)))
     if (checkConnectedUser(user.to, user.from, user.convId))
@@ -277,7 +263,7 @@ io.on('connection', socket => {
         io.to(user.convId).emit('message', formatMessage(user.username, msg));
         axios.get(`${process.env.HostApi}/getUnreadMessages`)
         .then((notif) => {
-          console.log(JSON.stringify(notif.data))
+          // console.log(JSON.stringify(notif.data))
           io.emit('chatNotif', {userTo: user.to, unreadMsgs: notif.data.unreadMsgs})
         })
         .catch()
@@ -293,7 +279,7 @@ io.on('connection', socket => {
   })
 
   socket.on('visitProfile', (data) => {
-    console.log(data)
+    // console.log(data)
     axios.get(`${process.env.HostApi}/unreadnotif?id=${data.visited}`)
     .then((respo) => {
         io.emit('unreadNotif', {unread: respo.data.unread, id: data.visited, msg: data.msg});
@@ -304,7 +290,7 @@ io.on('connection', socket => {
   })
 
   socket.on('checkNotif', (data) => {
-    console.log(data)
+    // console.log(data)
     axios.get(`${process.env.HostApi}/unreadnotif?id=${data.user.userId}`)
     .then((respo) => {
         io.emit('unreadNotif', {unread: respo.data.unread, id: data.user.userId, msg: data.msg});
@@ -312,6 +298,18 @@ io.on('connection', socket => {
       console.log(chalk.red( e.response.data.errorMessage.error))
       socket.error(e.response.data.errorMessage.error)
     })
+  })
+
+  socket.on('checkChatNotif', (data) => {
+    
+    axios.get(`${process.env.HostApi}/getUnreadMessages`)
+        .then((notif) => {
+          // console.log(JSON.stringify(notif.data))
+          io.emit('chatNotif', {userTo: user.to, unreadMsgs: notif.data.unreadMsgs})
+        })
+        .catch((e) => {
+          socket.error(e.response.data.errorMessage.error)
+        })
   })
 
   // Runs when client disconnects
@@ -339,64 +337,3 @@ io.on('connection', socket => {
 })
 
 
-
-
-/**
- * Normalize a port into a number, string, or false.
- */
-
-// function normalizePort(val) {
-//   var port = parseInt(val, 10);
-
-//   if (isNaN(port)) {
-//     // named pipe
-//     return val;
-//   }
-
-//   if (port >= 0) {
-//     // port number
-//     return port;
-//   }
-
-//   return false;
-// }
-
-// /**
-//  * Event listener for HTTP server "error" event.
-//  */
-
-// function onError(error) {
-//   if (error.syscall !== 'listen') {
-//     throw error;
-//   }
-
-//   var bind = typeof port === 'string'
-//     ? 'Pipe ' + port
-//     : 'Port ' + port;
-
-//   // handle specific listen errors with friendly messages
-//   switch (error.code) {
-//     case 'EACCES':
-//       console.error(bind + ' requires elevated privileges');
-//       process.exit(1);
-//       break;
-//     case 'EADDRINUSE':
-//       console.error(bind + ' is already in use');
-//       process.exit(1);
-//       break;
-//     default:
-//       throw error;
-//   }
-// }
-
-// /**
-//  * Event listener for HTTP server "listening" event.
-//  */
-
-// function onListening() {
-//   var addr = server.address();
-//   var bind = typeof addr === 'string'
-//     ? 'pipe ' + addr
-//     : 'port ' + addr.port;
-//   debug('Listening on ' + bind);
-// }

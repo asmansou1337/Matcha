@@ -27,19 +27,24 @@
                         if (typeof activeConv !== 'undefined')
                           active = (user.convId == activeConv.active) ? 'active' : ''
                         %>
-                        <a href="/chat?to=<%= user.matchedId%>&matchedUsername=<%= user.matchedUsername%>&convId=<%= user.convId %>" 
-                          class="list-group-item d-flex justify-content-between align-items-center <%= active %>">
-                          <img src="<%= (user.profilePic != null) ? `/uploads/${user.profilePic}` : '/uploads/avatar.jpg' %>" alt="avatar" class="small_avatar rounded-circle d-flex align-self-center mr-2 z-depth-1">
-                          <div class="d-sm-none d-md-none d-lg-block">
-                            <span><%= user.firstName+' '+user.lastName+'(@'+user.matchedUsername+')' %> </span>
-                          </div>
-                          <% if (user.is_online === 1) { %>
-                          <span class="stateOnline"></span>
-                          <% } else { %>
-                            <span class="stateOffline"></span>
-                          <% } %>
-                          <!-- <span class="badge badge-danger badge-pill">24</span> -->
-                        </a>
+                        <div class="list-group-item d-flex flex-column align-items-center">
+                          <a href="/chat?to=<%= user.matchedId%>&matchedUsername=<%= user.matchedUsername%>&convId=<%= user.convId %>" 
+                            class="d-flex justify-content-between align-items-center <%= active %>">
+                            <% if (user.is_online === 1) { %>
+                              <span class="stateOnline"></span>
+                              <% } else { %>
+                                <span class="stateOffline"></span>
+                              <% } %>
+                            <img src="<%= (user.profilePic != null) ? `/uploads/${user.profilePic}` : '/uploads/avatar.jpg' %>" alt="avatar" class="small_avatar rounded-circle d-flex align-self-center mr-2 ml-2 z-depth-1">
+                            <div class="d-sm-none d-md-none d-lg-block mr-2">
+                              <span><%= '@'+user.matchedUsername %> </span>
+                            </div>
+                            <% if (user.unreadMsgs !== 0) { %>
+                              <span class="badge badge-danger ml-2 unread<%= user.convId %>"><%= user.unreadMsgs %></span>
+                            <% } %>
+                          </a>
+                        </div>
+                        
 
                     <% });} else { %>
                       <div class="card-body card-body-cascade text-center">

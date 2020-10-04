@@ -9,7 +9,8 @@ var cnx = mysql.createConnection({
 	host     : 'localhost',
 	port	 : 3306,
     user     : 'root',
-	password : ''
+	password : '',
+	charset  : 'utf8mb4'
 });
 
 //Catching errors
@@ -34,6 +35,7 @@ cnx.query('CREATE DATABASE IF NOT EXISTS ' + DB_NAME, (error, results, fields) =
     console.log(chalk.green('Database '+ DB_NAME +' Created !'));
 });
 
+cnx.query('ALTER DATABASE '+ DB_NAME +' CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;');
 // Choosing matcha_db
 cnx.query('USE ' + DB_NAME);
 console.log(chalk.green('Database changed !'));
@@ -61,7 +63,7 @@ sql += '`last_connection` datetime,';
 sql += '`born_date` datetime,';
 sql += '`notify` int(11)  NOT NULL DEFAULT 1,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci';
+sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -77,7 +79,7 @@ sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
 sql += '`name` varchar(300) NOT NULL,';
 sql += '`user_id` int(11) NOT NULL,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci';
+sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -91,7 +93,7 @@ sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
 sql += '`name` varchar(300) NOT NULL,';
 sql += '`user_id` int(11) NOT NULL,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci';
+sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -105,7 +107,7 @@ sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
 sql += '`reported_user_id` int(11) NOT NULL,';
 sql += '`reporter_user_id` int(11) NOT NULL,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci';
+sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -119,7 +121,7 @@ sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
 sql += '`blocked_user_id` int(11) NOT NULL,';
 sql += '`blocker_user_id` int(11) NOT NULL,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci';
+sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -134,7 +136,7 @@ sql += '`visitor_user_id` int(11) NOT NULL,';
 sql += '`visited_user_id` int(11) NOT NULL,';
 sql += '`nbr_visits` int(100) NOT NULL,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci';
+sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -148,7 +150,7 @@ sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
 sql += '`liker_user_id` int(11) NOT NULL,';
 sql += '`liked_user_id` int(11) NOT NULL,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci';
+sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -162,7 +164,7 @@ sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
 sql += '`starter_user_id` int(11) NOT NULL,';
 sql += '`receiver_user_id` int(11) NOT NULL,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci';
+sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -178,7 +180,7 @@ sql += '`user_id` int(11) NOT NULL,';
 sql += '`message` TEXT NOT NULL,';
 sql += '`is_read` int(11) NOT NULL DEFAULT 0,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci';
+sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -195,7 +197,7 @@ sql += '`message` varchar(300) NOT NULL,';
 sql += '`is_read` int(11) NOT NULL DEFAULT 0,';
 sql += '`link` varchar(300) NOT NULL,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci';
+sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {

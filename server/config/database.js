@@ -9,7 +9,8 @@ var conn = mysql.createConnection({
   host: DB_HOST,
   user: DB_USER,
   password: DB_PASS,
-  database: DB_NAME
+  database: DB_NAME,
+  charset  : 'utf8mb4'
 }); 
 conn.connect(function(err) {
   if (err) throw err;

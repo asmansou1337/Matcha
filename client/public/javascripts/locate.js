@@ -1,11 +1,16 @@
 
-var latitude = document.getElementById('lat').value;
-var longitude = document.getElementById('long').value;
-var myMap = document.getElementById('map');
+var latitude = document.getElementById('latitude').value;
+var longitude = document.getElementById('longitude').value;
+var locationMap = document.getElementById('map');
 var marker;
 var map;
 
-function initMap(){
+function initialize() {
+  initMap();
+  initMap2();
+}
+
+function initMap2(){
    // Map options
    var options = {
      zoom : 14,
@@ -13,7 +18,7 @@ function initMap(){
    }
 
    // New map
-   map = new google.maps.Map(myMap, options);
+   map = new google.maps.Map(locationMap, options);
    addMarker({coords:{lat: parseFloat(latitude), lng: parseFloat(longitude)}});
 
    // Listen for click on map
@@ -22,8 +27,8 @@ function initMap(){
       // Add marker
       var pos = event.latLng;
       addMarker({coords:pos});
-      document.getElementById('lat').value = pos.lat();
-      document.getElementById('long').value = pos.lng();
+      document.getElementById('latitude').value = pos.lat();
+      document.getElementById('longitude').value = pos.lng();
    });
  }
 
@@ -41,6 +46,7 @@ function initMap(){
        marker.setMap(null);
   }
 
+  // For auto location
  function locate() {
    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position)=>{
@@ -49,8 +55,9 @@ function initMap(){
       initMap();
       clearMarkers();
       addMarker({coords:{lat: parseFloat(latitude), lng: parseFloat(longitude)}});
-      document.getElementById('lat').value = latitude;
-      document.getElementById('long').value = longitude;
+      document.getElementById('latitude').value = latitude;
+      document.getElementById('longitude').value = longitude;
       })
    }
 }
+
