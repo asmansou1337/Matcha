@@ -2,12 +2,14 @@
 var chalk = require('chalk');
 var mysql = require('mysql');
 
+// Change Database name to the same name in .env file
+const DB_NAME = 'matcha_db';
+
 var cnx = mysql.createConnection({
 	host     : 'localhost',
 	port	 : 3306,
     user     : 'root',
-	password : '', 
-	charset : 'utf8mb4'
+	password : ''
 });
 
 //Catching errors
@@ -24,16 +26,16 @@ cnx.connect(function(err) {
 
 //Database creation
 
-cnx.query('CREATE DATABASE IF NOT EXISTS matcha_db', (error, results, fields) => {
+cnx.query('CREATE DATABASE IF NOT EXISTS ' + DB_NAME, (error, results, fields) => {
     if (error) {
         console.log(chalk.red("Error Creating Database"));
         return;
     }
-    console.log(chalk.green('Database matcha_db Created !'));
+    console.log(chalk.green('Database '+ DB_NAME +' Created !'));
 });
 
 // Choosing matcha_db
-cnx.query('USE matcha_db');
+cnx.query('USE ' + DB_NAME);
 console.log(chalk.green('Database changed !'));
 
 
@@ -59,7 +61,7 @@ sql += '`last_connection` datetime,';
 sql += '`born_date` datetime,';
 sql += '`notify` int(11)  NOT NULL DEFAULT 1,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') CHARACTER SET utf8 COLLATE utf8_general_ci';
+sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -75,7 +77,7 @@ sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
 sql += '`name` varchar(300) NOT NULL,';
 sql += '`user_id` int(11) NOT NULL,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') CHARACTER SET utf8 COLLATE utf8_general_ci';
+sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -89,7 +91,7 @@ sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
 sql += '`name` varchar(300) NOT NULL,';
 sql += '`user_id` int(11) NOT NULL,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') CHARACTER SET utf8 COLLATE utf8_general_ci';
+sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -103,7 +105,7 @@ sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
 sql += '`reported_user_id` int(11) NOT NULL,';
 sql += '`reporter_user_id` int(11) NOT NULL,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') CHARACTER SET utf8 COLLATE utf8_general_ci';
+sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -117,7 +119,7 @@ sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
 sql += '`blocked_user_id` int(11) NOT NULL,';
 sql += '`blocker_user_id` int(11) NOT NULL,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') CHARACTER SET utf8 COLLATE utf8_general_ci';
+sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -132,7 +134,7 @@ sql += '`visitor_user_id` int(11) NOT NULL,';
 sql += '`visited_user_id` int(11) NOT NULL,';
 sql += '`nbr_visits` int(100) NOT NULL,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') CHARACTER SET utf8 COLLATE utf8_general_ci';
+sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -146,7 +148,7 @@ sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
 sql += '`liker_user_id` int(11) NOT NULL,';
 sql += '`liked_user_id` int(11) NOT NULL,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') CHARACTER SET utf8 COLLATE utf8_general_ci';
+sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -160,7 +162,7 @@ sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
 sql += '`starter_user_id` int(11) NOT NULL,';
 sql += '`receiver_user_id` int(11) NOT NULL,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') CHARACTER SET utf8 COLLATE utf8_general_ci';
+sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -176,7 +178,7 @@ sql += '`user_id` int(11) NOT NULL,';
 sql += '`message` TEXT NOT NULL,';
 sql += '`is_read` int(11) NOT NULL DEFAULT 0,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') CHARACTER SET utf8 COLLATE utf8_general_ci';
+sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -191,49 +193,15 @@ sql += '`receiver_id` int(11) NOT NULL,';
 sql += '`sender_id` int(11) NOT NULL,';
 sql += '`message` varchar(300) NOT NULL,';
 sql += '`is_read` int(11) NOT NULL DEFAULT 0,';
-sql += '`link` varchar(300) NOT NULL';
+sql += '`link` varchar(300) NOT NULL,';
 sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
-sql += ') CHARACTER SET utf8 COLLATE utf8_general_ci';
+sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
 		console.log(chalk.green('Table notifications created !'));
 	}
 });
-
-// // Fill Tabe gender
-// genders = [
-//     {title: "male"},
-//     {title: "female"}
-// ];
-
-// genders.forEach(g => {
-//     var sql = 'INSERT INTO genders SET ?';
-//     cnx.query(sql, g, function(err) {
-//       if (err) throw err;
-//       else {
-//           console.log(chalk.green('Infos inserted into genders table !'));
-//       }
-//     });
-//   });
-
-// // Fill Tabe preference
-// preferences = [
-//     {title: "heterosexual"},
-//     {title: "homosexual"},
-//     {title: "bisexual"}
-// ];
-
-// preferences.forEach(p => {
-//     var sql = 'INSERT INTO preferences SET ?';
-//     cnx.query(sql, p, function(err) {
-//       if (err) throw err;
-//       else {
-//           console.log(chalk.green('Infos inserted into preferences table !'));
-//       }
-//     });
-//   });
-
 
 //End of cnx
 cnx.end();

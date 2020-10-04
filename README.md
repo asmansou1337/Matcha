@@ -21,6 +21,7 @@ Install the app through the setup page to create automatically the database, ste
 
     4. Edit database credentials:
       - vim server/config/setup.js
+      - vim server/config/seed.js
     
     5. Allow permission to the project folder and enclosed files:
       - chmod -R 777 .
@@ -35,8 +36,10 @@ Install the app through the setup page to create automatically the database, ste
   0. ** cd server folder**
   1. **Install the project dependencies:**
     - In terminal lauch the command: npm install
-  2. **Lunch setup page:**
+  2. **Lunch setup:**
     - In terminal lauch the command: npm run setup
+  3. **Fill The DB with fake data:**
+    - In terminal lauch the command: npm run seed
   3. **Run the server:**
      - In terminal lauch the command: npm run dev
      
@@ -99,8 +102,8 @@ Part 1:
 Part 2: 
   - [ ] Chat: real time chat (10 secs max)
   - [X] Search profiles based on critera
-  - [ ] Suggesting profiles based on critera
-  - [ ] Notifications: 
+  - [X] Suggesting profiles based on critera
+  - [X] Notifications: 
     - [ ] New message
     - [ ] The user received a “like”.
     - [ ] The user’s profile has been checked.
@@ -124,8 +127,8 @@ Part 2:
     - [X] Likes history
     - [X] Suggested profiles Discover people (like or not)
     - [X] Search
-    - [ ] Chat
-    - [ ] Notifications
+    - [X] Chat
+    - [X] Notifications
 
   - **Components**
 

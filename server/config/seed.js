@@ -3,12 +3,14 @@ let jsonData = require('./users.json')
 const crypto = require('crypto')
 var mysql = require('mysql');
 
+// Change Database name to the same name in .env file
+const DB_NAME = 'matcha_db';
+
 var cnx = mysql.createConnection({
 	host     : 'localhost',
 	port	 : 3306,
     user     : 'root',
-	password : '', 
-	charset : 'utf8mb4'
+	password : ''
 });
 
 //console.log(jsonData)
@@ -99,7 +101,7 @@ cnx.connect(function(err) {
 });
 
 // Choosing matcha_db
-cnx.query('USE matcha_db');
+cnx.query('USE ' + DB_NAME);
 console.log(chalk.green('Database changed !'));
 
 
@@ -115,7 +117,6 @@ result.forEach((user, index) => {
     }
 });
 sql += ';'
-// console.log(chalk.red(sql))
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -243,39 +244,6 @@ cnx.query(sql, function(err) {
 		console.log(chalk.green('visits added !'));
 	}
 });
-
-// nub = Math.floor(Math.random() * (25 - 10 + 1)) + 10;
-// // add blocks
-// sql = 'INSERT INTO blocked_users ' + 
-//     '(blocker_user_id, blocked_user_id) VALUES ';
-
-// result.forEach((user,i) => {
-//     let curr = ++i;
-//     // random profile to like
-//     // Shuffle array
-//     let shuffled = result.sort(() => 0.5 - Math.random());
-//     // Get sub-array of first n elements after shuffled
-//     let usersBlocked = shuffled.slice(0, nub);
-//     usersBlocked.forEach((blockedUser, index) => {
-//         // if (blockedUser.id !== curr) {
-//             sql += `(${curr}, ${blockedUser.id})`
-//             if ((usersBlocked.length - 1) !== index){
-//                 sql += ','
-//             }
-//         // }
-//     });
-//     if ((result.length) !==  curr){
-//         sql += ','
-//     }
-// });
-// sql += ';'
-// // console.log(chalk.red(sql))
-// cnx.query(sql, function(err) {
-// 	if (err) throw err;
-// 	else {
-// 		console.log(chalk.green('blocks added !'));
-// 	}
-// });
 
 //End of cnx
 cnx.end();
