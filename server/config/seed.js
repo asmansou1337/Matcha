@@ -140,7 +140,7 @@ result.forEach((user,i) => {
     }
 });
 sql += ';'
-// console.log(chalk.red(sql))
+
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -164,7 +164,7 @@ result.forEach((user,i) => {
     }
 });
 sql += ';'
-// console.log(chalk.red(sql))
+
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -172,18 +172,13 @@ cnx.query(sql, function(err) {
 	}
 });
 
-  let nub = Math.floor(Math.random() * (25 - 10 + 1)) + 10;
-// let nub = Math.floor(Math.random() * (5 - 2 + 1)) + 2;
- console.log(chalk.blue('number -- ' + nub))
-// let nub = 3;
+let nub = Math.floor(Math.random() * (25 - 10 + 1)) + 10;
 
 // add likes
 sql = 'INSERT INTO liked_profiles ' + 
     '(liker_user_id, liked_user_id) VALUES ';
 
 result.forEach((user,i) => {
-    // console.log(chalk.green('user id ' + user.id))
-    // console.log(chalk.grey('id ' + i))
     let curr = ++i;
     // random profile to like
     // Shuffle array
@@ -191,12 +186,10 @@ result.forEach((user,i) => {
     // Get sub-array of first n elements after shuffled
     let usersToLike = shuffled.slice(0, nub);
     usersToLike.forEach((likedUser, index) => {
-        //  if (likedUser.id !== curr) {
             sql += `(${curr}, ${likedUser.id})`
             if ((usersToLike.length - 1) !== index){
                 sql += ','
             }
-        //  }
     });
     if ((result.length) !==  curr){
         sql += ','
@@ -204,7 +197,7 @@ result.forEach((user,i) => {
 });
 sql += ';'
 
-//  console.log(chalk.red(sql))
+
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {
@@ -225,19 +218,17 @@ result.forEach((user,i) => {
     // Get sub-array of first n elements after shuffled
     let usersVisited = shuffled.slice(0, nub);
     usersVisited.forEach((visitedUser, index) => {
-        // if (visitedUser.id !== curr) {
             sql += `(${curr}, ${visitedUser.id}, 1)`
             if ((usersVisited.length - 1) !== index){
                 sql += ','
             }
-        // }
     });
     if ((result.length) !==  curr){
         sql += ','
     }
 });
 sql += ';'
-// console.log(chalk.red(sql))
+
 cnx.query(sql, function(err) {
 	if (err) throw err;
 	else {

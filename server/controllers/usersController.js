@@ -118,7 +118,7 @@ const User = {
                 responseData.reportMessage = 'You reported this user';
                 responseData.isReported = 1
         } 
-        console.log(chalk.blue(JSON.stringify(responseData)))
+        // console.log(chalk.blue(JSON.stringify(responseData)))
         res.status(200).send(responseData);
     },
     likeUser: async (req, res) => {
@@ -252,7 +252,7 @@ const User = {
         const visited_user_id = req.query.id;
         // check if it's the first time this user visit this profile
         let checkVisited = await userManager.checkVisited(visitor_user_id, visited_user_id);
-        console.log(chalk.green(JSON.stringify(checkVisited)))
+        // console.log(chalk.green(JSON.stringify(checkVisited)))
         if (checkVisited.length > 0) {
             // IN case is not the first visit
             let updateVisit = await userManager.updateVisit(visitor_user_id, visited_user_id);

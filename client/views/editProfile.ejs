@@ -165,6 +165,12 @@
                           </div>
                         <% } %>
                     </div>
+                    <div class="form-group">
+                      <div class="custom-control custom-checkbox">
+                        <input type="hidden" name="notification" value="<%= (typeof userInfos !== 'undefined') ? userInfos.notify : '1' %>"><input type="checkbox" <%= (typeof userInfos !== 'undefined') ? (userInfos.notify == '1' ? 'checked' : '') : '' %> onclick="this.previousSibling.value=1-this.previousSibling.value" class="custom-control-input" id="notification">
+                        <label class="custom-control-label" for="notification">Notification</label>
+                      </div>
+                  </div>
                     <!-- Grid row -->
                     <input type="submit" class="btn btn-primary btn-md" name="basic" value="Submit">
                 </form>
@@ -332,8 +338,8 @@
   
 </div>
 <%- include('footer'); %>
-<!-- <script type="text/javascript" src="/javascripts/socket.js"></script>
-<script type="text/javascript" src="/javascripts/notif.js"></script> -->
+<script type="text/javascript" src="/javascripts/socket.js"></script>
+<script type="text/javascript" src="/javascripts/notif.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
   <script type="text/javascript" src="/javascripts/tag.js"></script>
   <script type="text/javascript" src="/javascripts/showMap.js"></script>

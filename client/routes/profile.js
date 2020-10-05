@@ -7,13 +7,6 @@ const fs = require("fs");
 const multer = require("multer");
 const headerAuth = require("../middleware/authHeader");
 const handle = require("../middleware/functions");
-const NodeGeocoder = require("node-geocoder");
-const options = {
-  provider: "google",
-  apiKey: "AIzaSyBg-g_Rb35tPbOZf4MVrXSpNP08hrVmhO0",
-  formatter: "json",
-};
-var geocoder = NodeGeocoder(options);
 
 // edit basic infos form POST
 router.post("/editProfile", headerAuth.connectedHeader, async (req, res) => {
@@ -202,7 +195,7 @@ router.post("/uploadPicture", headerAuth.connectedHeader, (req, res) => {
             let pic = {
               name: req.file.filename,
             };
-            console.log(chalk.green(JSON.stringify(req.file)));
+            // console.log(chalk.green(JSON.stringify(req.file)));
             axios.post(`${process.env.HostApi}/profile/addNewPic`, pic)
               .then((response) => {
                 req.flash("successMessage", response.data.successMessage);
@@ -246,7 +239,7 @@ router.post("/deletePicture", headerAuth.connectedHeader, (req, res) => {
     //console.log(chalk.green(JSON.stringify(req.file)));
     axios.post(`${process.env.HostApi}/profile/deletePic`, pic)
       .then((response) => {
-        console.log(chalk.blue(response.data.successMessage));
+        // console.log(chalk.blue(response.data.successMessage));
         req.flash("successMessage", response.data.successMessage);
         res.redirect("/profile/editProfile");
       })
@@ -326,7 +319,7 @@ router.get("/editProfile", headerAuth.connectedHeader, (req, res) => {
       handle.authError(e, req, res);
       if(typeof e.response !== 'undefined') {
         if(e.response.status === 400) {
-            console.log(e.response.data);
+            // console.log(e.response.data);
             let error = {error: e.response.data.errorMessage.error}
             res.render("editProfile", {success, error, userInfos: user, nav: { path }, tagsList, token: req.cookies.jwt});
         }

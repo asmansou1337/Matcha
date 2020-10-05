@@ -11,7 +11,7 @@ router.get('/notification',  headerAuth.connectedHeader, isComplete, (req, res) 
     axios.get(`${process.env.HostApi}/notifications`)
     .then((respo) => {
         // get user infos
-        console.log(chalk.red(JSON.stringify(respo.data)))
+        // console.log(chalk.red(JSON.stringify(respo.data)))
         // console.log(chalk.blue(JSON.stringify(respo.data.browseList)))
         res.render('notifications', {notifications: respo.data.notification, token: req.cookies.jwt});
     })

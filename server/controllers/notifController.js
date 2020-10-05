@@ -1,4 +1,5 @@
 const notifManager = require('../models/notifModel');
+const profileManager = require('../models/profileModel');
 let chalk = require('chalk');
 
 const Notif = {
@@ -33,9 +34,11 @@ const Notif = {
         };
         const userId = req.query.id;
         const notif = await notifManager.getUnreadNotif(userId);
-        if (notif[0]) {
+        const notifSetting = await profileManager.getNotifSetting(userId);
+        if (notif[0] && notifSetting[0]) {
             // console.log(chalk.green(JSON.stringify(notif)))
             responseData.unread = notif[0].unread
+            responseData.notify = notifSetting[0].notify
         } else {
             responseData.isValid = false;
             responseData.errorMessage.error = 'Error, Please try again!';
@@ -46,7 +49,12 @@ const Notif = {
             res.status(400).send(responseData);
     },
     addNotification: async (reciever, sender, message, link) => {
-        return await notifManager.addNotif(reciever, sender, message, link);
+        // check if receiver has notification activated
+        const notifSetting = await profileManager.getNotifSetting(reciever);
+        if (notifSetting[0].notify == 1)
+            return await notifManager.addNotif(reciever, sender, message, link);
+        else
+            return;
     },
     updateNotification: async (id) => {
         return await notifManager.updateNotifications(id);

@@ -30,7 +30,7 @@ var token = document.getElementById('token').dataset.token;
             // console.log(JSON.stringify(data));
             if (Number(data.id) === user.userId) {
                 notifCount.innerHTML =  data.unread
-                if (data.msg == 1)
+                if (data.msg == 1 && data.notify == 1)
                     toastr["info"]("You Got A New Notification", "Notification")
                 // console.log(JSON.stringify(data));
             }

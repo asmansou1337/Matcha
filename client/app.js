@@ -106,20 +106,20 @@ app.use('/', notificationsRouter);
 // });
 
 // error handler
-app.use(function(err, req, res) {
-  if(typeof err.response !== 'undefined') {
-    if(err.response.status === 400) {
-        const error = err.response.data.errorMessage;
-        return res.render('error', {error});
-    }
-  }  
-  // set locals, only providing error in development
-  // res.locals.message = err.message;
-  // res.locals.error = req.app.get('env') === 'development' ? err : {};
-  // // render the error page
-  // res.status(err.status || 500);
-  // res.render('error');
-});
+// app.use(function(err, req, res) {
+//   if(typeof err.response !== 'undefined') {
+//     if(err.response.status === 400) {
+//         const error = err.response.data.errorMessage;
+//         return res.render('error', {error});
+//     }
+//   }  
+//   // set locals, only providing error in development
+//   // res.locals.message = err.message;
+//   // res.locals.error = req.app.get('env') === 'development' ? err : {};
+//   // // render the error page
+//   // res.status(err.status || 500);
+//   // res.render('error');
+// });
 
 
 // io.sockets.on('connection', (socket) => {
@@ -274,15 +274,15 @@ io.on('connection', socket => {
     })
   });
 
-  socket.on('addNotif', (msg) => {
-    console.log(msg)
-  })
+  // socket.on('addNotif', (msg) => {
+  //   console.log(msg)
+  // })
 
   socket.on('visitProfile', (data) => {
     // console.log(data)
     axios.get(`${process.env.HostApi}/unreadnotif?id=${data.visited}`)
     .then((respo) => {
-        io.emit('unreadNotif', {unread: respo.data.unread, id: data.visited, msg: data.msg});
+        io.emit('unreadNotif', {unread: respo.data.unread, notify: respo.data.notify, id: data.visited, msg: data.msg});
     }).catch((e) => {
       console.log(chalk.red( e.response.data.errorMessage.error))
       socket.error(e.response.data.errorMessage.error)
@@ -293,7 +293,7 @@ io.on('connection', socket => {
     // console.log(data)
     axios.get(`${process.env.HostApi}/unreadnotif?id=${data.user.userId}`)
     .then((respo) => {
-        io.emit('unreadNotif', {unread: respo.data.unread, id: data.user.userId, msg: data.msg});
+        io.emit('unreadNotif', {unread: respo.data.unread, notify: respo.data.notify, id: data.user.userId, msg: data.msg});
     }).catch((e) => {
       console.log(chalk.red( e.response.data.errorMessage.error))
       socket.error(e.response.data.errorMessage.error)

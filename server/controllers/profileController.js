@@ -17,7 +17,7 @@ const Profile = {
         // get connected user data from token
         let userData = req.userData;
         // get the form infos from the request body
-        let { firstName, lastName, username, email, birthDay, gender, orientation, bio } = req.body;
+        let { firstName, lastName, username, email, birthDay, gender, orientation, bio, notification } = req.body;
         // Validate First Name
         let err = validation.validate(firstName, "first Name", validation.isName);
         if (err !== "success") {
@@ -89,6 +89,11 @@ const Profile = {
         // Update user basic infos
         if (responseData.isValid === true) {
             const updateUser = await profileManager.updatebasic(firstName, lastName, username, email, gender, orientation, birthDay, bio, userData['userId'])
+            // Update Notification setting
+            const notifSetting = await profileManager.getNotifSetting(userData['userId']);
+            if (notifSetting[0].notify != notification && (notification == '0' || notification == '1')) {
+                await profileManager.updateNotifSetting(userData['userId'], notification)
+            }
             if (updateUser) {
                 responseData.successMessage = "Your infos are updated successfully";
             } else {
@@ -96,6 +101,7 @@ const Profile = {
                 responseData.errorMessage.error= 'Error Updating your infos, Please try again!';
             }
         }
+
         if (responseData.isValid === true)
             res.status(200).send(responseData);
         else

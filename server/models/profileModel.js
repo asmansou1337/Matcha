@@ -1,7 +1,8 @@
 const conn = require('../config/database');
 const chalk = require('chalk');
 const bcrypt = require('bcrypt');
-const db = require('../models/databaseModel')
+const db = require('../models/databaseModel');
+const notif = require('./notifModel');
 
 const Auth = {
     updatePassword: async (password, value, str) => {
@@ -55,6 +56,14 @@ const Auth = {
     updateLocation: async (lat, long, id) => {
         const sql = 'UPDATE users SET latitude = ?, longitude = ? WHERE id = ?';
         return db.updateDB([lat, long, id], sql)
+    },
+    getNotifSetting: async (id) => {
+        const sql = `SELECT notify FROM users WHERE id = ?`;
+        return db.selectDB(id, sql)
+    },
+    updateNotifSetting: async (id, notify) => {
+        const sql = `UPDATE users SET notify = ? WHERE id = ?`;
+        return db.updateDB([notify, id], sql)
     },
 
 }
