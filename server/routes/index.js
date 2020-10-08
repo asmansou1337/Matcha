@@ -43,6 +43,7 @@ router.get('/chat', checkAuth, chat.getMatchingUsers);
 router.post('/sendMsg', checkAuth, chat.sendMessage);
 router.get('/getMessages', checkAuth, chat.getConvMessages);
 router.get('/getUnreadMessages', checkAuth, chat.getUnreadMessages);
+router.get('/getConvUnreadMessages', checkAuth, chat.getConvUnreadMessages);
 
 router.get('/search', checkAuth, browse.getSearchList);
 router.post('/search', checkAuth, browse.getFilterSearchList);

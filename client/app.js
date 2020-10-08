@@ -14,9 +14,6 @@ const server = require('http').createServer(app);
 io = require('socket.io').listen(server);
 
 chatUsers = [];
-connectedUsers = [];
-
-
 
 function formatMessage(username, msg) {
   return {
@@ -25,7 +22,7 @@ function formatMessage(username, msg) {
     //time: moment().format('h:mm a')
   };
 }
-// var cors = require('cors');
+
 
 var indexRouter = require('./routes/index');
 var profileRouter = require('./routes/profile');
@@ -52,10 +49,6 @@ server.listen(port, host, () => {
     console.log(chalk.yellow('Listening on http://' + host + ':' + port ));
 });
 
-// app.use(cors({
-//   origin: 'http://localhost:8080/',
-//   credentials: true
-// }));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -75,23 +68,6 @@ app.use(session({
  
 app.use(flash());
 
-// app.use(cors({
-//   credentials: true,
-// }));
-
-// app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-//   );
-//   if (req.method === "OPTIONS") {
-//     res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
-//     return res.status(200).json({});
-//   }
-//   next();
-// });
-
 app.use('/', indexRouter);
 app.use('/profile', profileRouter);
 app.use('/', userRouter);
@@ -100,74 +76,10 @@ app.use('/', chatRouter);
 app.use('/', searchRouter);
 app.use('/', notificationsRouter);
 
-// catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   next(createError(404));
-// });
-
-// error handler
-// app.use(function(err, req, res) {
-//   if(typeof err.response !== 'undefined') {
-//     if(err.response.status === 400) {
-//         const error = err.response.data.errorMessage;
-//         return res.render('error', {error});
-//     }
-//   }  
-//   // set locals, only providing error in development
-//   // res.locals.message = err.message;
-//   // res.locals.error = req.app.get('env') === 'development' ? err : {};
-//   // // render the error page
-//   // res.status(err.status || 500);
-//   // res.render('error');
-// });
-
-
-// io.sockets.on('connection', (socket) => {
-//   let currentUser = null;
-
-//     socket.on('identify', ({playload}) => {
-//       // console.log(JSON.stringify(playload))
-//       currentUser = {
-//         id: playload.userId,
-//         username: playload.username,
-//         count: 1
-//     };
-//     console.log(chalk.green('current user -- ' + JSON.stringify(currentUser)))
-//     const user = connectedUsers.find(u => u.id === currentUser.id);
-//     if (user) {
-//         user.count++;
-//     } else {
-//         currentUser.socket = socket.id;
-//         connectedUsers.push(currentUser)
-//     }
-//     console.log(JSON.stringify(connectedUsers))
-//     })
-
-//     socket.on('disconnect', () => {
-//       if (currentUser) {
-//           const user = connectedUsers.find(u => u.id === currentUser.id);
-//           if (user) {
-//               user.count--;
-//               if (user.count === 0) {
-//                 const index = connectedUsers.findIndex(user => user.id === currentUser.id);
-//               if (index !== -1) {
-//                 connectedUsers = connectedUsers.splice(index, 1)[0];
-//               }
-//                   // // Deconnexion utilisateur
-//                   // // checkDb.updateOnlineStatus(currentUser.id, 'logout');
-//                   // connectedUsers = connectedUsers.filter(u => u.id !== currentUser.id);
-//                   // socket.broadcast.emit('users.leave', {user: currentUser});
-//                   console.log(JSON.stringify(connectedUsers))
-//               }
-//           }
-//       }
-//   })
-// })
 
 // Join user to chat
 function userJoin(id, to, from, matchedUsername, username, convId) {
   const user = { id, to, from, matchedUsername, username, convId };
-
   chatUsers.push(user);
   return user;
 }
@@ -179,9 +91,8 @@ function getCurrentUser(id) {
 
 // Get current user
 function checkConnectedUser(id, id2, convId) {
-  // return chatUsers.find(user => (user.from === id && user.to === id2 && user.convId === convId));
   for (const user of chatUsers) {
-    if (user.from === id && user.to === id2 && user.convId === convId) {
+    if (Number(user.from) === Number(id) && Number(user.to) === Number(id2) && user.convId === convId) {
       return true
     }
   }
@@ -198,85 +109,47 @@ function userLeave(id) {
 }
 
 io.on('connection', socket => {
-    let currentUser = null;
-
-    socket.on('identify', ({playload}) => {
-      // console.log(JSON.stringify(playload))
-      currentUser = {
-        id: playload.userId,
-        username: playload.username,
-        count: 1
-      };
-      // console.log(chalk.red(JSON.stringify(connectedUsers)))
-      let user = connectedUsers.find(u => u.id == currentUser.id)
-      if (user) {
-        // console.log('increment')
-        user.count++;
-      } else {
-          currentUser.socket = socket.id;
-          connectedUsers.push(currentUser)
-      }
-      // console.log(chalk.green('current user -- ' + JSON.stringify(currentUser)))
-      // connectedUsers.push(currentUser)
-      // console.log(chalk.yellow(JSON.stringify(connectedUsers)))
-      // console.log(chalk.yellow('user connected'))
-      
-    })
-
-  //  socket.emit('message', 'user connected');
   socket.on('joinConv', ({ to, from, matchedUsername, username, convId }) => {
-    // const user = {socket:socket.id, userFrom, convId};
     const user = userJoin(socket.id, to, from, matchedUsername, username, convId);
-    console.log(chalk.blue(JSON.stringify(chatUsers)))
     socket.join(user.convId);
-    // // Welcome current user
-    // socket.emit('message', formatMessage('botName', `welcome`));
-
-    // // Broadcast when a user connects
-    // socket.broadcast
-    //   .to(user.convId)
-    //   .emit(
-    //     'message',formatMessage('botName', `${user.username} has joined the chat`));
-
-    // Send users and room info
-    // io.to(user.room).emit('roomUsers', {
-    //   room: user.room,
-    //   users: getRoomUsers(user.room)
-    // });
   });
+
   // Listen for chatMessage
   socket.on('chatMessage', msg => {
     const user = getCurrentUser(socket.id);
-    console.log(chalk.yellow('current user ' + JSON.stringify(user)))
-    console.log(chalk.yellow(JSON.stringify(chatUsers)))
     let isRead = 0;
-    console.log(chalk.magentaBright(checkConnectedUser(user.to, user.from, user.convId)))
-    if (checkConnectedUser(user.to, user.from, user.convId))
+    if (checkConnectedUser(user.to, user.from, user.convId) == true)
       isRead = 1;
 
     // to, from, matchedUsername, username, convId
     let sendMsg = {userTo: user.to, userFrom: user.from, convId: user.convId, msg, isRead}
-    // console.log(chalk.blue(JSON.stringify(sendMsg)))
     
     axios.post(`${process.env.HostApi}/sendMsg`, sendMsg)
     .then((respo) => {
         io.to(user.convId).emit('message', formatMessage(user.username, msg));
-        axios.get(`${process.env.HostApi}/getUnreadMessages`)
+        axios.get(`${process.env.HostApi}/getUnreadMessages?userId=${user.to}`)
         .then((notif) => {
           // console.log(JSON.stringify(notif.data))
-          io.emit('chatNotif', {userTo: user.to, unreadMsgs: notif.data.unreadMsgs})
+          io.emit('chatNotif', {userTo: user.to, unreadMsgs: notif.data.unreadMsgs, msg: 1})
+          axios.get(`${process.env.HostApi}/getConvUnreadMessages?userId=${user.from}&convId=${user.convId}`)
+            .then((unread) => {
+              io.emit('convUnread', {convId: user.convId, unreadMsgs: unread.data.unreadMsgs, userId: user.to})
+            })
+            .catch((e) => {
+              console.log(chalk.red( e.response.data.errorMessage.error))
+              socket.error(e.response.data.errorMessage.error)
+            })
         })
-        .catch()
+        .catch((e) => {
+          console.log(chalk.red( e.response.data.errorMessage.error))
+          socket.error(e.response.data.errorMessage.error)
+        })
         console.log(chalk.green(respo.data.successMessage))
     }).catch((e) => {
       console.log(chalk.red( e.response.data.errorMessage.error))
       socket.error(e.response.data.errorMessage.error)
     })
   });
-
-  // socket.on('addNotif', (msg) => {
-  //   console.log(msg)
-  // })
 
   socket.on('visitProfile', (data) => {
     // console.log(data)
@@ -301,11 +174,10 @@ io.on('connection', socket => {
   })
 
   socket.on('checkChatNotif', (data) => {
-    
-    axios.get(`${process.env.HostApi}/getUnreadMessages`)
+    axios.get(`${process.env.HostApi}/getUnreadMessages?userId=${data.user.userId}`)
         .then((notif) => {
           // console.log(JSON.stringify(notif.data))
-          io.emit('chatNotif', {userTo: user.to, unreadMsgs: notif.data.unreadMsgs})
+          io.emit('chatNotif', {userTo: data.user.userId, unreadMsgs: notif.data.unreadMsgs, msg: data.msg})
         })
         .catch((e) => {
           socket.error(e.response.data.errorMessage.error)
@@ -314,25 +186,7 @@ io.on('connection', socket => {
 
   // Runs when client disconnects
   socket.on('disconnect', () => {
-    console.log('disconnect')
-    // console.log(socket.id)
-    // const user = userLeave(socket.id);
     userLeave(socket.id);
-    console.log(chalk.magenta(JSON.stringify(chatUsers)))
-    if (currentUser) {
-                const user = connectedUsers.find(u => u.id === currentUser.id);
-                if (user) {
-                    user.count--;
-                    if (user.count === 0) {
-                      connectedUsers = connectedUsers.filter(u => u.id !== currentUser.id);
-                        // // Deconnexion utilisateur
-                        // // checkDb.updateOnlineStatus(currentUser.id, 'logout');
-                        // connectedUsers = connectedUsers.filter(u => u.id !== currentUser.id);
-                        // socket.broadcast.emit('users.leave', {user: currentUser});
-                        // console.log(chalk.blue(JSON.stringify(connectedUsers)))
-                    }
-                }
-            }
   });
 })
 

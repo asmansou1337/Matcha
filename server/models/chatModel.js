@@ -25,8 +25,9 @@ const chat = {
         return db.selectDB([id], sql)
     },
     getUnreadMessages: async (id) => {
-        const sql = `SELECT count(*) as unreadMsgs FROM messages WHERE user_id = ? AND is_read = 0`
-        return db.selectDB([id], sql)
+        const sql = `SELECT count(*) as unreadMsgs FROM messages WHERE is_read = 0 AND user_id != ? `+
+        `AND conversation_id IN (SELECT id FROM conversations WHERE starter_user_id = ? OR receiver_user_id = ?)`
+        return db.selectDB([id, id, id], sql)
     },
     getConvUnreadMessages: async (id, convId) => {
         const sql = `SELECT count(*) as unreadMsgs FROM messages WHERE user_id = ? AND conversation_id = ? AND is_read = 0`

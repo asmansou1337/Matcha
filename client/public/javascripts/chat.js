@@ -5,9 +5,6 @@ const chatMessages = document.querySelector('.chatMessages');
 const cardTitle = document.querySelector('.chatTitle')
 const chatBox = document.querySelector('.chatBox')
 
-  // const socket = io();
-  console.log(JSON.stringify(user))
-
    // Get user id, username and conversation id from URL
     const { to, matchedUsername, convId } = Qs.parse(location.search, {
     ignoreQueryPrefix: true
@@ -84,4 +81,9 @@ function outputMessage(message) {
   </div>`;
     chatMessages.appendChild(div);
   }
+
+  socket.on('convUnread', data => {
+    if (Number(data.unreadMsgs) !== 0 && data.userId == user.userId)
+      document.querySelector('.unread'+data.convId).innerHTML = data.unreadMsgs
+});
 

@@ -250,37 +250,40 @@ const User = {
         let message;
         const visitor_user_id = req.userData['userId'];
         const visited_user_id = req.query.id;
-        // check if it's the first time this user visit this profile
-        let checkVisited = await userManager.checkVisited(visitor_user_id, visited_user_id);
-        // console.log(chalk.green(JSON.stringify(checkVisited)))
-        if (checkVisited.length > 0) {
-            // IN case is not the first visit
-            let updateVisit = await userManager.updateVisit(visitor_user_id, visited_user_id);
-            if (updateVisit) {
-                responseData.successMessage = 'visit updated successfully';
-                message = `${req.userData['username']} visited you profile ${checkVisited[0]['nbr_visits']} times.`
+        // check block
+        let checkBlock = await userManager.checkBlock(visitor_user_id, visited_user_id);
+        if (checkBlock.length == 0) {
+            // check if it's the first time this user visit this profile
+            let checkVisited = await userManager.checkVisited(visitor_user_id, visited_user_id);
+            // console.log(chalk.green(JSON.stringify(checkVisited)))
+            if (checkVisited.length > 0) {
+                // IN case is not the first visit
+                let updateVisit = await userManager.updateVisit(visitor_user_id, visited_user_id);
+                if (updateVisit) {
+                    responseData.successMessage = 'visit updated successfully';
+                    message = `${req.userData['username']} visited you profile ${checkVisited[0]['nbr_visits']} times.`
+                } else {
+                    responseData.isValid = false;
+                    responseData.errorMessage.error= 'Error, Please try again!';
+                }
             } else {
-                responseData.isValid = false;
-                responseData.errorMessage.error= 'Error, Please try again!';
+                // the first time visited
+                let nbr_visits = 1
+                let firstVisit = await userManager.addVisit({visitor_user_id, visited_user_id, nbr_visits});
+                if (firstVisit) {
+                    responseData.successMessage = 'visit added successfully';
+                    message = `${req.userData['username']} visited you profile 1 time.`
+                } else {
+                    responseData.isValid = false;
+                    responseData.errorMessage.error= 'Error, Please try again!';
+                }
             }
-        } else {
-            // the first time visited
-            let nbr_visits = 1
-            let firstVisit = await userManager.addVisit({visitor_user_id, visited_user_id, nbr_visits});
-            if (firstVisit) {
-                responseData.successMessage = 'visit added successfully';
-                message = `${req.userData['username']} visited you profile 1 time.`
-            } else {
-                responseData.isValid = false;
-                responseData.errorMessage.error= 'Error, Please try again!';
-            }
-        }
 
-        // Add notification
-        if (responseData.isValid === true) {
-            await notifController.addNotification(visited_user_id, visitor_user_id, message, `/user?id=${visitor_user_id}`)
+            // Add notification
+            if (responseData.isValid === true) {
+                await notifController.addNotification(visited_user_id, visitor_user_id, message, `/user?id=${visitor_user_id}`)
+            }
         }
-        
         if (responseData.isValid === true)
             res.status(200).send(responseData);
         else
