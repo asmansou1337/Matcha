@@ -1,8 +1,4 @@
-const conn = require('../config/database');
-const chalk = require('chalk');
-const bcrypt = require('bcrypt');
 const db = require('../models/databaseModel');
-const notif = require('./notifModel');
 
 const Auth = {
     updatePassword: async (password, value, str) => {

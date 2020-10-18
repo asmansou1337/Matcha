@@ -1,9 +1,8 @@
-let validation = require('../models/validation');
+let validation = require('../utilities/validation');
 let chalk = require('chalk');
 const userManager = require('../models/userModel');
 const chatManager = require('../models/chatModel');
-const profileManager = require('../models/profileModel');
-const util = require('../models/functions');
+const util = require('../utilities/functions');
 
 const chat = {
     getMatchingUsers: async (req, res) => {
@@ -19,7 +18,6 @@ const chat = {
             for (let i = 0; i < mutualUsers.length; i++) {
                 // check if conversation exists otherwise create one
                 let checkConv = await chatManager.getConversation(mutualUsers[i].matchedId, mutualUsers[i].userId);
-                // console.log(chalk.red(JSON.stringify(checkConv)))
                 if (checkConv.length > 0) {
                     mutualUsers[i].convId = checkConv[0].id;
                     // Get Conversation unread msgs
@@ -27,7 +25,6 @@ const chat = {
                     mutualUsers[i].unreadMsgs = unreadConv[0].unreadMsgs
                 } else {
                     let addConv = await chatManager.addConversation(connectedUserData['userId'], mutualUsers[i].matchedId)
-                    // console.log(chalk.white(JSON.stringify(addConv)))
                     mutualUsers[i].convId = addConv.insertId
                 }
             };
@@ -134,7 +131,6 @@ const chat = {
             responseData.isValid = false;
             responseData.errorMessage.error = 'Error, Please try again!';
         }
-        // console.log(chalk.green(JSON.stringify(responseData)))
         if (responseData.isValid === true)
             res.status(200).send(responseData);
         else

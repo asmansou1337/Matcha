@@ -1,11 +1,11 @@
-var validation = require('../models/validation');
+var validation = require('../utilities/validation');
 var authManager = require('../models/authentificationModel');
-let tokenManager = require('../models/autorizationModel');
+let tokenManager = require('../utilities/autorizationJWT');
 var verifManager = require('../models/verificationModel');
 var chalk = require('chalk');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
-const mail = require('../models/mailModel');
+const mail = require('../utilities/sendMail');
 const profileManager = require('../models/profileModel');
 
 const Auth = {

@@ -1,11 +1,10 @@
-let validation = require('../models/validation');
+let validation = require('../utilities/validation');
 let authManager = require('../models/authentificationModel');
 let verifManager = require('../models/verificationModel');
-let userManager = require('../models/userModel');
 let chalk = require('chalk');
 const bcrypt = require('bcrypt');
 const profileManager = require('../models/profileModel');
-const util = require('../models/functions');
+const util = require('../utilities/functions');
 
 const Profile = {
     editBasic: async (req, res) => {
@@ -171,13 +170,20 @@ const Profile = {
             errorMessage: {}
         };
         let userData = req.userData;
-        const updatePic = await profileManager.updateProfilePic(req.body.name, userData['userId'])
+        var err = validation.isPictureName(req.body.name)
+        if (err === false) {
+            responseData.isValid = false;
+            responseData.errorMessage.error =  "Invalid Picture Name";
+        }
+        if (responseData.isValid === true) {
+            const updatePic = await profileManager.updateProfilePic(req.body.name, userData['userId'])
             if (updatePic) {
                 responseData.successMessage = "Your Profile Image Is Updated Successfully!";
             } else {
                 responseData.isValid = false;
                 responseData.errorMessage.error= 'Error Updating your Profile Picture, Please try again!';
             }
+        }
         if (responseData.isValid === true)
             res.status(200).send(responseData);
         else
@@ -192,13 +198,20 @@ const Profile = {
         let userData = req.userData;
         let name = req.body.name;
         let user_id =  userData['userId'];
-        const addPic = await profileManager.addNewPic({name, user_id});
+        if (validation.isPictureName(name) === false) {
+            responseData.isValid = false;
+            responseData.errorMessage.error =  "Invalid Picture Name";
+        }
+        if (responseData.isValid === true) {
+            const addPic = await profileManager.addNewPic({name, user_id});
             if (addPic) {
                 responseData.successMessage = "Your Image Is Added Successfully!";
             } else {
                 responseData.isValid = false;
                 responseData.errorMessage.error= 'Error adding your picture, Please try again!';
             }
+        }
+        
         if (responseData.isValid === true)
             res.status(200).send(responseData);
         else
@@ -213,13 +226,20 @@ const Profile = {
         let userData = req.userData;
         let name = req.body.name;
         let user_id =  userData['userId'];
-        const deletePic = await profileManager.deletePic(name, user_id);
+        if (validation.isPictureName(name) === false) {
+            responseData.isValid = false;
+            responseData.errorMessage.error =  "Invalid Picture Name";
+        }
+        if (responseData.isValid === true) {
+            const deletePic = await profileManager.deletePic(name, user_id);
             if (deletePic) {
                 responseData.successMessage = "Your Image Is Deleted Successfully!";
             } else {
                 responseData.isValid = false;
                 responseData.errorMessage.error= 'Error deleting your picture, Please try again!';
             }
+        }
+        
         if (responseData.isValid === true)
             res.status(200).send(responseData);
         else
@@ -358,10 +378,9 @@ const Profile = {
             successMessage: null,
             errorMessage: {}
         };
-        let userData = req.userData;
+        let id = req.userData['userId'];
         let latitude = req.body.latitude;
         let longitude = req.body.longitude;
-        let id =  userData['userId'];
         // validate latitude & longitude
         if (!validation.isLatitude(Number(latitude)) || !validation.isLongitude(Number(longitude))) {
             responseData.isValid = false;

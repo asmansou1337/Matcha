@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const chalk = require('chalk');
 
 module.exports = (req, res, next) => {
     try {

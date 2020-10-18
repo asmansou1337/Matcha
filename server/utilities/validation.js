@@ -109,7 +109,6 @@ const Valid = {
         return true
       },
       isKeywordFilterValid: (filter) => {
-        console.log(chalk.yellow(typeof filter['keyword']))
         if (!util.isEmpty(filter['keyword'])) {
           if(!util.isAlphaNum(filter['keyword']))
             return false
@@ -132,7 +131,6 @@ const Valid = {
       },
       isLocationFilterValid: (filter) => {
         if (!util.isEmpty(filter['location-min']) &&  !util.isEmpty(filter['location-max'])) {
-          // console.log('location')
           if (!util.isDigit(filter['location-min']) || !util.isDigit(filter['location-max']) || (Number(filter['location-max']) < Number(filter['location-min']))) 
             return false
         }

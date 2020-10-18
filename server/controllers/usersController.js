@@ -1,10 +1,10 @@
-let validation = require('../models/validation');
+let validation = require('../utilities/validation');
 let userManager = require('../models/userModel');
 let verifManager = require('../models/verificationModel');
 let chalk = require('chalk');
 const bcrypt = require('bcrypt');
 const profileManager = require('../models/profileModel');
-const util = require('../models/functions');
+const util = require('../utilities/functions');
 const notifController = require('./notifController');
 
 const User = {
@@ -15,7 +15,6 @@ const User = {
             errorMessage: {}
         };
         const userId = req.query.id
-        const connectedUserData = req.userData;
         const selectedUser = await profileManager.getUserProfile(userId);
             if (selectedUser[0]) {
                 selectedUser[0].age = util.calculateAge(selectedUser[0].born_date);
@@ -28,7 +27,6 @@ const User = {
                     lastLogin = util.calculateLastLogin(selectedUser[0].last_connection)
                 }
                 selectedUser[0].lastLogin = lastLogin
-                // console.log(chalk.red(JSON.stringify(selectedUser[0])))
                 responseData.user = selectedUser[0];
             } else {
                 responseData.isValid = false;
@@ -252,10 +250,8 @@ const User = {
         const visited_user_id = req.query.id;
         // check block
         let checkBlock = await userManager.checkBlock(visitor_user_id, visited_user_id);
-        if (checkBlock.length == 0) {
             // check if it's the first time this user visit this profile
             let checkVisited = await userManager.checkVisited(visitor_user_id, visited_user_id);
-            // console.log(chalk.green(JSON.stringify(checkVisited)))
             if (checkVisited.length > 0) {
                 // IN case is not the first visit
                 let updateVisit = await userManager.updateVisit(visitor_user_id, visited_user_id);
@@ -278,7 +274,7 @@ const User = {
                     responseData.errorMessage.error= 'Error, Please try again!';
                 }
             }
-
+        if (checkBlock.length == 0) {
             // Add notification
             if (responseData.isValid === true) {
                 await notifController.addNotification(visited_user_id, visitor_user_id, message, `/user?id=${visitor_user_id}`)
@@ -299,14 +295,14 @@ const User = {
         // get list of users who likes you
         let likersUsers = await userManager.likersUsers(connectedUserData['userId']);
         if (likersUsers.length > 0) {
-            // console.log(chalk.green(JSON.stringify(likersUsers)))
             responseData.likersUsers = likersUsers
         }
+        // get list of users you likes
         let likedUsers = await userManager.likedUsers(connectedUserData['userId']);
         if (likedUsers.length > 0) {
-            // console.log(chalk.red(JSON.stringify(likedUsers)))
             responseData.likedUsers = likedUsers
         }
+        // get list of users who visited your profile
         let visitorsUsers = await userManager.visitorsUsers(connectedUserData['userId']);
         if (visitorsUsers.length > 0) {
             responseData.visitorsUsers = visitorsUsers
@@ -314,12 +310,11 @@ const User = {
         // get list of users who matches you
         let mutualUsers = await userManager.mutualUsers(connectedUserData['userId']);
         if (mutualUsers.length > 0) {
-            // console.log(chalk.green(JSON.stringify(likersUsers)))
             responseData.mutualUsers = mutualUsers
         }
+        // get list of users you blocked
         let blockedUsers = await userManager.blockedUsers(connectedUserData['userId']);
         if (blockedUsers.length > 0) {
-            // console.log(chalk.red(JSON.stringify(likedUsers)))
             responseData.blockedUsers = blockedUsers
         }
         if (responseData.isValid === true)

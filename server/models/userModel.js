@@ -1,6 +1,3 @@
-const conn = require('../config/database');
-const chalk = require('chalk');
-const bcrypt = require('bcrypt');
 const db = require('../models/databaseModel')
 
 const user = {
@@ -57,7 +54,7 @@ const user = {
         return db.updateDB([visiterID, visitedID], sql)
     },
     checkLikeRelation: async (likerID, likedID) => {
-        const sql = "SELECT * FROM liked_profiles WHERE liker_user_id = ? OR liked_user_id = ?"
+        const sql = "SELECT * FROM liked_profiles WHERE liker_user_id = ? OR liker_user_id = ?"
         return db.selectDB([likerID, likedID], sql)
     },
     calculateFame: async (id) => {
