@@ -167,8 +167,13 @@ router.post('/user/block', headerAuth.connectedHeader, isComplete, (req, res) =>
        res.redirect(`/user?id=${id}`); 
      }
      ).catch((err) => {
-       // console.log(chalk.red(JSON.stringify(err.response.data)));
-       handle.errorHandle(err, req, res)     
+      handle.authError(err, req, res); 
+      if(typeof err.response !== 'undefined') {
+        if(err.response.status === 400) {
+          req.flash('error', err.response.data.errorMessage.error);
+          res.redirect(`/user?id=${id}`);
+        }
+      }     
      });
   })
   .catch((e) => {
@@ -195,8 +200,13 @@ router.post('/user/report', headerAuth.connectedHeader, isComplete, (req, res) =
        console.log(chalk.green(JSON.stringify(response.data)))
        res.redirect(`/user?id=${id}`); 
      }).catch((err) => {
-       // console.log(chalk.red(JSON.stringify(err.response.data)));
-       handle.errorHandle(err, req, res)     
+        handle.authError(err, req, res); 
+        if(typeof err.response !== 'undefined') {
+          if(err.response.status === 400) {
+            req.flash('error', err.response.data.errorMessage.error);
+            res.redirect(`/user?id=${id}`);
+          }
+        }      
      });
   })
   .catch((e) => {

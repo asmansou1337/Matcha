@@ -12,17 +12,9 @@ const chalk = require('chalk');
 var app = express();
 const server = require('http').createServer(app);
 io = require('socket.io').listen(server);
+const util = require('./middleware/functions');
 
 chatUsers = [];
-
-function formatMessage(username, msg) {
-  return {
-    username,
-    msg,
-    //time: moment().format('h:mm a')
-  };
-}
-
 
 var indexRouter = require('./routes/index');
 var profileRouter = require('./routes/profile');
@@ -43,7 +35,7 @@ function ignoreFavicon(req, res, next) {
  * Create HTTP server.
  */
 const port =  process.env.PORT || 8080;
-const host = 'localhost';
+const host =  process.env.HOST || 'localhost';
 
 server.listen(port, host, () => {
     console.log(chalk.yellow('Listening on http://' + host + ':' + port ));
@@ -77,48 +69,17 @@ app.use('/', searchRouter);
 app.use('/', notificationsRouter);
 
 
-// Join user to chat
-function userJoin(id, to, from, matchedUsername, username, convId) {
-  const user = { id, to, from, matchedUsername, username, convId };
-  chatUsers.push(user);
-  return user;
-}
-
-// Get current user
-function getCurrentUser(id) {
-  return chatUsers.find(user => user.id === id);
-}
-
-// Get current user
-function checkConnectedUser(id, id2, convId) {
-  for (const user of chatUsers) {
-    if (Number(user.from) === Number(id) && Number(user.to) === Number(id2) && user.convId === convId) {
-      return true
-    }
-  }
-  return false
-}
-
-// User leaves chat
-function userLeave(id) {
-  const index = chatUsers.findIndex(user => user.id === id);
-
-  if (index !== -1) {
-    return chatUsers.splice(index, 1)[0];
-  }
-}
-
 io.on('connection', socket => {
   socket.on('joinConv', ({ to, from, matchedUsername, username, convId }) => {
-    const user = userJoin(socket.id, to, from, matchedUsername, username, convId);
+    const user = util.userJoin(socket.id, to, from, matchedUsername, username, convId);
     socket.join(user.convId);
   });
 
   // Listen for chatMessage
   socket.on('chatMessage', msg => {
-    const user = getCurrentUser(socket.id);
+    const user = util.getCurrentUser(socket.id);
     let isRead = 0;
-    if (checkConnectedUser(user.to, user.from, user.convId) == true)
+    if (util.checkConnectedUser(user.to, user.from, user.convId) == true)
       isRead = 1;
 
     // to, from, matchedUsername, username, convId
@@ -126,7 +87,7 @@ io.on('connection', socket => {
     
     axios.post(`${process.env.HostApi}/sendMsg`, sendMsg)
     .then((respo) => {
-        io.to(user.convId).emit('message', formatMessage(user.username, msg));
+        io.to(user.convId).emit('message', util.formatMessage(user.username, msg));
         axios.get(`${process.env.HostApi}/getUnreadMessages?userId=${user.to}`)
         .then((notif) => {
           // console.log(JSON.stringify(notif.data))
@@ -186,7 +147,7 @@ io.on('connection', socket => {
 
   // Runs when client disconnects
   socket.on('disconnect', () => {
-    userLeave(socket.id);
+    util.userLeave(socket.id);
   });
 })
 
