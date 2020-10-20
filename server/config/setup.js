@@ -59,10 +59,10 @@ sql += '`latitude` FLOAT,';
 sql += '`longitude` FLOAT,';
 sql += '`profilePic` varchar(300) DEFAULT NULL,';
 sql += '`is_online` int(2) NOT NULL DEFAULT 0,';
-sql += '`last_connection` datetime,';
-sql += '`born_date` datetime,';
+sql += '`last_connection` DATETIME,';
+sql += '`born_date` DATETIME,';
 sql += '`notify` int(11)  NOT NULL DEFAULT 1,';
-sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
+sql += '`created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP';
 sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
@@ -78,7 +78,7 @@ var sql = 'CREATE TABLE IF NOT EXISTS tags (';
 sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
 sql += '`name` varchar(300) NOT NULL,';
 sql += '`user_id` int(11) NOT NULL,';
-sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
+sql += '`created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP';
 sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
@@ -92,7 +92,7 @@ var sql = 'CREATE TABLE IF NOT EXISTS pictures (';
 sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
 sql += '`name` varchar(300) NOT NULL,';
 sql += '`user_id` int(11) NOT NULL,';
-sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
+sql += '`created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP';
 sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
@@ -106,7 +106,7 @@ var sql = 'CREATE TABLE IF NOT EXISTS reported_users (';
 sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
 sql += '`reported_user_id` int(11) NOT NULL,';
 sql += '`reporter_user_id` int(11) NOT NULL,';
-sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
+sql += '`created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP';
 sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
@@ -120,7 +120,7 @@ var sql = 'CREATE TABLE IF NOT EXISTS blocked_users (';
 sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
 sql += '`blocked_user_id` int(11) NOT NULL,';
 sql += '`blocker_user_id` int(11) NOT NULL,';
-sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
+sql += '`created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP';
 sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
@@ -135,7 +135,7 @@ sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
 sql += '`visitor_user_id` int(11) NOT NULL,';
 sql += '`visited_user_id` int(11) NOT NULL,';
 sql += '`nbr_visits` int(100) NOT NULL,';
-sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
+sql += '`created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP';
 sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
@@ -149,7 +149,7 @@ var sql = 'CREATE TABLE IF NOT EXISTS liked_profiles (';
 sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
 sql += '`liker_user_id` int(11) NOT NULL,';
 sql += '`liked_user_id` int(11) NOT NULL,';
-sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
+sql += '`created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP';
 sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
@@ -163,7 +163,7 @@ var sql = 'CREATE TABLE IF NOT EXISTS conversations (';
 sql += 'id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,';
 sql += '`starter_user_id` int(11) NOT NULL,';
 sql += '`receiver_user_id` int(11) NOT NULL,';
-sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
+sql += '`created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP';
 sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
@@ -179,7 +179,7 @@ sql += '`conversation_id` int(11) NOT NULL,';
 sql += '`user_id` int(11) NOT NULL,';
 sql += '`message` TEXT NOT NULL,';
 sql += '`is_read` int(11) NOT NULL DEFAULT 0,';
-sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
+sql += '`created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP';
 sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;
@@ -196,7 +196,7 @@ sql += '`sender_id` int(11) NOT NULL,';
 sql += '`message` varchar(300) NOT NULL,';
 sql += '`is_read` int(11) NOT NULL DEFAULT 0,';
 sql += '`link` varchar(300) NOT NULL,';
-sql += '`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP';
+sql += '`created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP';
 sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci';
 cnx.query(sql, function(err) {
 	if (err) throw err;

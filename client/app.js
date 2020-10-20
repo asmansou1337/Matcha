@@ -37,7 +37,7 @@ function ignoreFavicon(req, res, next) {
 const port =  process.env.PORT || 8080;
 const host =  process.env.HOST || 'localhost';
 
-server.listen(port, host, () => {
+server.listen(port, () => {
     console.log(chalk.yellow('Listening on http://' + host + ':' + port ));
 });
 

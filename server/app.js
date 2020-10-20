@@ -55,6 +55,6 @@ app.use((err, req, res, next) => {
 const port =  process.env.PORT || 3000;
 const host =  process.env.HOST;
 
-server.listen(port, host, () => {
+server.listen(port, () => {
     console.log(chalk.yellow('API Listening on http://' + host + ':' + port ));
 });
