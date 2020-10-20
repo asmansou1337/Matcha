@@ -88,7 +88,13 @@ router.post("/uploadProfile", headerAuth.connectedHeader, (req, res) => {
       oldProfilePic = resp.data.user.profilePic;
     })
     .catch((e) => {
-      handle.authError(e);
+      if (typeof e.response !== "undefined") {
+        handle.authError(e);
+        if (e.response.status === 400) {
+          req.flash("error", e.response.data.errorMessage.error);
+          res.redirect("/profile/editProfile");
+        }
+      }
     });
 
   // upload new picture

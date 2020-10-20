@@ -10,6 +10,7 @@ function initialize() {
   initMap2();
 }
 
+// Location Map Tab
 function initMap2(){
    // Map options
    var options = {

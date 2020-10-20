@@ -11,7 +11,6 @@ const handle = require('../middleware/functions')
 router.get('/browse',  headerAuth.connectedHeader, isComplete, (req, res) => {
     axios.get(`${process.env.HostApi}/browse`)
     .then((respo) => {
-        // get user infos
         res.render('browse', {users: respo.data.browseList, tags: respo.data.userTags, token: req.cookies.jwt});
     })
     .catch((e) => {
@@ -24,11 +23,10 @@ router.get('/browse',  headerAuth.connectedHeader, isComplete, (req, res) => {
     })
   });
 
-/* GET home page. */
+/* Filter browsing page. */
 router.post('/browse',  headerAuth.connectedHeader, isComplete, (req, res) => {
     axios.post(`${process.env.HostApi}/browse`, req.body)
     .then((respo) => {
-        // get user infos
         res.render('browse', {users: respo.data.browseList, filter: respo.data.filter ,error: respo.data.errorMessage, tags: respo.data.userTags, token: req.cookies.jwt});
     })
     .catch((e) => {

@@ -10,16 +10,15 @@ const handle = require('../middleware/functions')
 router.get('/notification',  headerAuth.connectedHeader, isComplete, (req, res) => {
     axios.get(`${process.env.HostApi}/notifications`)
     .then((respo) => {
-        // get user infos
-        // console.log(chalk.red(JSON.stringify(respo.data)))
-        // console.log(chalk.blue(JSON.stringify(respo.data.browseList)))
+        // get user notifications list
         res.render('notifications', {notifications: respo.data.notification, token: req.cookies.jwt});
     })
     .catch((e) => {
       handle.authError(e, req, res);
       if(typeof e.response !== 'undefined') {
         if(e.response.status === 400) {
-          res.render('browse', {error: {error: e.response.data.errorMessage.error, token: req.cookies.jwt}});
+          let error = {error: e.response.data.errorMessage.error}
+          res.render('notifications', {error, token: req.cookies.jwt});
         }
       }    
     })

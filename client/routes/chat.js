@@ -21,7 +21,7 @@ router.get('/chat', headerAuth.connectedHeader, isComplete, (req, res) => {
         handle.authError(e, req, res);
         if(typeof e.response !== 'undefined') {
           if(e.response.status === 400) {
-            console.log(chalk.red(e.response.data.errorMessage.error))
+            // console.log(chalk.red(e.response.data.errorMessage.error))
             let error = {error: e.response.data.errorMessage.error};
             res.render('chat', {mutualUsers: respo.data.mutualUsers, error, token: req.cookies.jwt});
           }
@@ -35,7 +35,7 @@ router.get('/chat', headerAuth.connectedHeader, isComplete, (req, res) => {
     handle.authError(e, req, res);
     if(typeof e.response !== 'undefined') {
       if(e.response.status === 400) {
-        console.log(chalk.red(e.response.data.errorMessage.error))
+        // console.log(chalk.red(e.response.data.errorMessage.error))
         let error = {error: e.response.data.errorMessage.error};
         res.render('chat', {error, token: req.cookies.jwt});
       }

@@ -193,7 +193,7 @@ router.get('/logout', headerAuth.connectedHeader, (req, res) => {
   ).catch((e) => {
     if(typeof e.response !== 'undefined') {
       if(e.response.status === 400) {
-        console.log(e.response.data.errorMessage);
+        // console.log(e.response.data.errorMessage);
         req.flash("error", e.response.data.errorMessage.error);
         res.redirect("/");
       }
