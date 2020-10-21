@@ -18,10 +18,13 @@
         <a class="nav-link" href="/browse"><i class="fas fa-random"></i>Browse</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/search">
-            <i class="fas fa-search"></i>Search
-        </a>
-    </li>
+        <a class="nav-link" href="/search"><i class="fas fa-search"></i>Search</a>
+      </li>
+      <% if (isAdmin != 'undefined' && isAdmin === 1) { %>
+      <li class="nav-item">
+        <a class="nav-link" href="/reported"><i class="fas fa-user-lock"></i>Reported</a>
+      </li>
+      <% } %>
     </ul>
     <ul class="navbar-nav ml-auto nav-flex-icons">
         <li class="nav-item">

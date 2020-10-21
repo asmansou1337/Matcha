@@ -62,6 +62,7 @@ const User = {
                     responseData.isComplete = 1;
                     responseData.successMessage = 'profile completed';
                 }
+                responseData.isAdmin = selectedUser[0].is_admin;
             }
         }
         if (responseData.isValid === true)
@@ -316,6 +317,73 @@ const User = {
         let blockedUsers = await userManager.blockedUsers(connectedUserData['userId']);
         if (blockedUsers.length > 0) {
             responseData.blockedUsers = blockedUsers
+        }
+        if (responseData.isValid === true)
+            res.status(200).send(responseData);
+        else
+            res.status(400).send(responseData);
+    },
+    reportedUsers: async (req, res) => {
+        let responseData = {
+            isValid : true,
+            errorMessage: {}
+        };
+        const connectedUserData = req.userData;
+        // verify if user connected is admin
+        const user = await profileManager.getUserProfile(connectedUserData['userId']);
+        if (user) {
+            //console.log(chalk.yellow(JSON.stringify(selectedUser[0])))
+            if (user[0].is_admin === 1) {
+                // get list of users who got reported
+                let reportedUsers = await userManager.reportedUsers();
+                console.log(chalk.green(JSON.stringify(reportedUsers)))
+                if (reportedUsers) {
+                    responseData.reportedUsers = reportedUsers
+                } else {
+                    responseData.isValid = false;
+                    responseData.errorMessage.error= 'Error, Please try again!';
+                }
+            } else {
+                responseData.isValid = false;
+                responseData.errorMessage.error= 'You can\'t access this page!';
+            }
+        } else {
+            responseData.isValid = false;
+            responseData.errorMessage.error= 'Error, Please try again!';
+        }
+        if (responseData.isValid === true)
+            res.status(200).send(responseData);
+        else
+            res.status(400).send(responseData);
+    },
+    deleteProfile: async (req, res) => {
+        let responseData = {
+            isValid : true,
+            successMessage: null,
+            errorMessage: {}
+        };
+        const connectedUserData = req.userData;
+        const userID = req.body.id;
+        // verify if user connected is admin
+        const user = await profileManager.getUserProfile(connectedUserData['userId']);
+        if (user) {
+            //console.log(chalk.yellow(JSON.stringify(selectedUser[0])))
+            if (user[0].is_admin === 1) {
+                // delete user profile
+                let deletedUser = await userManager.deleteUser(userID);
+                if (deletedUser) {
+                    responseData.successMessage = "User deleted successfully !!"
+                } else {
+                    responseData.isValid = false;
+                    responseData.errorMessage.error= 'Error, Please try again!';
+                }
+            } else {
+                responseData.isValid = false;
+                responseData.errorMessage.error= 'You can\'t take this action!';
+            }
+        } else {
+            responseData.isValid = false;
+            responseData.errorMessage.error= 'Error, Please try again!';
         }
         if (responseData.isValid === true)
             res.status(200).send(responseData);

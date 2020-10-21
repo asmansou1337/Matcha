@@ -20,13 +20,13 @@ router.get('/', headerAuth.connectedHeader, isComplete, (req, res) => {
       //  console.log(chalk.green(JSON.stringify(response.data)))
       return res.render('index', {likersUsers: response.data.likersUsers,likedUsers: response.data.likedUsers, 
         visitorsUsers: response.data.visitorsUsers, mutualUsers: response.data.mutualUsers,
-        blockedUsers: response.data.blockedUsers, error, token: req.cookies.jwt});     
+        blockedUsers: response.data.blockedUsers, error, isAdmin: req.isAdmin, token: req.cookies.jwt});     
     })
     .catch((e) => {
       if(typeof e.response !== 'undefined') {
         if(e.response.status === 400) {
             const error = e.response.data.errorMessage;
-            return res.render('index', {error});
+            return res.render('index', {error, isAdmin: req.isAdmin, token: req.cookies.jwt});
         }
       } 
     });

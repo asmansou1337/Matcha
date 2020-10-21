@@ -62,6 +62,7 @@ sql += '`is_online` int(2) NOT NULL DEFAULT 0,';
 sql += '`last_connection` DATETIME,';
 sql += '`born_date` DATETIME,';
 sql += '`notify` int(11)  NOT NULL DEFAULT 1,';
+sql += '`is_admin` int(2) NOT NULL DEFAULT 0,';
 sql += '`created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP';
 sql += ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci';
 cnx.query(sql, function(err) {

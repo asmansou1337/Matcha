@@ -11,13 +11,13 @@ const handle = require('../middleware/functions')
 router.get('/browse',  headerAuth.connectedHeader, isComplete, (req, res) => {
     axios.get(`${process.env.HostApi}/browse`)
     .then((respo) => {
-        res.render('browse', {users: respo.data.browseList, tags: respo.data.userTags, token: req.cookies.jwt});
+        res.render('browse', {users: respo.data.browseList, tags: respo.data.userTags, isAdmin: req.isAdmin, token: req.cookies.jwt});
     })
     .catch((e) => {
       handle.authError(e, req, res);
       if(typeof e.response !== 'undefined') {
         if(e.response.status === 400) {
-          res.render('browse', {error: {error: e.response.data.errorMessage.error, token: req.cookies.jwt}});
+          res.render('browse', {error: {error: e.response.data.errorMessage.error, isAdmin: req.isAdmin, token: req.cookies.jwt}});
         }
       }    
     })
@@ -27,13 +27,13 @@ router.get('/browse',  headerAuth.connectedHeader, isComplete, (req, res) => {
 router.post('/browse',  headerAuth.connectedHeader, isComplete, (req, res) => {
     axios.post(`${process.env.HostApi}/browse`, req.body)
     .then((respo) => {
-        res.render('browse', {users: respo.data.browseList, filter: respo.data.filter ,error: respo.data.errorMessage, tags: respo.data.userTags, token: req.cookies.jwt});
+        res.render('browse', {users: respo.data.browseList, filter: respo.data.filter ,error: respo.data.errorMessage, tags: respo.data.userTags, isAdmin: req.isAdmin, token: req.cookies.jwt});
     })
     .catch((e) => {
       handle.authError(e, req, res);
       if(typeof e.response !== 'undefined') {
         if(e.response.status === 400) {
-          res.render('browse', {error: {error: e.response.data.errorMessage.error, token: req.cookies.jwt}});
+          res.render('browse', {error: {error: e.response.data.errorMessage.error, isAdmin: req.isAdmin, token: req.cookies.jwt}});
         }
       }    
     })

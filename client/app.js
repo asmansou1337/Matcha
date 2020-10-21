@@ -23,6 +23,7 @@ var browseRouter = require('./routes/browse');
 var chatRouter = require('./routes/chat');
 var searchRouter = require('./routes/search');
 var notificationsRouter = require('./routes/notification');
+var reportedRouter = require('./routes/report');
 
 function ignoreFavicon(req, res, next) {
   if (req.originalUrl.includes('favicon.ico')) {
@@ -71,6 +72,7 @@ app.use('/', browseRouter);
 app.use('/', chatRouter);
 app.use('/', searchRouter);
 app.use('/', notificationsRouter);
+app.use('/', reportedRouter);
 
 
 io.on('connection', socket => {

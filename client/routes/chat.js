@@ -16,19 +16,19 @@ router.get('/chat', headerAuth.connectedHeader, isComplete, (req, res) => {
       axios.get(`${process.env.HostApi}/getMessages?to=${req.query.to}&convId=${req.query.convId}`)
       .then((response) => {
         messages = response.data.messages;
-        res.render('chat', {mutualUsers: respo.data.mutualUsers, messages, error, activeConv: {active: req.query.convId}, token: req.cookies.jwt});
+        res.render('chat', {mutualUsers: respo.data.mutualUsers, messages, error, activeConv: {active: req.query.convId},isAdmin: req.isAdmin, token: req.cookies.jwt});
       }).catch((e) => {
         handle.authError(e, req, res);
         if(typeof e.response !== 'undefined') {
           if(e.response.status === 400) {
             // console.log(chalk.red(e.response.data.errorMessage.error))
             let error = {error: e.response.data.errorMessage.error};
-            res.render('chat', {mutualUsers: respo.data.mutualUsers, error, token: req.cookies.jwt});
+            res.render('chat', {mutualUsers: respo.data.mutualUsers, error,isAdmin: req.isAdmin, token: req.cookies.jwt});
           }
         }    
       })
      } else {
-        res.render('chat', {mutualUsers: respo.data.mutualUsers, token: req.cookies.jwt});
+        res.render('chat', {mutualUsers: respo.data.mutualUsers,isAdmin: req.isAdmin, token: req.cookies.jwt});
      }
   })
   .catch((e) => {
@@ -37,7 +37,7 @@ router.get('/chat', headerAuth.connectedHeader, isComplete, (req, res) => {
       if(e.response.status === 400) {
         // console.log(chalk.red(e.response.data.errorMessage.error))
         let error = {error: e.response.data.errorMessage.error};
-        res.render('chat', {error, token: req.cookies.jwt});
+        res.render('chat', {error,isAdmin: req.isAdmin, token: req.cookies.jwt});
       }
     }    
   })

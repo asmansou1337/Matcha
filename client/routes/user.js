@@ -63,7 +63,7 @@ router.get('/user', headerAuth.connectedHeader, isComplete, async (req,res) => {
         const user = await getUserInfos(id)
         // get the relationship with the user
         const relation = await getRelation(id)
-        return res.render('profile', {userInfos: user, error, relation, message: {err}, token: req.cookies.jwt});
+        return res.render('profile', {userInfos: user, error, relation, message: {err},isAdmin: req.isAdmin, token: req.cookies.jwt});
     } catch (e) {
       console.log(chalk.red(JSON.stringify(e.message)))
       req.flash('error', e.message);

@@ -16,7 +16,7 @@ const Auth = {
     },
     getUserProfile: async (id) => {
         const sql = `SELECT id, username, firstName, lastName, email, gender, preference, biography, ` +
-        `latitude, longitude, profilePic, is_online as online, last_connection, DATE_FORMAT(born_date, "%Y-%m-%d") as born_date, notify, ` +
+        `latitude, longitude, profilePic, is_online as online, last_connection, DATE_FORMAT(born_date, "%Y-%m-%d") as born_date, notify, is_admin, ` +
         `(SELECT GROUP_CONCAT(name SEPARATOR ',') FROM pictures WHERE user_id = ?) as otherPictures, ` +
         `(SELECT GROUP_CONCAT(name SEPARATOR ',') FROM tags WHERE user_id = ?) as tags FROM users WHERE id = ?`;
         return db.selectDB([id, id, id], sql)

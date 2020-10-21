@@ -40,7 +40,7 @@ router.post("/editProfile", headerAuth.connectedHeader, async (req, res) => {
         }
       }
     });
-  res.render("editProfile", {success, error, userInfos: user, nav: { path: "basic" }, token: req.cookies.jwt});
+  res.render("editProfile", {success, error, userInfos: user, nav: { path: "basic" },isAdmin: req.isAdmin, token: req.cookies.jwt});
 });
 
 // Update password
@@ -74,7 +74,7 @@ router.post("/updatePassword", headerAuth.connectedHeader, async (req, res) => {
         }
       }
     });
-  res.render("editProfile", {success, error, userInfos: user, nav: { path: "password" }, token: req.cookies.jwt});
+  res.render("editProfile", {success, error, userInfos: user, nav: { path: "password" },isAdmin: req.isAdmin, token: req.cookies.jwt});
 });
 
 // Upload profile picture form
@@ -319,7 +319,7 @@ router.get("/editProfile", headerAuth.connectedHeader, (req, res) => {
   axios.get(`${process.env.HostApi}/profile/getInfos`)
     .then((response) => {
       user = response.data.user;
-      res.render("editProfile", {success, error, userInfos: user, nav: { path }, tagsList, token: req.cookies.jwt});
+      res.render("editProfile", {success, error, userInfos: user, nav: { path }, tagsList,isAdmin: req.isAdmin, token: req.cookies.jwt});
     })
     .catch((e) => {
       handle.authError(e, req, res);
@@ -327,7 +327,7 @@ router.get("/editProfile", headerAuth.connectedHeader, (req, res) => {
         if(e.response.status === 400) {
             // console.log(e.response.data);
             let error = {error: e.response.data.errorMessage.error}
-            res.render("editProfile", {success, error, userInfos: user, nav: { path }, tagsList, token: req.cookies.jwt});
+            res.render("editProfile", {success, error, userInfos: user, nav: { path }, tagsList,isAdmin: req.isAdmin, token: req.cookies.jwt});
         }
       }    
     });

@@ -90,6 +90,21 @@ const user = {
         "INNER JOIN users u ON u.id = blocked_user_id AND blocker_user_id  = ? ORDER BY bl.created_at DESC"
         return db.selectDB([blockerId], sql)
     },
+    reportedUsers : async () => {
+        const sql = "SELECT DISTINCT reported_user_id , (SELECT COUNT(*) FROM reported_users WHERE reported_user_id = r.reported_user_id) AS report, " +
+        " u.firstName, u.lastName,u.username, u.profilePic FROM reported_users r " +
+        " INNER JOIN users u ON u.id = r.reported_user_id"
+        return db.selectDB([], sql)
+    },
+    deleteUser : async (id) => {
+        const sql = 'DELETE FROM users where id = ?;' +
+        'DELETE FROM visited_profiles where visited_user_id = ?; DELETE FROM tags where user_id = ?;' +
+        'DELETE FROM reported_users where reported_user_id = ?; DELETE FROM pictures where user_id = ?;' +
+        'DELETE FROM notifications where receiver_id = ?; DELETE FROM messages where user_id = ?;' +
+        'DELETE FROM liked_profiles where liked_user_id = ?; DELETE FROM conversations where starter_user_id = ? OR receiver_user_id = ?;' +
+        'DELETE FROM blocked_users where blocked_user_id = ?;';
+        return db.updateDB([id, id, id, id, id, id, id, id, id, id, id], sql)
+    },
 }
 
 module.exports = user;

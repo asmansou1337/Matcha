@@ -30,6 +30,7 @@ let defaultUser = {}
     defaultUser['born_date'] = '1997-08-15 00:00:00'
     defaultUser['created_at'] = '2020-03-31 21:00:07'
     defaultUser['is_active'] = 1
+    defaultUser['is_admin'] = 1
     defaultUser['profilePic'] = 'woman-pic5.jpg'
     defaultUser['preference'] = 'bisexual'
     defaultUser['token'] = '813d654e0519df425f6af60786810a16a1061807daafc90a2c95e43093fdca501aa6bda03bed43cc'
@@ -65,6 +66,7 @@ tab.forEach(user => {
     newUser['born_date'] = user.dob.date
     newUser['created_at'] = user.registered.date
     newUser['is_active'] = 1
+    newUser['is_admin'] = 0
     // profile pic
     if (user.gender == 'female') 
      newUser['profilePic'] = femalePics[Math.floor(Math.random() * femalePics.length)]
@@ -108,10 +110,10 @@ console.log(chalk.green('Database changed !'));
 
 // filling users table
 let sql = `INSERT INTO users `+
-    `(firstName, lastName, username, email, password, is_active, gender, preference, biography, token, latitude, longitude, profilePic,`+
+    `(firstName, lastName, username, email, password, is_active, is_admin, gender, preference, biography, token, latitude, longitude, profilePic,`+
     `born_date, created_at) VALUES `;
 result.forEach((user, index) => {
-    sql += `('${user.firstName}','${user.lastName}','${user.username}','${user.email}','${user.password}','${user.is_active}','${user.gender}','${user.preference}','${user.biography}',`+
+    sql += `('${user.firstName}','${user.lastName}','${user.username}','${user.email}','${user.password}','${user.is_active}','${user.is_admin}','${user.gender}','${user.preference}','${user.biography}',`+
         `'${user.token}','${user.latitude}','${user.longitude}','${user.profilePic}','${user.born_date}','${user.created_at}')`
     if ((result.length - 1) !== index){
         sql += ','

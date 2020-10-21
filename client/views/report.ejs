@@ -1,0 +1,45 @@
+<%- include('header'); %>
+<%- include('./navs/navAuth'); %>
+<section class="view">
+    <div class="col-md-12">
+        <div class="d-flex flex-column justify-content-center">
+            <!-- Error & messages section -->
+            <div>
+            <% if(typeof  error !== 'undefined'){ %>
+                <% if (typeof  error.error != 'undefined') { %>
+                    <div class="alert alert-danger" role="alert">
+                    <%= error.error %>
+                    </div>
+                <% } } %>
+            </div>
+        </div>
+        <!-- Notifications list -->
+        <div class="card example-1 scrollbar-deep-purple thin">
+            <h5 class="card-header h5">Reported Users</h5>
+            <div class="card-body">
+              <ul class="list-group list-group-flush ">
+                <% if(typeof users !== 'undefined' && users.length > 0) { 
+                  users.forEach(user => { %>
+                <li class="list-group-item">
+                  <div class="media">
+                    <img class="d-flex mr-3 rounded-circle small_avatar" src="<%= (user.profilePic != null) ? `/uploads/${user.profilePic}` : '/uploads/avatar.jpg' %>"
+                alt="avatar"><div class="media-body">
+                      <h5 class="mt-0 font-weight-bold"><%= user.firstName+' '+user.lastName %></h5>
+                      @<%= user.username %> has been reported <%= user.report %> times.
+                    </div>
+                  </div>
+                  <a href="/user?id=<%= user.reported_user_id %>" class="stretched-link"></a>
+                 </li>
+                <% });} else { %>
+                  <li class="list-group-item">No Reported Users Yet !!</li>
+                  <% }%>
+              </ul>
+            </div>
+          </div>
+        <!-- Notifications list -->
+    </div>
+</section>
+
+<%- include('footer'); %>
+<script type="text/javascript" src="/javascripts/socket.js"></script>
+<script type="text/javascript" src="/javascripts/notif.js"></script>
