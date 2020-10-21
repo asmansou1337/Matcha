@@ -1,0 +1,1 @@
+cd ./server && npm install && npm run setup && npm run seed && npm run dev

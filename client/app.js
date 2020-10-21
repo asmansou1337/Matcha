@@ -59,6 +59,10 @@ app.use(session({
 }));
  
 app.use(flash());
+// app.use((req, res, next) => {
+//   res.header('Cache-Control', 'no-cache, no-store, must-revalidate')
+//   next();
+// });
 
 app.use('/', indexRouter);
 app.use('/profile', profileRouter);
