@@ -136,12 +136,17 @@ const Valid = {
         }
         return true
       },
-      isFilterValid: (filter, tags) => {
+      isFilterValid: (filter) => {
         if (!Valid.isAgeFilterValid(filter) || !Valid.isRatingFilterValid(filter) || 
         !Valid.isLocationFilterValid(filter) || !Valid.isKeywordFilterValid(filter))
           return 'Error Filtering Results!!'
-        if (!Valid.isFilterTags(tags))
+        try {
+          let tags = JSON.parse(filter['TagsTab'])
+          if (!Valid.isFilterTags(tags))
+            return errorTab['tags']
+        } catch (error) {
           return errorTab['tags']
+        }
         return 'success'
       },
       isLatitude: (latitude) => {

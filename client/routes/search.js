@@ -17,7 +17,8 @@ router.get('/search',  headerAuth.connectedHeader, isComplete, (req, res) => {
       handle.authError(e, req, res);
       if(typeof e.response !== 'undefined') {
         if(e.response.status === 400) {
-          res.render('search', {error: {error: e.response.data.errorMessage.error, isAdmin: req.isAdmin, token: req.cookies.jwt}});
+          let error = e.response.data.errorMessage
+          res.render('search', {error, isAdmin: req.isAdmin, token: req.cookies.jwt});
         }
       }    
     })
@@ -33,7 +34,9 @@ router.post('/search',  headerAuth.connectedHeader, isComplete, (req, res) => {
       handle.authError(e, req, res);
       if(typeof e.response !== 'undefined') {
         if(e.response.status === 400) {
-          res.render('search', {error: {error: e.response.data.errorMessage.error, isAdmin: req.isAdmin, token: req.cookies.jwt}});
+          // console.log(chalk.red(JSON.stringify(e.response.data)))
+          let error = e.response.data.errorMessage
+          res.render('search', {error, filter: e.response.data.filter, isAdmin: req.isAdmin, token: req.cookies.jwt});
         }
       }    
     })

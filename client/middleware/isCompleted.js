@@ -7,7 +7,6 @@ module.exports  = (req, res, next) => {
   axios.get(`${process.env.HostApi}/user/getProfileStatut`)
   .then((resp) => {
     req.isAdmin = resp.data.isAdmin
-    // console.log(chalk.magentaBright(req.isAdmin))
     if (resp.data.successMessage == null && resp.data.isComplete === 0) {
         req.flash('error', 'Please complete your profile first!!');
         res.redirect('/profile/editProfile'); 

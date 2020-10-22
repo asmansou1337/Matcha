@@ -17,7 +17,8 @@ router.get('/browse',  headerAuth.connectedHeader, isComplete, (req, res) => {
       handle.authError(e, req, res);
       if(typeof e.response !== 'undefined') {
         if(e.response.status === 400) {
-          res.render('browse', {error: {error: e.response.data.errorMessage.error, isAdmin: req.isAdmin, token: req.cookies.jwt}});
+          let error = e.response.data.errorMessage
+          res.render('browse', {error, isAdmin: req.isAdmin, token: req.cookies.jwt});
         }
       }    
     })
@@ -33,7 +34,8 @@ router.post('/browse',  headerAuth.connectedHeader, isComplete, (req, res) => {
       handle.authError(e, req, res);
       if(typeof e.response !== 'undefined') {
         if(e.response.status === 400) {
-          res.render('browse', {error: {error: e.response.data.errorMessage.error, isAdmin: req.isAdmin, token: req.cookies.jwt}});
+          let error = e.response.data.errorMessage
+          res.render('browse', {error, tags: e.response.data.userTags, isAdmin: req.isAdmin, token: req.cookies.jwt});
         }
       }    
     })

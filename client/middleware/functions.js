@@ -13,12 +13,24 @@ const func = {
         return false
     },
     formatMessage: (username, msg) => {
+        msg = func.escapeHtml(msg)
         return {
           username,
           msg,
           //time: moment().format('h:mm a')
         };
     },
+    escapeHtml: (str) => {
+        str  = str.replace(/[&<>'"]/g, 
+          tag => ({
+              '&': '&amp;',
+              '<': '&lt;',
+              '>': '&gt;',
+              "'": '&#39;',
+              '"': '&quot;'
+            }[tag] || tag))
+        return str
+      },
     // Join user to chat
     userJoin: (id, to, from, matchedUsername, username, convId) => {
         const user = { id, to, from, matchedUsername, username, convId };
