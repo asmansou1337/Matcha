@@ -111,10 +111,10 @@ console.log(chalk.green('Database changed !'));
 // filling users table
 let sql = `INSERT INTO users `+
     `(firstName, lastName, username, email, password, is_active, is_admin, gender, preference, biography, token, latitude, longitude, profilePic,`+
-    `born_date, created_at) VALUES `;
+    `born_date, last_connection, created_at) VALUES `;
 result.forEach((user, index) => {
     sql += `('${user.firstName}','${user.lastName}','${user.username}','${user.email}','${user.password}','${user.is_active}','${user.is_admin}','${user.gender}','${user.preference}','${user.biography}',`+
-        `'${user.token}','${user.latitude}','${user.longitude}','${user.profilePic}','${user.born_date}','${user.created_at}')`
+        `'${user.token}','${user.latitude}','${user.longitude}','${user.profilePic}','${user.born_date}','${user.last_connection}','${user.created_at}')`
     if ((result.length - 1) !== index){
         sql += ','
     }

@@ -144,7 +144,7 @@ router.post("/deleteProfile", headerAuth.connectedHeader, (req, res) => {
   req.flash("path", "picture");
   axios.get(`${process.env.HostApi}/profile/getProfilePic`)
     .then((resp) => {
-      if (resp.data.user.profilePic != "" && resp.data.user.profilePic != null)
+      if (!handle.isEmpty(resp.data.user.profilePic) && resp.data.user.profilePic != null )
         fs.unlinkSync(process.cwd() + "/public/uploads/" + resp.data.user.profilePic);
       // Update the image name on the backend
       let pic = {
@@ -236,28 +236,33 @@ router.post("/deletePicture", headerAuth.connectedHeader, (req, res) => {
   req.flash("path", "picture");
   let img = req.body.img;
   //console.log(chalk.magenta(JSON.stringify(req.body)));
-  if (fs.existsSync(process.cwd() + "/public/uploads/" + img)) {
-    fs.unlinkSync(process.cwd() + "/public/uploads/" + img);
-    // Remove the image name on the backend
-    let pic = {
-      name: img,
-    };
-    //console.log(chalk.green(JSON.stringify(req.file)));
-    axios.post(`${process.env.HostApi}/profile/deletePic`, pic)
-      .then((response) => {
-        // console.log(chalk.blue(response.data.successMessage));
-        req.flash("successMessage", response.data.successMessage);
-        res.redirect("/profile/editProfile");
-      })
-      .catch((e) => {
-        if (typeof e.response !== "undefined") {
-          if (e.response.status === 400) {
-            req.flash("error", e.response.data.errorMessage.error);
-            res.redirect("/profile/editProfile");
+  if (!handle.isEmpty(img) && img != null && img != "") {
+    if (fs.existsSync(process.cwd() + "/public/uploads/" + img)) {
+      fs.unlinkSync(process.cwd() + "/public/uploads/" + img);
+      // Remove the image name on the backend
+      let pic = {
+        name: img,
+      };
+      //console.log(chalk.green(JSON.stringify(req.file)));
+      axios.post(`${process.env.HostApi}/profile/deletePic`, pic)
+        .then((response) => {
+          // console.log(chalk.blue(response.data.successMessage));
+          req.flash("successMessage", response.data.successMessage);
+          res.redirect("/profile/editProfile");
+        })
+        .catch((e) => {
+          if (typeof e.response !== "undefined") {
+            if (e.response.status === 400) {
+              req.flash("error", e.response.data.errorMessage.error);
+              res.redirect("/profile/editProfile");
+            }
           }
-        }
-        handle.authError(e, req, res);
-      });
+          handle.authError(e, req, res);
+        });
+    } else {
+      req.flash("error", "This image does not exists!!");
+      res.redirect("/profile/editProfile");
+    }
   } else {
     req.flash("error", "This image does not exists!!");
     res.redirect("/profile/editProfile");

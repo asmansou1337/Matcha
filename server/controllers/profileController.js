@@ -170,12 +170,16 @@ const Profile = {
             errorMessage: {}
         };
         let userData = req.userData;
-        var err = validation.isPictureName(req.body.name)
-        if (err === false) {
-            responseData.isValid = false;
-            responseData.errorMessage.error =  "Invalid Picture Name";
+        if (req.body.name != null) {
+            var err = validation.isPictureName(req.body.name)
+            if (err === false) {
+                responseData.isValid = false;
+                responseData.errorMessage.error =  "Invalid Picture Name";
+            }
         }
+        
         if (responseData.isValid === true) {
+            console.log(chalk.yellow(JSON.stringify(req.body.name)))
             const updatePic = await profileManager.updateProfilePic(req.body.name, userData['userId'])
             if (updatePic) {
                 responseData.successMessage = "Your Profile Image Is Updated Successfully!";
@@ -198,9 +202,12 @@ const Profile = {
         let userData = req.userData;
         let name = req.body.name;
         let user_id =  userData['userId'];
-        if (validation.isPictureName(name) === false) {
-            responseData.isValid = false;
-            responseData.errorMessage.error =  "Invalid Picture Name";
+        if (name != null) {
+            var err = validation.isPictureName(name)
+            if (err === false) {
+                responseData.isValid = false;
+                responseData.errorMessage.error =  "Invalid Picture Name";
+            }
         }
         if (responseData.isValid === true) {
             const addPic = await profileManager.addNewPic({name, user_id});
@@ -226,9 +233,12 @@ const Profile = {
         let userData = req.userData;
         let name = req.body.name;
         let user_id =  userData['userId'];
-        if (validation.isPictureName(name) === false) {
-            responseData.isValid = false;
-            responseData.errorMessage.error =  "Invalid Picture Name";
+        if (name != null) {
+            var err = validation.isPictureName(name)
+            if (err === false) {
+                responseData.isValid = false;
+                responseData.errorMessage.error =  "Invalid Picture Name";
+            }
         }
         if (responseData.isValid === true) {
             const deletePic = await profileManager.deletePic(name, user_id);
