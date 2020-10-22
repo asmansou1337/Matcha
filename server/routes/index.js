@@ -39,7 +39,7 @@ router.get('/user/getRelation', checkAuth, user.getRelation);
 router.get('/user/getProfileStatut', checkAuth, user.userProfileStatut);
 router.get('/history', checkAuth, user.history);
 router.get('/reportedUsers', checkAuth, user.reportedUsers);
-router.get('/deleteProfile', checkAuth, user.deleteProfile);
+router.post('/deleteProfile', checkAuth, user.deleteProfile);
 
 router.get('/chat', checkAuth, chat.getMatchingUsers);
 router.post('/sendMsg', checkAuth, chat.sendMessage);

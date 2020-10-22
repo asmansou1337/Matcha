@@ -336,7 +336,7 @@ const User = {
             if (user[0].is_admin === 1) {
                 // get list of users who got reported
                 let reportedUsers = await userManager.reportedUsers();
-                console.log(chalk.green(JSON.stringify(reportedUsers)))
+                // console.log(chalk.green(JSON.stringify(reportedUsers)))
                 if (reportedUsers) {
                     responseData.reportedUsers = reportedUsers
                 } else {
@@ -363,16 +363,28 @@ const User = {
             errorMessage: {}
         };
         const connectedUserData = req.userData;
-        const userID = req.body.id;
+        const userID = req.body.reported_user_id;
         // verify if user connected is admin
         const user = await profileManager.getUserProfile(connectedUserData['userId']);
         if (user) {
             //console.log(chalk.yellow(JSON.stringify(selectedUser[0])))
             if (user[0].is_admin === 1) {
-                // delete user profile
-                let deletedUser = await userManager.deleteUser(userID);
-                if (deletedUser) {
-                    responseData.successMessage = "User deleted successfully !!"
+                // get list of users who got reported
+                let reportedUsers = await userManager.reportedUsers();
+                if (reportedUsers) {
+                    if (reportedUsers.some(user => user.reported_user_id == userID)) {
+                        // delete user profile
+                        let deletedUser = await userManager.deleteUser(userID);
+                        if (deletedUser) {
+                            responseData.successMessage = "User deleted successfully !!"
+                        } else {
+                            responseData.isValid = false;
+                            responseData.errorMessage.error= 'Error, Please try again!';
+                        }
+                    } else {
+                        responseData.isValid = false;
+                        responseData.errorMessage.error= 'You can\'t delete this profile!';
+                    }
                 } else {
                     responseData.isValid = false;
                     responseData.errorMessage.error= 'Error, Please try again!';

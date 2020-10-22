@@ -97,13 +97,18 @@ const user = {
         return db.selectDB([], sql)
     },
     deleteUser : async (id) => {
-        const sql = 'DELETE FROM users where id = ?;' +
-        'DELETE FROM visited_profiles where visited_user_id = ?; DELETE FROM tags where user_id = ?;' +
-        'DELETE FROM reported_users where reported_user_id = ?; DELETE FROM pictures where user_id = ?;' +
-        'DELETE FROM notifications where receiver_id = ?; DELETE FROM messages where user_id = ?;' +
-        'DELETE FROM liked_profiles where liked_user_id = ?; DELETE FROM conversations where starter_user_id = ? OR receiver_user_id = ?;' +
-        'DELETE FROM blocked_users where blocked_user_id = ?;';
-        return db.updateDB([id, id, id, id, id, id, id, id, id, id, id], sql)
+        const users ='DELETE FROM users where id = ?;';
+        const visited ='DELETE FROM visited_profiles where visited_user_id = ?;'; 
+        const tags ='DELETE FROM tags where user_id = ?;'; 
+        const reported ='DELETE FROM reported_users where reported_user_id = ?;'; 
+        const pictures ='DELETE FROM pictures where user_id = ?;'; 
+        const notifications ='DELETE FROM notifications where receiver_id = ?;'; 
+        const messages ='DELETE FROM messages where user_id = ?;'; 
+        const liked ='DELETE FROM liked_profiles where liked_user_id = ?;'; 
+        const conversations ='DELETE FROM conversations where starter_user_id = ? OR receiver_user_id = ?;'; 
+        const blocked ='DELETE FROM blocked_users where blocked_user_id = ?;';
+        return (db.updateDB([id], users) && db.updateDB([id], visited) && db.updateDB([id], tags) && db.updateDB([id], reported) && db.updateDB([id], pictures) && db.updateDB([id], notifications)
+        && db.updateDB([id], messages) && db.updateDB([id], liked) && db.updateDB([id, id], conversations) && db.updateDB([id], blocked))
     },
 }
 
