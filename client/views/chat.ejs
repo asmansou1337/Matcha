@@ -41,7 +41,9 @@
                             </div>
                             <% if (user.unreadMsgs !== 0) { %>
                               <span class="badge badge-danger ml-2 unread<%= user.convId %>"><%= user.unreadMsgs %></span>
-                            <% } %>
+                            <% } else { %>
+                              <span class="badge badge-danger ml-2 unread<%= user.convId %>"></span>
+                              <% } %>
                           </a>
                         </div>
                         

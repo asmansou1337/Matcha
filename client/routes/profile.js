@@ -272,24 +272,27 @@ router.post("/deletePicture", headerAuth.connectedHeader, (req, res) => {
 // edit tags infos form POST
 router.post("/addTags", headerAuth.connectedHeader, (req, res) => {
   req.flash("path", "tag");
-  // console.log(chalk.yellow(req.body.TagsTab));
   // verify if tags tab is an array
   try {
-    let userTags = JSON.parse(req.body.TagsTab);
-    axios.post(`${process.env.HostApi}/profile/updateTags`, userTags)
-    .then((response) => {
-      req.flash("successMessage", response.data.successMessage);
-      res.redirect("/profile/editProfile");
-    })
-    .catch((e) => {
-      if (typeof e.response !== "undefined") {
-        if (e.response.status === 400) {
-          req.flash("error", e.response.data.errorMessage.error);
+    if (Array.isArray(JSON.parse(req.body.TagsTab))) {
+      let userTags = JSON.parse(req.body.TagsTab);
+      axios.post(`${process.env.HostApi}/profile/updateTags`, userTags)
+        .then((response) => {
+          req.flash("successMessage", response.data.successMessage);
           res.redirect("/profile/editProfile");
-        }
-      }
-      handle.authError(e, req, res);
-    });
+        })
+        .catch((e) => {
+          if (typeof e.response !== "undefined") {
+            if (e.response.status === 400) {
+              req.flash("error", e.response.data.errorMessage.error);
+              res.redirect("/profile/editProfile");
+            }
+          }
+          handle.authError(e, req, res);
+        });
+    } else {
+        throw new Error()
+    }
   } catch(e) {
     req.flash("error", 'Invalid Tags');
     res.redirect("/profile/editProfile");

@@ -57,7 +57,7 @@ const func = {
         if (index !== -1) {
         return chatUsers.splice(index, 1)[0];
         }
-    }
+    },
 }
 
 module.exports = func

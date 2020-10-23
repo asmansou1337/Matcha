@@ -179,7 +179,7 @@ const Profile = {
         }
         
         if (responseData.isValid === true) {
-            console.log(chalk.yellow(JSON.stringify(req.body.name)))
+            // console.log(chalk.yellow(JSON.stringify(req.body.name)))
             const updatePic = await profileManager.updateProfilePic(req.body.name, userData['userId'])
             if (updatePic) {
                 responseData.successMessage = "Your Profile Image Is Updated Successfully!";
@@ -321,9 +321,10 @@ const Profile = {
         let user_id =  req.userData['userId'];
         // console.log(chalk.yellow(JSON.stringify(req.body)));
         let userTags = req.body;
+        let err = validation.isTags(userTags);
         // remove duplicate from userTags array
         userTags = [...new Set(userTags)];
-        let err = validation.isTags(userTags);
+        
         if (err !== "success") {
             responseData.isValid = false;
             responseData.errorMessage.error = err;
