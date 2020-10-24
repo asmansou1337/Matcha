@@ -119,14 +119,25 @@ io.on('connection', socket => {
   });
 
   socket.on('visitProfile', (data) => {
-    // console.log(data)
-    axios.get(`${process.env.HostApi}/unreadnotif?id=${data.visited}`)
-    .then((respo) => {
-        io.emit('unreadNotif', {unread: respo.data.unread, notify: respo.data.notify, id: data.visited, msg: data.msg});
+    // verify if the visited user blocked me
+    axios.get(`${process.env.HostApi}/user/isBlocked?id=${data.visited}`)
+    .then((response) => {
+      console.log(chalk.red(JSON.stringify(response.data)))
+        if (response.data.blocked === 0) {
+          axios.get(`${process.env.HostApi}/unreadnotif?id=${data.visited}`)
+          .then((respo) => {
+            console.log(chalk.green(console.log(JSON.stringify(respo.data))))
+              io.emit('unreadNotif', {unread: respo.data.unread, notify: respo.data.notify, id: data.visited, msg: data.msg});
+          }).catch((e) => {
+            console.log(chalk.red( e.response.data.errorMessage.error))
+            socket.error(e.response.data.errorMessage.error)
+          })
+        }
     }).catch((e) => {
       console.log(chalk.red( e.response.data.errorMessage.error))
       socket.error(e.response.data.errorMessage.error)
     })
+    
   })
 
   socket.on('checkNotif', (data) => {

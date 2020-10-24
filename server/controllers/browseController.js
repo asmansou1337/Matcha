@@ -256,7 +256,6 @@ getFilterBrowseList: async (req, res) => {
             // check if the filter values are valid
             let userTags = connectedUser[0].tags.split(',')
             let filterTags = util.selectedTags(userTags, listTags)
-            // console.log(chalk.green(JSON.stringify(filterTags)))
             err = validation.isFilterValid(filter)
             for (let i = 0; i < users.length; i++) {
                 // calculate age

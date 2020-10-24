@@ -241,12 +241,21 @@ const Profile = {
             }
         }
         if (responseData.isValid === true) {
-            const deletePic = await profileManager.deletePic(name, user_id);
-            if (deletePic) {
-                responseData.successMessage = "Your Image Is Deleted Successfully!";
-            } else {
-                responseData.isValid = false;
-                responseData.errorMessage.error= 'Error deleting your picture, Please try again!';
+            const user = await profileManager.getUserProfile(user_id);
+            if (user) {
+                // console.log(JSON.stringify(user[0].otherPictures))
+                if (user[0].otherPictures.includes(name)) {
+                    const deletePic = await profileManager.deletePic(name, user_id);
+                    if (deletePic) {
+                        responseData.successMessage = "Your Image Is Deleted Successfully!";
+                    } else {
+                        responseData.isValid = false;
+                        responseData.errorMessage.error= 'Error deleting your picture, Please try again!';
+                    }
+                } else {
+                    responseData.isValid = false;
+                    responseData.errorMessage.error= 'Error this picture does not exist!';
+                }
             }
         }
         

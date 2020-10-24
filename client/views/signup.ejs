@@ -22,8 +22,8 @@
             <!-- Registration Form -->
                 <form class="text-center border border-light p-5" id="signupForm" method="POST" action="/signup">
                     <p class="h4 mb-4">SIGN UP</p>
-                    <div class="form-row mb-4">
-                        <div class="col">
+                    <div class="form-row mb-3">
+                        <div class="form-group col-md-6">
                             <!-- First name -->
                             <input type="text" name="firstName" class="form-control" placeholder="First name" required maxlength="30">
                             <% if(typeof  error !== 'undefined'){ %>
@@ -33,7 +33,7 @@
                                   </div>
                             <% } %>
                         </div>
-                        <div class="col">
+                        <div class="form-group col-md-6">
                             <!-- Last name -->
                             <input type="text" name="lastName" class="form-control" placeholder="Last name" required maxlength="30">
                             <% if(typeof  error !== 'undefined'){ %>

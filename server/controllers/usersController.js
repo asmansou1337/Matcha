@@ -286,6 +286,26 @@ const User = {
         else
             res.status(400).send(responseData);
     },
+    isBlocked: async (req, res) => {
+        let responseData = {
+            isValid : true,
+            successMessage: null,
+            errorMessage: {}
+        };
+        const blocked_user_id = req.userData['userId'];
+        const blocker_user_id = req.query.id;
+        // check block
+        let checkBlock = await userManager.checkBlocked(blocker_user_id, blocked_user_id);
+        if (checkBlock.length > 0) {
+            responseData.blocked = 1;
+        } else {
+            responseData.blocked = 0;
+        }
+        if (responseData.isValid === true)
+            res.status(200).send(responseData);
+        else
+            res.status(400).send(responseData);
+    },
     history: async (req, res) => {
         let responseData = {
             isValid : true,

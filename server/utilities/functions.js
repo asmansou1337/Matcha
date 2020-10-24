@@ -109,11 +109,10 @@ const util = {
     },
     selectedTags: (userTags, listTags) => {
       if(Array.isArray(listTags) && listTags.length > 0) {
-      listTags.forEach(t => {
-        if (!userTags.includes(t)) {
+        for (let i = 0; i < listTags.length; i++) {
+          if (!userTags.includes(listTags[i]))
             return userTags
-        }  
-      });
+        }
       return listTags
     } else
     return userTags

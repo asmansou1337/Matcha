@@ -53,7 +53,7 @@ function initMap2(){
       navigator.geolocation.getCurrentPosition((position)=>{
       latitude  = position.coords.latitude;
       longitude = position.coords.longitude;
-      initMap();
+      initMap2();
       clearMarkers();
       addMarker({coords:{lat: parseFloat(latitude), lng: parseFloat(longitude)}});
       document.getElementById('latitude').value = latitude;

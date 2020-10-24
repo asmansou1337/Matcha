@@ -238,7 +238,6 @@ router.post("/deletePicture", headerAuth.connectedHeader, (req, res) => {
   //console.log(chalk.magenta(JSON.stringify(req.body)));
   if (!handle.isEmpty(img) && img != null && img != "") {
     if (fs.existsSync(process.cwd() + "/public/uploads/" + img)) {
-      fs.unlinkSync(process.cwd() + "/public/uploads/" + img);
       // Remove the image name on the backend
       let pic = {
         name: img,
@@ -246,6 +245,7 @@ router.post("/deletePicture", headerAuth.connectedHeader, (req, res) => {
       //console.log(chalk.green(JSON.stringify(req.file)));
       axios.post(`${process.env.HostApi}/profile/deletePic`, pic)
         .then((response) => {
+          fs.unlinkSync(process.cwd() + "/public/uploads/" + img);
           // console.log(chalk.blue(response.data.successMessage));
           req.flash("successMessage", response.data.successMessage);
           res.redirect("/profile/editProfile");

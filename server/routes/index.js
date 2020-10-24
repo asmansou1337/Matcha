@@ -37,6 +37,7 @@ router.post('/user/report', checkAuth, user.reportUser);
 router.post('/user/visit', checkAuth, user.visitUser);
 router.get('/user/getRelation', checkAuth, user.getRelation);
 router.get('/user/getProfileStatut', checkAuth, user.userProfileStatut);
+router.get('/user/isBlocked', checkAuth, user.isBlocked);
 router.get('/history', checkAuth, user.history);
 router.get('/reportedUsers', checkAuth, user.reportedUsers);
 router.post('/deleteProfile', checkAuth, user.deleteProfile);
