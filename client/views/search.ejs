@@ -188,9 +188,9 @@
                         <!-- Text -->
                         <p class="card-text">
                             <% if(user.biography !== null) if (user.biography.length > 85) { %>
-                                <%= user.biography.substring(1, 85) %>...
+                                <%- user.biography.substring(1, 85) %>...
                             <% } else { %>
-                                <%= user.biography %>
+                                <%- user.biography %>
                             <% } %>
                         </p>
                         <a href="/user?id=<%= user.id %>" class="stretched-link"></a>

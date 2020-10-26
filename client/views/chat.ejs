@@ -79,12 +79,12 @@
                           <li class="d-flex <%= d %> mb-4">
                             <div class="<%= color %> rounded w-75 p-3 ml-2 z-depth-1">
                               <div class="header">
-                                <strong class="primary-font"><%= msg.username %></strong>
-                                <small class="pull-right text-muted"><i class="far fa-clock"></i> <%= msg.msgTime %></small>
+                                <strong class="primary-font"><%- msg.username %></strong>
+                                <small class="pull-right text-muted"><i class="far fa-clock"></i> <%- msg.msgTime %></small>
                               </div>
                               <hr class="w-100">
                               <p class="mb-0">
-                                <%= msg.message %>
+                                <%- msg.message %>
                               </p>
                             </div>
                           </li>

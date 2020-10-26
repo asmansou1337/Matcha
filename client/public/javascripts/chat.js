@@ -34,6 +34,7 @@ const chatBox = document.querySelector('.chatBox')
     div.classList.add('alert');
     div.classList.add('alert-danger');
     div.innerHTML = error;
+    document.getElementById('error').innerHTML = '';
     document.getElementById('error').appendChild(div);
 });
 
@@ -49,12 +50,12 @@ const chatBox = document.querySelector('.chatBox')
     // Message submit
     chatForm.addEventListener('submit', e => {
         e.preventDefault();
-    
+        document.getElementById('error').innerHTML = '';
         // Get message text
         const msg = e.target.elements.msg.value;
     
         // Emit message to server
-        socket.emit('chatMessage', msg);
+        socket.emit('chatMessage', {msg, token});
     
         // Clear input
         e.target.elements.msg.value = '';
@@ -72,7 +73,7 @@ function outputMessage(message) {
     div.innerHTML = `<div class="${cl} rounded w-75 p-3 ml-2 z-depth-1">
     <div class="header">
       <strong class="primary-font">${message.username}</strong>
-      <small class="pull-right text-muted"><i class="far fa-clock"></i> 12 mins ago</small>
+      <small class="pull-right text-muted"><i class="far fa-clock"></i> ${message.time}</small>
     </div>
     <hr class="w-100">
     <p class="mb-0">

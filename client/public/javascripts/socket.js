@@ -8,7 +8,9 @@ var token = document.getElementById('token').dataset.token;
         var user = decodeToken(token);
         var chatNotif = document.querySelector('.chatNotif')
         var notifCount = document.querySelector('.notifCount')
-
+        $(window).on('beforeunload', function(){
+            socket.close();
+        });
         const socket = io();
         // $(window).on('beforeunload', function(){
         //     socket.close();

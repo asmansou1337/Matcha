@@ -13,6 +13,8 @@ var app = express();
 const server = require('http').createServer(app);
 io = require('socket.io').listen(server);
 const util = require('./middleware/functions');
+const headerAuth = require('./middleware/authHeader');
+const isComplete = require('./middleware/isCompleted');
 
 chatUsers = [];
 
@@ -82,7 +84,7 @@ io.on('connection', socket => {
   });
 
   // Listen for chatMessage
-  socket.on('chatMessage', msg => {
+  socket.on('chatMessage', ({msg, token}) => {
     const user = util.getCurrentUser(socket.id);
     let isRead = 0;
     if (util.checkConnectedUser(user.to, user.from, user.convId) == true)
@@ -90,7 +92,7 @@ io.on('connection', socket => {
 
     // to, from, matchedUsername, username, convId
     let sendMsg = {userTo: user.to, userFrom: user.from, convId: user.convId, msg, isRead}
-    
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
     axios.post(`${process.env.HostApi}/sendMsg`, sendMsg)
     .then((respo) => {
         io.to(user.convId).emit('message', util.formatMessage(user.username, msg));
@@ -120,6 +122,7 @@ io.on('connection', socket => {
 
   socket.on('visitProfile', (data) => {
     // verify if the visited user blocked me
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + data.token;
     axios.get(`${process.env.HostApi}/user/isBlocked?id=${data.visited}`)
     .then((response) => {
       console.log(chalk.red(JSON.stringify(response.data)))

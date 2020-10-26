@@ -45,12 +45,6 @@ const chat = {
         // Verify the conversation is valid && the user sending the message is the connected user
         let { userTo, userFrom, convId, msg, isRead } = req.body;
         let checkConv = await chatManager.checkConversation(userTo, userFrom, convId)
-        // console.log(chalk.green(JSON.stringify(checkConv)))
-        // console.log(chalk.red(typeof connectedUserData['userId']))
-        // console.log(chalk.red(typeof userFrom))
-        // console.log(chalk.magenta("length conv - "+ checkConv.length))
-        // console.log(chalk.magenta("userform - "+ userFrom + " type "+ typeof Number(userFrom)))
-        // console.log(chalk.magenta("conn - "+ connectedUserData['userId'] + " type "+ typeof connectedUserData['userId']))
         if (checkConv.length > 0  && (Number(userFrom) == connectedUserData['userId'])) {
             // verify the users are matched
             let checklike1 = await userManager.checkLiked(userTo, userFrom)

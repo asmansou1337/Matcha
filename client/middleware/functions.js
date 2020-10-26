@@ -17,8 +17,22 @@ const func = {
         return {
           username,
           msg,
-          //time: moment().format('h:mm a')
+          time: func.formatTime(new Date())
         };
+    },
+    formatTime: (lastConnection) => {
+        let connDate = new Date(lastConnection);
+        let dayOfMonth = connDate.getDate();
+        let month = connDate.getMonth() + 1;
+        let year = connDate.getFullYear();
+        let hour = connDate.getHours();
+        let minutes = connDate.getMinutes();
+        month = month < 10 ? '0' + month : month;
+        dayOfMonth = dayOfMonth < 10 ? '0' + dayOfMonth : dayOfMonth;
+        hour = hour < 10 ? '0' + hour : hour;
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        lastLogin = dayOfMonth+'/'+ month+'/'+year +' at '+ hour+':'+ minutes
+        return lastLogin;
     },
     escapeHtml: (str) => {
         str  = str.replace(/[&<>'"]/g, 
