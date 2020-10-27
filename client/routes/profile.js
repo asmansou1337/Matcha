@@ -50,7 +50,6 @@ router.post("/updatePassword", headerAuth.connectedHeader, async (req, res) => {
   let success = undefined;
   await axios.post(`${process.env.HostApi}/profile/updatePassword`, req.body)
     .then((response) => {
-      // console.log(chalk.blue(response.data.successMessage));
       success = response.data;
     })
     .catch((e) => {
@@ -84,7 +83,6 @@ router.post("/uploadProfile", headerAuth.connectedHeader, (req, res) => {
   // Get The old profile picture name if exists
   axios.get(`${process.env.HostApi}/profile/getProfilePic`)
     .then((resp) => {
-      // console.log(chalk.magenta(JSON.stringify(resp.data.user.profilePic)));
       oldProfilePic = resp.data.user.profilePic;
     })
     .catch((e) => {
@@ -100,7 +98,7 @@ router.post("/uploadProfile", headerAuth.connectedHeader, (req, res) => {
   // upload new picture
   upload(req, res, (err) => {
     if (err instanceof multer.MulterError) {
-      console.log(chalk.red(err));
+      // console.log(chalk.red(err));
       req.flash("error", "Images Allowed (jpg, jpeg, png, gif), size: less than 10MB");
       res.redirect("/profile/editProfile");
     } else if (err) {
@@ -235,18 +233,17 @@ router.post("/uploadPicture", headerAuth.connectedHeader, (req, res) => {
 router.post("/deletePicture", headerAuth.connectedHeader, (req, res) => {
   req.flash("path", "picture");
   let img = req.body.img;
-  //console.log(chalk.magenta(JSON.stringify(req.body)));
+
   if (!handle.isEmpty(img) && img != null && img != "") {
     if (fs.existsSync(process.cwd() + "/public/uploads/" + img)) {
       // Remove the image name on the backend
       let pic = {
         name: img,
       };
-      //console.log(chalk.green(JSON.stringify(req.file)));
+      
       axios.post(`${process.env.HostApi}/profile/deletePic`, pic)
         .then((response) => {
           fs.unlinkSync(process.cwd() + "/public/uploads/" + img);
-          // console.log(chalk.blue(response.data.successMessage));
           req.flash("successMessage", response.data.successMessage);
           res.redirect("/profile/editProfile");
         })

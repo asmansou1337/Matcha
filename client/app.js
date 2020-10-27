@@ -1,5 +1,4 @@
 require('dotenv').config();
-var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -13,8 +12,6 @@ var app = express();
 const server = require('http').createServer(app);
 io = require('socket.io').listen(server);
 const util = require('./middleware/functions');
-const headerAuth = require('./middleware/authHeader');
-const isComplete = require('./middleware/isCompleted');
 
 chatUsers = [];
 
@@ -62,10 +59,6 @@ app.use(session({
 }));
  
 app.use(flash());
-// app.use((req, res, next) => {
-//   res.header('Cache-Control', 'no-cache, no-store, must-revalidate')
-//   next();
-// });
 
 app.use('/', indexRouter);
 app.use('/profile', profileRouter);
@@ -105,17 +98,14 @@ io.on('connection', socket => {
               io.emit('convUnread', {convId: user.convId, unreadMsgs: unread.data.unreadMsgs, userId: user.to})
             })
             .catch((e) => {
-              console.log(chalk.red( e.response.data.errorMessage.error))
               socket.error(e.response.data.errorMessage.error)
             })
         })
         .catch((e) => {
-          console.log(chalk.red( e.response.data.errorMessage.error))
           socket.error(e.response.data.errorMessage.error)
         })
         console.log(chalk.green(respo.data.successMessage))
     }).catch((e) => {
-      console.log(chalk.red( e.response.data.errorMessage.error))
       socket.error(e.response.data.errorMessage.error)
     })
   });
@@ -125,19 +115,15 @@ io.on('connection', socket => {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + data.token;
     axios.get(`${process.env.HostApi}/user/isBlocked?id=${data.visited}`)
     .then((response) => {
-      console.log(chalk.red(JSON.stringify(response.data)))
         if (response.data.blocked === 0) {
           axios.get(`${process.env.HostApi}/unreadnotif?id=${data.visited}`)
           .then((respo) => {
-            console.log(chalk.green(console.log(JSON.stringify(respo.data))))
               io.emit('unreadNotif', {unread: respo.data.unread, notify: respo.data.notify, id: data.visited, msg: data.msg});
           }).catch((e) => {
-            console.log(chalk.red( e.response.data.errorMessage.error))
             socket.error(e.response.data.errorMessage.error)
           })
         }
     }).catch((e) => {
-      console.log(chalk.red( e.response.data.errorMessage.error))
       socket.error(e.response.data.errorMessage.error)
     })
     
@@ -149,7 +135,6 @@ io.on('connection', socket => {
     .then((respo) => {
         io.emit('unreadNotif', {unread: respo.data.unread, notify: respo.data.notify, id: data.user.userId, msg: data.msg});
     }).catch((e) => {
-      console.log(chalk.red( e.response.data.errorMessage.error))
       socket.error(e.response.data.errorMessage.error)
     })
   })
@@ -157,7 +142,6 @@ io.on('connection', socket => {
   socket.on('checkChatNotif', (data) => {
     axios.get(`${process.env.HostApi}/getUnreadMessages?userId=${data.user.userId}`)
         .then((notif) => {
-          // console.log(JSON.stringify(notif.data))
           io.emit('chatNotif', {userTo: data.user.userId, unreadMsgs: notif.data.unreadMsgs, msg: data.msg})
         })
         .catch((e) => {

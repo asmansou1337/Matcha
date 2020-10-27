@@ -12,9 +12,6 @@ var token = document.getElementById('token').dataset.token;
             socket.close();
         });
         const socket = io();
-        // $(window).on('beforeunload', function(){
-        //     socket.close();
-        // });
 
         socket.on('chatNotif', data => {
             if (Number(data.userTo) === user.userId) {

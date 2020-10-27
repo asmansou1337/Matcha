@@ -10,7 +10,6 @@ axios.get(`/profile/getTags`)
     response.data.tags.forEach(element => {
       tagsLists.push(element.name);
     });
-    // console.log(JSON.stringify(tagsLists));   
   })
 const oldTags = document.getElementById('tagsTab').value.split(',');
       oldTags.forEach(tag => {

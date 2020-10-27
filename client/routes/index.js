@@ -17,7 +17,6 @@ router.get('/', headerAuth.connectedHeader, isComplete, (req, res) => {
   // get history of likes and visits
   axios.get(`${process.env.HostApi}/history`)
     .then((response) => {
-      //  console.log(chalk.green(JSON.stringify(response.data)))
       return res.render('index', {likersUsers: response.data.likersUsers,likedUsers: response.data.likedUsers, 
         visitorsUsers: response.data.visitorsUsers, mutualUsers: response.data.mutualUsers,
         blockedUsers: response.data.blockedUsers, error, isAdmin: req.isAdmin, token: req.cookies.jwt});     
@@ -193,7 +192,6 @@ router.get('/logout', headerAuth.connectedHeader, (req, res) => {
   ).catch((e) => {
     if(typeof e.response !== 'undefined') {
       if(e.response.status === 400) {
-        // console.log(e.response.data.errorMessage);
         req.flash("error", e.response.data.errorMessage.error);
         res.redirect("/");
       }

@@ -65,7 +65,6 @@ router.get('/user', headerAuth.connectedHeader, isComplete, async (req,res) => {
         const relation = await getRelation(id)
         return res.render('profile', {userInfos: user, error, relation, message: {err},isAdmin: req.isAdmin, token: req.cookies.jwt});
     } catch (e) {
-      console.log(chalk.red(JSON.stringify(e.message)))
       req.flash('error', e.message);
       res.redirect('/');
     }

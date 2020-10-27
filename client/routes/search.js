@@ -36,7 +36,6 @@ router.post('/search',  headerAuth.connectedHeader, isComplete, (req, res) => {
         handle.authError(e, req, res);
         if(typeof e.response !== 'undefined') {
           if(e.response.status === 400) {
-            // console.log(chalk.red(JSON.stringify(e.response.data)))
             let error = e.response.data.errorMessage
             res.render('search', {error, filter: e.response.data.filter, isAdmin: req.isAdmin, token: req.cookies.jwt});
           }

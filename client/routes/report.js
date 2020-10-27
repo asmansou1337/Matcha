@@ -18,7 +18,6 @@ router.get('/reported',  headerAuth.connectedHeader, isComplete, (req, res) => {
   
     axios.get(`${process.env.HostApi}/reportedUsers`)
     .then((respo) => {
-      // console.log(chalk.green(JSON.stringify(respo.data)))
         res.render('report', {success, users: respo.data.reportedUsers, isAdmin: req.isAdmin, token: req.cookies.jwt});
     })
     .catch((e) => {
@@ -34,7 +33,7 @@ router.get('/reported',  headerAuth.connectedHeader, isComplete, (req, res) => {
 
 /* Delete user profile page. */
 router.post('/deleteProfile',  headerAuth.connectedHeader, isComplete, (req, res) => {
-  // console.log(chalk.green(JSON.stringify(req.body)))
+  
   let profilePic = req.body.profilePic
 
   // Delete User from DB
