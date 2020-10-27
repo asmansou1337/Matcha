@@ -51,8 +51,9 @@ const Notif = {
     addNotification: async (reciever, sender, message, link) => {
         // check if receiver has notification activated
         const notifSetting = await profileManager.getNotifSetting(reciever);
-        if (notifSetting[0].notify == 1)
-            return await notifManager.addNotif(reciever, sender, message, link);
+        if (notifSetting.length > 0)
+            if (notifSetting[0].notify == 1)
+                return await notifManager.addNotif(reciever, sender, message, link);
         else
             return;
     },

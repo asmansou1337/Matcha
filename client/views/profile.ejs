@@ -84,7 +84,7 @@
                                 <p><strong>Orientation : </strong> <%= (typeof userInfos !== 'undefined') ? ((userInfos.preference !== null) ? userInfos.preference : ' - ') : '' %></p>
                                 <!-- Bio -->
                                 <strong>Biography : </strong>
-                                <p class="card-text"><%= (typeof userInfos !== 'undefined') ? ((userInfos.biography !== null) ? userInfos.biography : ' - ') : '' %></p>
+                                <p class="card-text"><%- (typeof userInfos !== 'undefined') ? ((userInfos.biography !== null) ? userInfos.biography : ' - ') : '' %></p>
                                 <hr>
                                  <!-- Tags -->
                                  <h4 class="card-title"><strong>Interests</strong></h4>
