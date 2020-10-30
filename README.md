@@ -32,6 +32,8 @@ ________________________________________________________________________
 
     - [X] at least an email address, a username, a last name, a first name and a password
     - [X] After the registration, an e-mail with an unique link must be sent to the registered user to verify his account
+    
+    ![Alt text](screenshots/signup.png?raw=true "SignUP")
   
   - **Signing-in** 
 
