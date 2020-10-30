@@ -7,15 +7,21 @@
 **To Run The backend server**
 
   **cd Project folder and run the script ./startServer.sh**
+  
   This will install the project dependencies, lunch setup to create Database, Fill The DB with fake data then run the server.
      
 **To Run The frontend server**
+
   **cd Project folder and run the script ./startClient.sh**
+  
   This will install the project dependencies then run the server.
 
 **Authentication**
+
     - Login page: http://localhost:8080/login
+    
     - Sign up page : http://localhost:8080/signup
+    
         > After signing up you will need to activate you account through email
     
 ________________________________________________________________________
