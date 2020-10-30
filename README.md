@@ -4,19 +4,19 @@
 
   - Matcha is a dating web app made with NodeJs, Express Js, Ejs Template Engine/ Material Design Bootstrap, and MySQL.
 
-**To Run The backend server**
+- **To Run The backend server**
 
   **cd Project folder and run the script ./startServer.sh**
   
   This will install the project dependencies, lunch setup to create Database, Fill The DB with fake data then run the server.
      
-**To Run The frontend server**
+- **To Run The frontend server**
 
   **cd Project folder and run the script ./startClient.sh**
   
   This will install the project dependencies then run the server.
 
-**Authentication**
+- **Authentication**
 
     - Login page: http://localhost:8080/login
     
