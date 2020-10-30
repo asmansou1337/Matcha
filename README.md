@@ -3,36 +3,8 @@
 ## Description:
 
   - Matcha is a dating web app that is made with NodeJs, Express Js, Ejs Template Engine/ Material Design Bootstrap, and MySQL.
-  
-## Installing:
 
-Install the app through the setup page to create automatically the database, steps:
-
-1. **Change database credentials and create database with it's tables - Change project env variables**
-
-    1. Copy and rename the file:
-      - cp server/.env.example server/.env
-      
-    2. Edit File Infos
-      - vim server/.env
-
-    3. Edit database credentials:
-      - vim server/config/database.js
-
-    4. Edit database credentials:
-      - vim server/config/setup.js
-      - vim server/config/seed.js
-    
-    5. Allow permission to the project folder and enclosed files:
-      - chmod -R 777 .
-      
-    6. Copy and rename the file:
-      - cp client/.env.example client/.env
-      
-    7. Edit File Infos
-      - vim client/.env
-
-**To Run The backend server **
+** To Run The backend server **
   0. ** cd server folder**
   1. **Install the project dependencies:**
     - In terminal lauch the command: npm install
@@ -43,7 +15,7 @@ Install the app through the setup page to create automatically the database, ste
   3. **Run the server:**
      - In terminal lauch the command: npm run dev
      
- **To Run The frontend server **
+** To Run The frontend server **
   0. ** cd client folder**
   1. **Install the project dependencies:**
     - In terminal lauch the command: npm install

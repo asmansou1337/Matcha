@@ -83,6 +83,10 @@ router.get('/user', headerAuth.connectedHeader, isComplete, async (req,res) => {
 // Like / Unlike 
 router.post('/user/like', headerAuth.connectedHeader, isComplete, (req, res) => {
   const id = req.body.userId;
+  if (handle.isEmpty(id)){
+    req.flash('error', 'This user does not exist');
+    res.redirect(`/`);
+  }
   // check if user exists & his profile is completed
   axios.get(`${process.env.HostApi}/user/getProfileStatut?id=${id}`)
   .then((resp) => {
@@ -121,6 +125,10 @@ router.post('/user/like', headerAuth.connectedHeader, isComplete, (req, res) => 
 // Block / Unblock
 router.post('/user/block', headerAuth.connectedHeader, isComplete, (req, res) => {
   const id = req.body.userId;
+  if (handle.isEmpty(id)){
+    req.flash('error', 'This user does not exist');
+    res.redirect(`/`);
+  }
   // check if user exists & his profile is completed
   axios.get(`${process.env.HostApi}/user/getProfileStatut?id=${id}`)
   .then((resp) => {
@@ -153,6 +161,10 @@ router.post('/user/block', headerAuth.connectedHeader, isComplete, (req, res) =>
 // Report
 router.post('/user/report', headerAuth.connectedHeader, isComplete, (req, res) => {
   const id = req.body.userId;
+  if (handle.isEmpty(id)){
+    req.flash('error', 'This user does not exist');
+    res.redirect(`/`);
+  }
   // check if user exists & his profile is completed
   axios.get(`${process.env.HostApi}/user/getProfileStatut?id=${id}`)
   .then((resp) => {
