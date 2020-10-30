@@ -40,6 +40,8 @@ ________________________________________________________________________
     - [X] connect with his/her username and password
     - [X] able to receive an email allowing him/her to re-initialize his/her password in case of forgetting his/her password 
     - [X] Disconnect with 1 click from any pages on the site.
+    
+    ![Alt text](screenshots/login.png?raw=true "Login")
 
   - **User profile**
 
@@ -56,7 +58,16 @@ ________________________________________________________________________
       ◦ Up to you to define what “fame rating” means as long as your criteria are consistent
     - [X] The user must be located using GPS positioning, up to his/her neighborhood. If the user does not want to be positioned, you must find a way to locate him/her even without his/her consent.
     - [X] The user must be able to modify his/her position in his/her profile.
-
+    
+    ![Alt text](screenshots/edit-profile.png?raw=true "Edit Profile")
+    ![Alt text](screenshots/edit-basic.png?raw=true "Edit Basic Infos")
+    ![Alt text](screenshots/edit-pass.png?raw=true "Edit Password")
+    ![Alt text](screenshots/edit-profilepic.png?raw=true "Edit Profile Picture")
+    ![Alt text](screenshots/edit-pics.png?raw=true "Edit Other pics")
+    ![Alt text](screenshots/edit-tags.png?raw=true "Edit Tags")
+    ![Alt text](screenshots/edit-tags3.png?raw=true "Edit Tags")
+    ![Alt text](screenshots/edit-location.png?raw=true "Edit Location")
+    ![Alt text](screenshots/home.png?raw=true "Home")
 
   - **Matching**
 
@@ -71,6 +82,8 @@ ________________________________________________________________________
           - With their “fame rating”.
       - The list must be sortable by age, location, “fame rating” and common tags.
       - The list must be filterable by age, location, “fame rating” and common tags.
+      
+      ![Alt text](screenshots/browse2.png?raw=true "Matching Users")
 
   - **Search**
 
@@ -81,6 +94,8 @@ ________________________________________________________________________
       - One or multiple interests tags.
     As per the suggestion list, the resulting list must be sortable and filterable by age, location, “fame rating” and tags.
       - A blocked user should not appear in the search.
+      
+      ![Alt text](screenshots/search.png?raw=true "Search Users")
 
   - **Profile of other users**
 
@@ -98,10 +113,16 @@ ________________________________________________________________________
 
     - [X] A user can clearly see if the consulted profile is connected or “like” his/her profile and
     must be able to “unlike” or be disconnected from that profile.
+    
+    ![Alt text](screenshots/profileview.png?raw=true "Profile View")
 
   - **Chat**
 
     - [X] When two users are connected,(Meaning they “like” each other.) they must be able to “chat” in real time.(We’ll tolerate a 10 secondes delay.) How you will implement the chat is totally up to you. The user must be able to see from any page if a new message is received.
+    
+    ![Alt text](screenshots/chat.png?raw=true "Chat")
+    ![Alt text](screenshots/chat1.png?raw=true "Chat")
+    ![Alt text](screenshots/chat2.png?raw=true "Chat")
 
   - **Notifications**
 
@@ -114,6 +135,14 @@ ________________________________________________________________________
       - [X] A connected user “unliked” you.
 
     - [X] A user must be able to see, from any page that a notification hasn’t been read.
+    
+    ![Alt text](screenshots/notification.png?raw=true "Notification")
+    
+ - **Delete Reported Users By an admin**
+
+    - [X] A admin can view and delete a reported user
+    
+    ![Alt text](screenshots/reported.png?raw=true "Reported Users")
 
     - **Links**
     For sorting array of objects with mutiple option
