@@ -3,6 +3,10 @@
 ## Description:
 
   - Matcha is a dating web app made with NodeJs, Express Js, Ejs Template Engine/ Material Design Bootstrap, and MySQL.
+  
+- **Installation**
+
+  - Follow this [instructions](how-to-install.md)
 
 - **To Run The backend server**
 
