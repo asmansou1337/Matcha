@@ -71,6 +71,7 @@ ________________________________________________________________________
     ![Alt text](screenshots/edit-tags.png?raw=true "Edit Tags")
     ![Alt text](screenshots/edit-tags3.png?raw=true "Edit Tags")
     ![Alt text](screenshots/edit-location.png?raw=true "Edit Location")
+    - Home Page:
     ![Alt text](screenshots/home.png?raw=true "Home")
 
   - **Matching**
