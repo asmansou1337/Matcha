@@ -9,7 +9,7 @@
     "seed": "node ./config/seed"
   },
   "dependencies": {
-    "bcrypt": "^4.0.1",
+    "bcrypt": "^5.0.0",
     "chalk": "^3.0.0",
     "connect-flash-plus": "^0.2.1",
     "cookie-parser": "~1.4.4",
